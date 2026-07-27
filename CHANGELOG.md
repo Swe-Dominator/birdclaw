@@ -9,6 +9,7 @@
 ### Changed
 
 - Merge archive and backup imports by default so incomplete snapshots never delete destination-only rows; use explicit `--restore` for exact replacement.
+- Refresh compatible dependency resolutions, including React 19.2.8, Mapbox GL 3.27.0, Playwright 1.62.0, and Oxlint 1.75.0, without widening declared ranges.
 
 ## 0.11.0 - 2026-07-18
 
