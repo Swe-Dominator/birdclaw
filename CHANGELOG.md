@@ -1,14 +1,23 @@
 # CHANGELOG
 
-## 0.11.1 - Unreleased
+## 0.11.1 - 2026-07-27
+
+### Highlights
+
+- Preserve explicit X archive deletions and observable edit history as portable, source-attributed records without exposing deleted or superseded tweet bodies in active views.
+- Merge archive and backup imports by default so an incomplete snapshot cannot erase destination-only data; exact replacement remains available through explicit `--restore` mode.
 
 ### Added
 
-- Preserve explicit X archive deletions as source-attributed tweet, media, and quote tombstones, and retain observable X edit chains as portable revision records while hiding superseded bodies from active views.
+- Preserve explicit X archive deletions as source-attributed tweet, media, and quote tombstones.
+- Retain observable X edit chains as portable revision records while hiding superseded bodies from active views.
 
 ### Changed
 
 - Merge archive and backup imports by default so incomplete snapshots never delete destination-only rows; use explicit `--restore` for exact replacement.
+
+### Dependencies and maintenance
+
 - Refresh compatible dependency resolutions, including React 19.2.8, Mapbox GL 3.27.0, Playwright 1.62.0, and Oxlint 1.75.0, without widening declared ranges.
 - Update the remaining pinned test/build tools and override the MCP SDK's Hono server dependency to the patched 2.x line.
 
