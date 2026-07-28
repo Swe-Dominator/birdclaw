@@ -65,6 +65,13 @@ function parseLimit(value = DEFAULT_FOLLOW_PAGE_LIMIT) {
 	return Math.floor(value);
 }
 
+function parseRowLimit(value: number) {
+	if (!Number.isFinite(value) || value < 1) {
+		throw new Error("--limit must be at least 1");
+	}
+	return Math.floor(value);
+}
+
 function parseOptionalPositiveInteger(name: string, value?: number) {
 	if (value === undefined) {
 		return undefined;
@@ -784,7 +791,9 @@ export function listTopFollowers({
       limit ?
       `,
 		)
-		.all(resolved.accountId, limit) as Array<Record<string, unknown>>;
+		.all(resolved.accountId, parseRowLimit(limit)) as Array<
+		Record<string, unknown>
+	>;
 	return {
 		accountId: resolved.accountId,
 		items: rows.map(toGraphProfile),
@@ -827,7 +836,9 @@ export function listMutuals({
       limit ?
       `,
 		)
-		.all(resolved.accountId, limit) as Array<Record<string, unknown>>;
+		.all(resolved.accountId, parseRowLimit(limit)) as Array<
+		Record<string, unknown>
+	>;
 	return {
 		accountId: resolved.accountId,
 		items: rows.map(toGraphProfile),
@@ -877,7 +888,9 @@ export function listNonMutualFollowing({
       limit ?
       `,
 		)
-		.all(resolved.accountId, limit) as Array<Record<string, unknown>>;
+		.all(resolved.accountId, parseRowLimit(limit)) as Array<
+		Record<string, unknown>
+	>;
 	return {
 		accountId: resolved.accountId,
 		items: rows.map(toGraphProfile),
@@ -922,7 +935,7 @@ export function listUnfollowedSince({
       limit ?
       `,
 		)
-		.all(resolved.accountId, direction, since, limit) as Array<
+		.all(resolved.accountId, direction, since, parseRowLimit(limit)) as Array<
 		Record<string, unknown>
 	>;
 	return {
@@ -973,7 +986,7 @@ export function listFollowEvents({
 		params.push(until.includes("T") ? until : `${until}T00:00:00.000Z`);
 	}
 
-	params.push(limit);
+	params.push(parseRowLimit(limit));
 	const rows = db
 		.prepare(
 			`

@@ -224,6 +224,37 @@ describe("follow graph sync and cache-only queries", () => {
 		});
 	});
 
+	it("rejects non-positive limits instead of returning every row", async () => {
+		setupTempHome();
+		mocks.listFollowUsersViaXurl.mockResolvedValueOnce({
+			data: [user("1", "alice", 100), user("2", "bob", 500)],
+			meta: { result_count: 2 },
+		});
+		const { listTopFollowers, syncFollowGraph } =
+			await import("./follow-graph");
+
+		await syncFollowGraph({
+			direction: "followers",
+			yes: true,
+			refresh: true,
+		});
+
+		expect(
+			listTopFollowers({ limit: 1 }).items.map((item) => item.handle),
+		).toEqual(["bob"]);
+		// A negative limit is "no limit" in SQLite, so an unvalidated value
+		// silently returns the whole table instead of respecting --limit.
+		expect(() => listTopFollowers({ limit: -1 })).toThrow(
+			"--limit must be at least 1",
+		);
+		expect(() => listTopFollowers({ limit: 0 })).toThrow(
+			"--limit must be at least 1",
+		);
+		expect(() => listTopFollowers({ limit: Number.NaN })).toThrow(
+			"--limit must be at least 1",
+		);
+	});
+
 	it("reuses fresh cache for duplicate sync requests instead of calling xurl again", async () => {
 		setupTempHome();
 		mocks.listFollowUsersViaXurl.mockResolvedValueOnce({
