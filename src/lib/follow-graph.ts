@@ -66,8 +66,8 @@ function parseLimit(value = DEFAULT_FOLLOW_PAGE_LIMIT) {
 }
 
 function parseRowLimit(value: number) {
-	if (!Number.isFinite(value) || value < 1) {
-		throw new Error("--limit must be at least 1");
+	if (!Number.isFinite(value) || value < 0) {
+		throw new Error("--limit must be a non-negative number");
 	}
 	return Math.floor(value);
 }

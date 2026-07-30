@@ -224,7 +224,7 @@ describe("follow graph sync and cache-only queries", () => {
 		});
 	});
 
-	it("rejects non-positive limits instead of returning every row", async () => {
+	it("rejects negative and non-finite limits instead of returning every row", async () => {
 		setupTempHome();
 		mocks.listFollowUsersViaXurl.mockResolvedValueOnce({
 			data: [user("1", "alice", 100), user("2", "bob", 500)],
@@ -245,13 +245,11 @@ describe("follow graph sync and cache-only queries", () => {
 		// A negative limit is "no limit" in SQLite, so an unvalidated value
 		// silently returns the whole table instead of respecting --limit.
 		expect(() => listTopFollowers({ limit: -1 })).toThrow(
-			"--limit must be at least 1",
+			"--limit must be a non-negative number",
 		);
-		expect(() => listTopFollowers({ limit: 0 })).toThrow(
-			"--limit must be at least 1",
-		);
+		expect(listTopFollowers({ limit: 0 }).items).toEqual([]);
 		expect(() => listTopFollowers({ limit: Number.NaN })).toThrow(
-			"--limit must be at least 1",
+			"--limit must be a non-negative number",
 		);
 	});
 
