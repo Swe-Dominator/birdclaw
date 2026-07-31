@@ -245,11 +245,16 @@ describe("follow graph sync and cache-only queries", () => {
 		// A negative limit is "no limit" in SQLite, so an unvalidated value
 		// silently returns the whole table instead of respecting --limit.
 		expect(() => listTopFollowers({ limit: -1 })).toThrow(
-			"--limit must be a non-negative number",
+			"--limit must be a non-negative integer",
 		);
 		expect(listTopFollowers({ limit: 0 }).items).toEqual([]);
 		expect(() => listTopFollowers({ limit: Number.NaN })).toThrow(
-			"--limit must be a non-negative number",
+			"--limit must be a non-negative integer",
+		);
+		// A fractional limit used to be silently floored (1.9 -> 1) instead of
+		// being treated as invalid input.
+		expect(() => listTopFollowers({ limit: 1.9 })).toThrow(
+			"--limit must be a non-negative integer",
 		);
 	});
 

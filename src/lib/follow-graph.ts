@@ -66,10 +66,10 @@ function parseLimit(value = DEFAULT_FOLLOW_PAGE_LIMIT) {
 }
 
 function parseRowLimit(value: number) {
-	if (!Number.isFinite(value) || value < 0) {
-		throw new Error("--limit must be a non-negative number");
+	if (!Number.isInteger(value) || value < 0) {
+		throw new Error("--limit must be a non-negative integer");
 	}
-	return Math.floor(value);
+	return value;
 }
 
 function parseOptionalPositiveInteger(name: string, value?: number) {
