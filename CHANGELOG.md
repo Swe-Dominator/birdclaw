@@ -2,6 +2,10 @@
 
 ## 0.11.2 - Unreleased
 
+### Fixed
+
+- Reject negative, fractional, and non-numeric follow-graph `--limit` values before SQLite can treat them as unbounded or return a driver error. (#110 — thanks @devYRPauli)
+
 ## 0.11.1 - 2026-07-27
 
 ### Highlights
