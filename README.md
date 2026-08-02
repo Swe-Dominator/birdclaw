@@ -181,7 +181,7 @@ Notes:
 
 ## Requirements
 
-- Node `26.5.0`
+- Node `26.5.1`
 - `pnpm`
 - macOS recommended for Spotlight archive discovery
 - `xurl` recommended for live reads / writes

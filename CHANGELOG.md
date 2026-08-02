@@ -2,6 +2,10 @@
 
 ## 0.11.2 - Unreleased
 
+### Dependencies and maintenance
+
+- Move development and CI to Node 26.5.1 and pnpm 11.18.0 with explicit dependency build approvals; refresh direct packages, lockfile resolutions, and GitHub Actions.
+
 ## 0.11.1 - 2026-07-27
 
 ### Highlights
