@@ -9,8 +9,8 @@ description: "Install birdclaw via Homebrew, npm, or from source. Optional xurl 
 
 ## Requirements
 
-- **Node.js** 26.5.0 (managed via `fnm`, `nvm`, or `volta`)
-- **pnpm** 10.x for source installs
+- **Node.js** 26.5.1 (managed via `fnm`, `nvm`, or `volta`)
+- **pnpm** 11.x for source installs
 - **macOS** is recommended for archive autodiscovery (Spotlight `mdfind`); Linux works for everything else
 - **SQLite** uses Node's native `node:sqlite` runtime — no system install needed
 

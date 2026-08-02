@@ -6,6 +6,10 @@
 
 - Reject negative, fractional, and non-numeric follow-graph `--limit` values before SQLite can treat them as unbounded or return a driver error. (#110 — thanks @devYRPauli)
 
+### Dependencies and maintenance
+
+- Move development and CI to Node 26.5.1 and pnpm 11.18.0 with explicit dependency build approvals; refresh direct packages, lockfile resolutions, and GitHub Actions.
+
 ## 0.11.1 - 2026-07-27
 
 ### Highlights

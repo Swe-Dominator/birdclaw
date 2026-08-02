@@ -48,7 +48,7 @@ Repo: `steipete/birdclaw`
 ## Decisions
 
 - language: TypeScript
-- runtime: Node 26.5.0+ with pnpm workspace
+- runtime: Node 26.5.1+ with pnpm workspace
 - database: SQLite
 - query layer: native SQLite with focused typed row codecs
 - search: FTS5 day 1
@@ -81,7 +81,7 @@ Repo: `steipete/birdclaw`
 
 ### Runtime / workspace
 
-- Node.js 26.5.0
+- Node.js 26.5.1
 - pnpm workspace
 - TypeScript `strict: true`
 - ESM only
