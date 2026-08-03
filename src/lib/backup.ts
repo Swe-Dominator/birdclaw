@@ -31,7 +31,7 @@ import {
 } from "./streaming-ingestion";
 import { runSubprocessEffect, SubprocessError } from "./subprocess";
 
-const BACKUP_SCHEMA_VERSION = 7;
+const BACKUP_SCHEMA_VERSION = 8;
 const MIN_SUPPORTED_BACKUP_SCHEMA_VERSION = 1;
 const DEFAULT_MAX_BACKUP_SHARD_BYTES = 48 * 1024 * 1024;
 const MANIFEST_PATH = "manifest.json";
@@ -439,6 +439,8 @@ data/profile_snapshots.jsonl
 data/profile_bio_entities.jsonl
 data/tweets/YYYY.jsonl
 data/tweets/unknown.jsonl
+data/fxtwitter/fetches.jsonl
+data/fxtwitter/observations.jsonl
 data/timeline_edges/home.jsonl
 data/timeline_edges/mention.jsonl
 data/collections/likes.jsonl

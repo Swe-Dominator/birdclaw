@@ -714,6 +714,88 @@ const definitions = {
 			columns: ["tweet_id", "source", "source_url", "observed_at"],
 		},
 	},
+	fxtwitter_fetches: {
+		exportSql: `
+      select id, endpoint_family, request_key, source_url, retrieved_at,
+        collection_state, partial_reasons_json, pages_fetched, items_observed,
+        terminal_cursor, next_cursor, upstream_count, failure_json
+      from fxtwitter_fetches
+      order by retrieved_at, id
+    `,
+		...fixedShard("data/fxtwitter/fetches.jsonl", "fxtwitter_fetches"),
+		merge: {
+			order: 26,
+			sql: `
+      insert into fxtwitter_fetches (
+        id, endpoint_family, request_key, source_url, retrieved_at,
+        collection_state, partial_reasons_json, pages_fetched, items_observed,
+        terminal_cursor, next_cursor, upstream_count, failure_json
+      ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      on conflict(id) do nothing
+      `,
+			columns: [
+				"id",
+				"endpoint_family",
+				"request_key",
+				"source_url",
+				"retrieved_at",
+				"collection_state",
+				"partial_reasons_json",
+				"pages_fetched",
+				"items_observed",
+				"terminal_cursor",
+				"next_cursor",
+				"upstream_count",
+				"failure_json",
+			],
+		},
+	},
+	fxtwitter_observations: {
+		exportSql: `
+      select endpoint_family, request_key, item_kind, item_id, source_url,
+        first_seen_at, last_seen_at, seen_count, last_fetch_id
+      from fxtwitter_observations
+      order by endpoint_family, request_key, item_kind, item_id
+    `,
+		...fixedShard(
+			"data/fxtwitter/observations.jsonl",
+			"fxtwitter_observations",
+		),
+		merge: {
+			order: 27,
+			sql: `
+      insert into fxtwitter_observations (
+        endpoint_family, request_key, item_kind, item_id, source_url,
+        first_seen_at, last_seen_at, seen_count, last_fetch_id
+      ) values (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      on conflict(endpoint_family, request_key, item_kind, item_id) do update set
+        source_url = case
+          when excluded.last_seen_at >= fxtwitter_observations.last_seen_at
+            then excluded.source_url
+          else fxtwitter_observations.source_url
+        end,
+        first_seen_at = min(fxtwitter_observations.first_seen_at, excluded.first_seen_at),
+        last_seen_at = max(fxtwitter_observations.last_seen_at, excluded.last_seen_at),
+        seen_count = max(fxtwitter_observations.seen_count, excluded.seen_count),
+        last_fetch_id = case
+          when excluded.last_seen_at >= fxtwitter_observations.last_seen_at
+            then excluded.last_fetch_id
+          else fxtwitter_observations.last_fetch_id
+        end
+      `,
+			columns: [
+				"endpoint_family",
+				"request_key",
+				"item_kind",
+				"item_id",
+				"source_url",
+				"first_seen_at",
+				"last_seen_at",
+				"seen_count",
+				"last_fetch_id",
+			],
+		},
+	},
 	tweet_collections: {
 		exportSql: `
       select account_id, tweet_id, kind, collected_at, source, raw_json, updated_at
