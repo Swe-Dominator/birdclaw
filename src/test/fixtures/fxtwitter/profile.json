@@ -1,0 +1,20 @@
+{
+	"code": 200,
+	"message": "OK",
+	"user": {
+		"type": "profile",
+		"id": "12",
+		"screen_name": "example",
+		"name": "Example Person",
+		"description": "Profile from FxTwitter",
+		"location": "Internet",
+		"avatar_url": "https://pbs.twimg.com/profile_images/12/avatar.jpg",
+		"followers": 123,
+		"following": 45,
+		"statuses": 67,
+		"joined": "Tue Mar 21 20:50:14 +0000 2006",
+		"protected": false,
+		"verification": { "verified": true, "type": "individual" },
+		"website": { "url": "https://example.com" }
+	}
+}

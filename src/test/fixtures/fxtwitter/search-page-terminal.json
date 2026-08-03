@@ -1,0 +1,54 @@
+{
+	"code": 200,
+	"results": [
+		{
+			"type": "status",
+			"id": "201",
+			"text": "second search result",
+			"created_at": "Tue Mar 21 20:51:14 +0000 2006",
+			"likes": 4,
+			"reposts": 0,
+			"quotes": 0,
+			"replies": 0,
+			"author": {
+				"type": "profile",
+				"id": "41",
+				"screen_name": "finder",
+				"name": "Finder",
+				"description": "",
+				"followers": 11,
+				"following": 6,
+				"statuses": 21,
+				"joined": "Tue Mar 21 20:50:14 +0000 2006",
+				"protected": false,
+				"website": {}
+			},
+			"media": {}
+		},
+		{
+			"type": "status",
+			"id": "202",
+			"text": "terminal search result",
+			"created_at": "Tue Mar 21 20:52:14 +0000 2006",
+			"likes": 3,
+			"reposts": 0,
+			"quotes": 0,
+			"replies": 0,
+			"author": {
+				"type": "profile",
+				"id": "42",
+				"screen_name": "terminal",
+				"name": "Terminal",
+				"description": "",
+				"followers": 12,
+				"following": 7,
+				"statuses": 22,
+				"joined": "Tue Mar 21 20:50:14 +0000 2006",
+				"protected": false,
+				"website": {}
+			},
+			"media": {}
+		}
+	],
+	"cursor": { "top": null, "bottom": null }
+}

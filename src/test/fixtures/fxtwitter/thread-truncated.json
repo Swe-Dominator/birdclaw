@@ -1,0 +1,88 @@
+{
+	"code": 200,
+	"status": {
+		"type": "status",
+		"id": "100",
+		"url": "https://x.com/example/status/100",
+		"text": "thread root",
+		"created_at": "Tue Mar 21 20:50:14 +0000 2006",
+		"likes": 10,
+		"reposts": 2,
+		"quotes": 1,
+		"replies": 9,
+		"author": {
+			"type": "profile",
+			"id": "12",
+			"screen_name": "example",
+			"name": "Example",
+			"description": "public profile",
+			"location": "Internet",
+			"avatar_url": "https://pbs.twimg.com/profile_images/12/avatar.jpg",
+			"followers": 100,
+			"following": 20,
+			"statuses": 50,
+			"joined": "Tue Mar 21 20:50:14 +0000 2006",
+			"protected": false,
+			"website": { "url": "https://example.com" }
+		},
+		"media": {}
+	},
+	"thread": [
+		{
+			"type": "status",
+			"id": "100",
+			"url": "https://x.com/example/status/100",
+			"text": "thread root",
+			"created_at": "Tue Mar 21 20:50:14 +0000 2006",
+			"likes": 10,
+			"reposts": 2,
+			"quotes": 1,
+			"replies": 9,
+			"author": {
+				"type": "profile",
+				"id": "12",
+				"screen_name": "example",
+				"name": "Example",
+				"description": "public profile",
+				"location": "Internet",
+				"avatar_url": "https://pbs.twimg.com/profile_images/12/avatar.jpg",
+				"followers": 100,
+				"following": 20,
+				"statuses": 50,
+				"joined": "Tue Mar 21 20:50:14 +0000 2006",
+				"protected": false,
+				"website": { "url": "https://example.com" }
+			},
+			"media": {}
+		},
+		{
+			"type": "status",
+			"id": "101",
+			"url": "https://x.com/example/status/101",
+			"text": "thread continuation",
+			"created_at": "Tue Mar 21 20:51:14 +0000 2006",
+			"likes": 8,
+			"reposts": 1,
+			"quotes": 0,
+			"replies": 0,
+			"replying_to": { "status": "100", "user_id": "12" },
+			"author": {
+				"type": "profile",
+				"id": "12",
+				"screen_name": "example",
+				"name": "Example",
+				"description": "public profile",
+				"location": "Internet",
+				"avatar_url": "https://pbs.twimg.com/profile_images/12/avatar.jpg",
+				"followers": 100,
+				"following": 20,
+				"statuses": 50,
+				"joined": "Tue Mar 21 20:50:14 +0000 2006",
+				"protected": false,
+				"website": { "url": "https://example.com" }
+			},
+			"media": {}
+		}
+	],
+	"author": null
+}

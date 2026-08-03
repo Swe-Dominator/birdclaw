@@ -9,7 +9,13 @@ import {
 } from "#/lib/archive-import";
 import { ensureBirdclawDirs, setActionsTransport } from "#/lib/config";
 import { getNativeDb } from "#/lib/db";
-import { importTweetsViaFxTwitter } from "#/lib/fxtwitter";
+import {
+	FxTwitterError,
+	importConversationViaFxTwitter,
+	importProfileViaFxTwitter,
+	importThreadViaFxTwitter,
+	importTweetsViaFxTwitter,
+} from "#/lib/fxtwitter";
 import { hydrateProfilesFromX } from "#/lib/profile-hydration";
 import { getQueryEnvelope } from "#/lib/queries";
 import { seedDemoData } from "#/lib/seed";
@@ -139,7 +145,37 @@ export function registerCoreCommands({
 	print,
 	asJson,
 	autoSyncAfterWrite,
+	parsePositiveIntegerOption,
 }: CliCommandContext) {
+	async function runFxTwitterCommand<T>(run: () => Promise<T>) {
+		try {
+			return await run();
+		} catch (error) {
+			if (!(error instanceof FxTwitterError)) throw error;
+			console.error(
+				JSON.stringify({
+					error: {
+						kind: error.kind,
+						message: error.message,
+						status: error.status,
+						retryAfterMs: error.retryAfterMs,
+					},
+				}),
+			);
+			process.exitCode = 1;
+			return undefined;
+		}
+	}
+
+	function requireFxTwitterOptIn(enabled: boolean | undefined) {
+		if (enabled) return true;
+		printError(
+			"FxTwitter public reads are off by default. Pass --fxtwitter to disclose the requested tweet IDs, handles, or queries plus network metadata and timing to api.fxtwitter.com.",
+		);
+		process.exitCode = 1;
+		return false;
+	}
+
 	program
 		.command("init")
 		.description("Create an empty local birdclaw workspace")
@@ -242,14 +278,59 @@ export function registerCoreCommands({
 			"Send tweet IDs to the fixed third-party api.fxtwitter.com endpoint",
 		)
 		.action(async (tweets: string[], options: { fxtwitter?: boolean }) => {
-			if (!options.fxtwitter) {
-				printError(
-					"Public tweet import is off by default. Pass --fxtwitter to disclose the requested tweet IDs and network metadata to api.fxtwitter.com.",
-				);
-				process.exitCode = 1;
-				return;
-			}
-			const result = await importTweetsViaFxTwitter(tweets);
+			if (!requireFxTwitterOptIn(options.fxtwitter)) return;
+			const result = await runFxTwitterCommand(() =>
+				importTweetsViaFxTwitter(tweets),
+			);
+			if (!result) return;
+			await autoSyncAfterWrite();
+			print(result, asJson());
+		});
+	for (const endpointFamily of ["thread", "conversation"] as const) {
+		importCommand
+			.command(`${endpointFamily} <tweet>`)
+			.description(
+				`Import an explicitly requested public ${endpointFamily} through FxTwitter`,
+			)
+			.option(
+				"--fxtwitter",
+				"Send the tweet ID to the fixed third-party api.fxtwitter.com endpoint",
+			)
+			.option("--limit <n>", "Maximum observed tweets to import", "500")
+			.action(
+				async (
+					tweet: string,
+					options: { fxtwitter?: boolean; limit?: string },
+				) => {
+					if (!requireFxTwitterOptIn(options.fxtwitter)) return;
+					const limit = parsePositiveIntegerOption(options.limit, "--limit");
+					if (limit === undefined) return;
+					const result = await runFxTwitterCommand(() =>
+						endpointFamily === "thread"
+							? importThreadViaFxTwitter(tweet, { limit })
+							: importConversationViaFxTwitter(tweet, { limit }),
+					);
+					if (!result) return;
+					await autoSyncAfterWrite();
+					print(result, asJson());
+				},
+			);
+	}
+	importCommand
+		.command("profile <handle>")
+		.description(
+			"Import an explicitly requested public profile through FxTwitter",
+		)
+		.option(
+			"--fxtwitter",
+			"Send the handle to the fixed third-party api.fxtwitter.com endpoint",
+		)
+		.action(async (handle: string, options: { fxtwitter?: boolean }) => {
+			if (!requireFxTwitterOptIn(options.fxtwitter)) return;
+			const result = await runFxTwitterCommand(() =>
+				importProfileViaFxTwitter(handle),
+			);
+			if (!result) return;
 			await autoSyncAfterWrite();
 			print(result, asJson());
 		});
