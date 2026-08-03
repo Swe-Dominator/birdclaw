@@ -1,4 +1,5 @@
 import { backfillLinkIndex, searchLinks } from "#/lib/link-index";
+import { FxTwitterError, importSearchViaFxTwitter } from "#/lib/fxtwitter";
 import { fetchTweetMedia, formatMediaFetchResult } from "#/lib/media-fetch";
 import { listTimelineItems } from "#/lib/queries";
 import { formatWhois, runWhois } from "#/lib/whois";
@@ -35,7 +36,9 @@ export function registerSearchCommands({
 }: CliCommandContext) {
 	const searchCommand = program
 		.command("search")
-		.description("Search local data");
+		.description(
+			"Search local data or an explicitly selected public transport",
+		);
 
 	searchCommand
 		.command("tweets [query]")
@@ -56,8 +59,84 @@ export function registerSearchCommands({
 		.option("--quality-reason", "Include qualityReason on each row")
 		.option("--liked", "Only liked tweets")
 		.option("--bookmarked", "Only bookmarked tweets")
+		.option(
+			"--fxtwitter",
+			"Send the query to the fixed third-party api.fxtwitter.com endpoint",
+		)
+		.option("--max-pages <n>", "Maximum FxTwitter search pages", "5")
+		.option("--feed <feed>", "FxTwitter search feed: latest, top, or media")
 		.option("--limit <n>", "Limit results", "20")
 		.action(async (query, options) => {
+			if (options.fxtwitter) {
+				const incompatible = [
+					[options.account, "--account"],
+					[options.list, "--list"],
+					[options.listId, "--list-id"],
+					[options.replied, "--replied"],
+					[options.unreplied, "--unreplied"],
+					[options.since, "--since"],
+					[options.until, "--until"],
+					[options.originalsOnly, "--originals-only"],
+					[options.hideLowQuality, "--hide-low-quality"],
+					[options.minLikes, "--min-likes"],
+					[options.qualityReason, "--quality-reason"],
+					[options.liked, "--liked"],
+					[options.bookmarked, "--bookmarked"],
+				].find(([value]) => Boolean(value));
+				if (incompatible) {
+					console.error(
+						JSON.stringify({
+							error: {
+								kind: "capability_rejected",
+								message: `${String(incompatible[1])} is a local or account-scoped filter and cannot be used with FxTwitter public search`,
+							},
+						}),
+					);
+					process.exitCode = 1;
+					return;
+				}
+				if (typeof query !== "string" || query.trim().length === 0) {
+					console.error(
+						JSON.stringify({
+							error: {
+								kind: "input_rejected",
+								message: "FxTwitter search requires a query",
+							},
+						}),
+					);
+					process.exitCode = 1;
+					return;
+				}
+				const limit = parsePositiveIntegerOption(options.limit, "--limit");
+				const maxPages = parsePositiveIntegerOption(
+					options.maxPages,
+					"--max-pages",
+				);
+				if (limit === undefined || maxPages === undefined) return;
+				try {
+					const result = await importSearchViaFxTwitter(query, {
+						limit,
+						maxPages,
+						feed: options.feed,
+					});
+					await autoSyncAfterWrite();
+					print(result, asJson());
+				} catch (error) {
+					if (!(error instanceof FxTwitterError)) throw error;
+					console.error(
+						JSON.stringify({
+							error: {
+								kind: error.kind,
+								message: error.message,
+								status: error.status,
+								retryAfterMs: error.retryAfterMs,
+							},
+						}),
+					);
+					process.exitCode = 1;
+				}
+				return;
+			}
 			const minLikes = parseNonNegativeIntegerOption(
 				options.minLikes,
 				"--min-likes",

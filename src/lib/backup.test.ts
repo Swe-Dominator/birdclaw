@@ -59,6 +59,8 @@ function clearData() {
     delete from tweet_account_edges;
     delete from tweet_collections;
 		delete from tweet_sources;
+		delete from fxtwitter_observations;
+		delete from fxtwitter_fetches;
     delete from link_occurrences;
     delete from url_expansions;
     delete from blocks;
@@ -176,6 +178,27 @@ function seedBackupFixture() {
       'https://api.fxtwitter.com/2/status/tweet_2024',
       '2025-01-03T00:00:00.000Z'
     );
+
+		insert into fxtwitter_fetches (
+			id, endpoint_family, request_key, source_url, retrieved_at,
+			collection_state, partial_reasons_json, pages_fetched, items_observed,
+			terminal_cursor, next_cursor, upstream_count, failure_json
+		) values (
+			'fx_fetch_1', 'search', 'local-first',
+			'https://api.fxtwitter.com/2/search?q=local-first',
+			'2025-01-03T00:00:00.000Z', 'partial', '["caller_limit"]',
+			1, 1, null, 'next-cursor', null, null
+		);
+
+		insert into fxtwitter_observations (
+			endpoint_family, request_key, item_kind, item_id, source_url,
+			first_seen_at, last_seen_at, seen_count, last_fetch_id
+		) values (
+			'search', 'local-first', 'tweet', 'tweet_2024',
+			'https://api.fxtwitter.com/2/search?q=local-first',
+			'2025-01-03T00:00:00.000Z', '2025-01-03T00:00:00.000Z', 1,
+			'fx_fetch_1'
+		);
 
     insert into dm_conversations (
       id, account_id, participant_profile_id, title, inbox_kind, last_message_at, unread_count, needs_reply
@@ -423,6 +446,8 @@ describe("text backup", () => {
 			profile_bio_entities: 2,
 			tweets: 3,
 			tweet_sources: 1,
+			fxtwitter_fetches: 1,
+			fxtwitter_observations: 1,
 			timeline_edges_home: 1,
 			timeline_edges_search: 1,
 			collections_bookmarks: 1,
@@ -452,6 +477,12 @@ describe("text backup", () => {
 		expect(existsSync(path.join(repoPath, "data/tweet_sources.jsonl"))).toBe(
 			true,
 		);
+		expect(
+			existsSync(path.join(repoPath, "data/fxtwitter/fetches.jsonl")),
+		).toBe(true);
+		expect(
+			existsSync(path.join(repoPath, "data/fxtwitter/observations.jsonl")),
+		).toBe(true);
 		expect(existsSync(path.join(repoPath, "data/dms/2025.jsonl"))).toBe(true);
 		expect(
 			existsSync(path.join(repoPath, "data/links/url_expansions.jsonl")),
@@ -592,6 +623,28 @@ describe("text backup", () => {
 		expect(
 			getNativeDb({ seedDemoData: false })
 				.prepare(
+					"select collection_state, partial_reasons_json, next_cursor from fxtwitter_fetches where id = 'fx_fetch_1'",
+				)
+				.get(),
+		).toEqual({
+			collection_state: "partial",
+			partial_reasons_json: '["caller_limit"]',
+			next_cursor: "next-cursor",
+		});
+		expect(
+			getNativeDb({ seedDemoData: false })
+				.prepare(
+					"select endpoint_family, request_key, item_id from fxtwitter_observations where item_id = 'tweet_2024'",
+				)
+				.get(),
+		).toEqual({
+			endpoint_family: "search",
+			request_key: "local-first",
+			item_id: "tweet_2024",
+		});
+		expect(
+			getNativeDb({ seedDemoData: false })
+				.prepare(
 					"select public_metrics_json from profiles where id = 'profile_friend'",
 				)
 				.get(),
@@ -670,7 +723,7 @@ describe("text backup", () => {
 		expect(topologyQueries).toBe(0);
 	});
 
-	it("emits byte-identical schema-v7 data and hashes for the same database", async () => {
+	it("emits byte-identical schema-v8 data and hashes for the same database", async () => {
 		switchHome("birdclaw-backup-stable-src-");
 		seedBackupFixture();
 		const firstRepoPath = makeTempDir("birdclaw-backup-stable-first-");
@@ -679,7 +732,7 @@ describe("text backup", () => {
 		const first = await exportBackup({ repoPath: firstRepoPath });
 		const second = await exportBackup({ repoPath: secondRepoPath });
 
-		expect(first.manifest.schemaVersion).toBe(7);
+		expect(first.manifest.schemaVersion).toBe(8);
 		expect(second.manifest.files).toEqual(first.manifest.files);
 		expect(second.manifest.counts).toEqual(first.manifest.counts);
 		expect(second.manifest.backupHash).toBe(first.manifest.backupHash);

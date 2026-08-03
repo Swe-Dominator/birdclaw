@@ -1,0 +1,54 @@
+{
+	"code": 200,
+	"results": [
+		{
+			"type": "status",
+			"id": "200",
+			"text": "first search result",
+			"created_at": "Tue Mar 21 20:50:14 +0000 2006",
+			"likes": 5,
+			"reposts": 1,
+			"quotes": 0,
+			"replies": 0,
+			"author": {
+				"type": "profile",
+				"id": "40",
+				"screen_name": "searcher",
+				"name": "Searcher",
+				"description": "",
+				"followers": 10,
+				"following": 5,
+				"statuses": 20,
+				"joined": "Tue Mar 21 20:50:14 +0000 2006",
+				"protected": false,
+				"website": {}
+			},
+			"media": {}
+		},
+		{
+			"type": "status",
+			"id": "201",
+			"text": "second search result",
+			"created_at": "Tue Mar 21 20:51:14 +0000 2006",
+			"likes": 4,
+			"reposts": 0,
+			"quotes": 0,
+			"replies": 0,
+			"author": {
+				"type": "profile",
+				"id": "41",
+				"screen_name": "finder",
+				"name": "Finder",
+				"description": "",
+				"followers": 11,
+				"following": 6,
+				"statuses": 21,
+				"joined": "Tue Mar 21 20:50:14 +0000 2006",
+				"protected": false,
+				"website": {}
+			},
+			"media": {}
+		}
+	],
+	"cursor": { "top": "cursor-top", "bottom": "cursor-2" }
+}

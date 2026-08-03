@@ -69,6 +69,10 @@ birdclaw sync following
 birdclaw sync lists
 birdclaw lists list
 birdclaw lists members [name]
+birdclaw import tweet <tweet-id-or-url...> --fxtwitter
+birdclaw import thread <tweet-id-or-url> --fxtwitter
+birdclaw import conversation <tweet-id-or-url> --fxtwitter
+birdclaw import profile <handle> --fxtwitter
 birdclaw search tweets <query>
 birdclaw search dms <query>
 birdclaw discuss <query>
@@ -147,6 +151,19 @@ Account-capable commands accept `--account <username>` or a stored account ID. S
 
 See [Public tweet import](public-tweets.md) for the full privacy and capability boundary.
 
+### `import thread|conversation <tweet-id-or-url>`
+
+- disabled unless `--fxtwitter` is passed on the same invocation
+- imports only positively observed public tweets through the fixed FxTwitter origin
+- accepts `--limit <n>` up to 1,000 and always reports the collection as `partial` because the endpoint cannot prove exhaustion
+- preserves the upstream reply count and next cursor as evidence, never as completeness proof
+
+### `import profile <handle>`
+
+- disabled unless `--fxtwitter` is passed on the same invocation
+- imports the named public profile object, not its statuses or another timeline
+- rejects URLs, custom origins, private/account data, and write capabilities before network access
+
 ### `auth status`
 
 - show transport availability
@@ -186,6 +203,8 @@ Shard contract:
 
 - tweets: `data/tweets/YYYY.jsonl`
 - tweet provenance: `data/tweet_sources.jsonl`
+- FxTwitter fetch/completeness metadata: `data/fxtwitter/fetches.jsonl`
+- FxTwitter positive item observations: `data/fxtwitter/observations.jsonl`
 - unknown tweet dates: `data/tweets/unknown.jsonl`
 - tweet revisions: `data/tweet_revisions.jsonl`
 - subordinate tweet tombstones: `data/tweet_subordinate_tombstones.jsonl`
@@ -422,6 +441,9 @@ Flags:
 - `--hide-low-quality`
 - `--liked`
 - `--bookmarked`
+- `--fxtwitter` (explicit public-service opt-in)
+- `--max-pages <n>` (FxTwitter only, maximum 10)
+- `--feed latest|top|media` (FxTwitter only)
 - `--limit <n>`
 
 Examples:
@@ -430,6 +452,7 @@ Examples:
 birdclaw search tweets --liked --limit 20 --json
 birdclaw search tweets --bookmarked --limit 20 --json
 birdclaw search tweets "sqlite" --list Builders --limit 50 --json
+birdclaw search tweets "local-first" --fxtwitter --limit 50 --max-pages 3 --json
 ```
 
 ### `search dms <query>`

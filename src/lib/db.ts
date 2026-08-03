@@ -170,6 +170,35 @@ const BASE_SCHEMA_SQL = `
     primary key (tweet_id, source)
   );
 
+  create table if not exists fxtwitter_fetches (
+    id text primary key,
+    endpoint_family text not null,
+    request_key text not null,
+    source_url text not null,
+    retrieved_at text not null,
+    collection_state text,
+    partial_reasons_json text not null default '[]',
+    pages_fetched integer not null,
+    items_observed integer not null,
+    terminal_cursor text,
+    next_cursor text,
+    upstream_count integer,
+    failure_json text
+  );
+
+  create table if not exists fxtwitter_observations (
+    endpoint_family text not null,
+    request_key text not null,
+    item_kind text not null,
+    item_id text not null,
+    source_url text not null,
+    first_seen_at text not null,
+    last_seen_at text not null,
+    seen_count integer not null default 1,
+    last_fetch_id text not null,
+    primary key (endpoint_family, request_key, item_kind, item_id)
+  );
+
   create table if not exists tweet_collections (
     account_id text not null,
     tweet_id text not null,
@@ -656,6 +685,44 @@ function ensureTweetSourcesTable(db: Database) {
   `);
 }
 
+function ensureFxTwitterProvenanceTables(db: Database) {
+	db.exec(`
+    create table if not exists fxtwitter_fetches (
+      id text primary key,
+      endpoint_family text not null,
+      request_key text not null,
+      source_url text not null,
+      retrieved_at text not null,
+      collection_state text,
+      partial_reasons_json text not null default '[]',
+      pages_fetched integer not null,
+      items_observed integer not null,
+      terminal_cursor text,
+      next_cursor text,
+      upstream_count integer,
+      failure_json text
+    );
+
+    create table if not exists fxtwitter_observations (
+      endpoint_family text not null,
+      request_key text not null,
+      item_kind text not null,
+      item_id text not null,
+      source_url text not null,
+      first_seen_at text not null,
+      last_seen_at text not null,
+      seen_count integer not null default 1,
+      last_fetch_id text not null,
+      primary key (endpoint_family, request_key, item_kind, item_id)
+    );
+
+    create index if not exists idx_fxtwitter_fetches_request
+      on fxtwitter_fetches(endpoint_family, request_key, retrieved_at desc);
+    create index if not exists idx_fxtwitter_observations_item
+      on fxtwitter_observations(item_kind, item_id);
+  `);
+}
+
 function ensureTweetAccountEdgesTable(db: Database) {
 	db.exec(`
     create table if not exists tweet_account_edges (
@@ -1079,6 +1146,11 @@ const DATABASE_MIGRATIONS: readonly DatabaseMigration[] = [
 		version: 7,
 		name: "retain observable tweet revision ordering",
 		up: ensureTweetRevisionEdgeSchema,
+	},
+	{
+		version: 8,
+		name: "retain FxTwitter fetch and positive observation provenance",
+		up: ensureFxTwitterProvenanceTables,
 	},
 ];
 

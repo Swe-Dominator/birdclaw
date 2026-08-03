@@ -13,7 +13,7 @@ import {
 describe("backup table codecs", () => {
 	it("owns every portable table and path exactly once", () => {
 		expect(assertBackupTableCodecRegistry()).toBe(true);
-		expect(BACKUP_TABLE_CODECS).toHaveLength(26);
+		expect(BACKUP_TABLE_CODECS).toHaveLength(28);
 		expect(BACKUP_TABLE_CODECS.map((codec) => codec.name)).toEqual([
 			"accounts",
 			"profiles",
@@ -27,6 +27,8 @@ describe("backup table codecs", () => {
 			"tweet_revision_edges",
 			"tweet_subordinate_tombstones",
 			"tweet_sources",
+			"fxtwitter_fetches",
+			"fxtwitter_observations",
 			"tweet_collections",
 			"tweet_account_edges",
 			"dm_conversations",
@@ -46,7 +48,7 @@ describe("backup table codecs", () => {
 			BACKUP_TABLE_CODECS.map((codec) => codec.merge.order).sort(
 				(left, right) => left - right,
 			),
-		).toEqual(Array.from({ length: 26 }, (_, index) => index));
+		).toEqual(Array.from({ length: 28 }, (_, index) => index));
 
 		const sample = { created_at: "2026-01-02T00:00:00.000Z", kind: "likes" };
 		for (const codec of BACKUP_TABLE_CODECS) {

@@ -14,6 +14,10 @@ const seedDemoDataMock = vi.fn();
 const findArchivesMock = vi.fn();
 const importArchiveMock = vi.fn();
 const importTweetsViaFxTwitterMock = vi.fn();
+const importThreadViaFxTwitterMock = vi.fn();
+const importConversationViaFxTwitterMock = vi.fn();
+const importProfileViaFxTwitterMock = vi.fn();
+const importSearchViaFxTwitterMock = vi.fn();
 const importBlocklistMock = vi.fn();
 const addBlockMock = vi.fn();
 const recordBlockMock = vi.fn();
@@ -80,6 +84,24 @@ const execFileAsyncMock = vi.fn();
 const execFileMock = vi.fn();
 const consoleLogMock = vi.spyOn(console, "log").mockImplementation(() => {});
 
+class FxTwitterErrorMock extends Error {
+	readonly kind: string;
+	readonly status?: number;
+	readonly retryAfterMs?: number;
+
+	constructor(options: {
+		kind: string;
+		message: string;
+		status?: number;
+		retryAfterMs?: number;
+	}) {
+		super(options.message);
+		this.kind = options.kind;
+		this.status = options.status;
+		this.retryAfterMs = options.retryAfterMs;
+	}
+}
+
 Object.defineProperty(
 	execFileMock,
 	Symbol.for("nodejs.util.promisify.custom"),
@@ -135,6 +157,15 @@ vi.mock("#/lib/archive-import", () => ({
 }));
 
 vi.mock("#/lib/fxtwitter", () => ({
+	FxTwitterError: FxTwitterErrorMock,
+	importConversationViaFxTwitter: (...args: unknown[]) =>
+		importConversationViaFxTwitterMock(...args),
+	importProfileViaFxTwitter: (...args: unknown[]) =>
+		importProfileViaFxTwitterMock(...args),
+	importSearchViaFxTwitter: (...args: unknown[]) =>
+		importSearchViaFxTwitterMock(...args),
+	importThreadViaFxTwitter: (...args: unknown[]) =>
+		importThreadViaFxTwitterMock(...args),
 	importTweetsViaFxTwitter: (...args: unknown[]) =>
 		importTweetsViaFxTwitterMock(...args),
 }));
@@ -331,6 +362,10 @@ describe("cli", () => {
 		findArchivesMock.mockReset();
 		importArchiveMock.mockReset();
 		importTweetsViaFxTwitterMock.mockReset();
+		importThreadViaFxTwitterMock.mockReset();
+		importConversationViaFxTwitterMock.mockReset();
+		importProfileViaFxTwitterMock.mockReset();
+		importSearchViaFxTwitterMock.mockReset();
 		importBlocklistMock.mockReset();
 		addBlockMock.mockReset();
 		recordBlockMock.mockReset();
@@ -460,6 +495,29 @@ describe("cli", () => {
 					sourceUrl: "https://api.fxtwitter.com/2/status/20",
 				},
 			],
+		});
+		for (const mock of [
+			importThreadViaFxTwitterMock,
+			importConversationViaFxTwitterMock,
+			importSearchViaFxTwitterMock,
+		]) {
+			mock.mockResolvedValue({
+				ok: true,
+				readOnlyTransport: true,
+				source: "fxtwitter",
+				endpoint: "https://api.fxtwitter.com",
+				collection: {
+					state: "partial",
+					partialReasons: ["endpoint_has_no_exhaustion_proof"],
+				},
+			});
+		}
+		importProfileViaFxTwitterMock.mockResolvedValue({
+			ok: true,
+			readOnlyTransport: true,
+			source: "fxtwitter",
+			endpoint: "https://api.fxtwitter.com",
+			profile: { handle: "example" },
 		});
 		importBlocklistMock.mockResolvedValue({
 			ok: true,
@@ -1494,6 +1552,145 @@ describe("cli", () => {
 		expect(consoleLogMock).toHaveBeenCalledWith(
 			expect.stringContaining('"source": "fxtwitter"'),
 		);
+	});
+
+	it("keeps Phase 2 FxTwitter reads disabled without explicit opt-in", async () => {
+		const consoleErrorMock = vi
+			.spyOn(console, "error")
+			.mockImplementation(() => {});
+		const { runCli } = await loadCli();
+
+		await runCli(["node", "birdclaw", "import", "thread", "100"]);
+		await runCli(["node", "birdclaw", "import", "profile", "example"]);
+
+		expect(process.exitCode).toBe(1);
+		expect(importThreadViaFxTwitterMock).not.toHaveBeenCalled();
+		expect(importProfileViaFxTwitterMock).not.toHaveBeenCalled();
+		expect(consoleErrorMock).toHaveBeenCalledWith(
+			expect.stringContaining("off by default"),
+		);
+		consoleErrorMock.mockRestore();
+	});
+
+	it("routes explicit Phase 2 public reads through FxTwitter and persists them", async () => {
+		const { runCli } = await loadCli();
+
+		await runCli([
+			"node",
+			"birdclaw",
+			"--json",
+			"import",
+			"thread",
+			"100",
+			"--fxtwitter",
+			"--limit",
+			"3",
+		]);
+		await runCli([
+			"node",
+			"birdclaw",
+			"--json",
+			"import",
+			"conversation",
+			"100",
+			"--fxtwitter",
+		]);
+		await runCli([
+			"node",
+			"birdclaw",
+			"--json",
+			"import",
+			"profile",
+			"@example",
+			"--fxtwitter",
+		]);
+		await runCli([
+			"node",
+			"birdclaw",
+			"--json",
+			"search",
+			"tweets",
+			"local first",
+			"--fxtwitter",
+			"--limit",
+			"7",
+			"--max-pages",
+			"2",
+			"--feed",
+			"top",
+		]);
+
+		expect(importThreadViaFxTwitterMock).toHaveBeenCalledWith("100", {
+			limit: 3,
+		});
+		expect(importConversationViaFxTwitterMock).toHaveBeenCalledWith("100", {
+			limit: 500,
+		});
+		expect(importProfileViaFxTwitterMock).toHaveBeenCalledWith("@example");
+		expect(importSearchViaFxTwitterMock).toHaveBeenCalledWith("local first", {
+			limit: 7,
+			maxPages: 2,
+			feed: "top",
+		});
+		expect(listTimelineItemsMock).not.toHaveBeenCalled();
+		expect(maybeAutoUpdateBackupMock).not.toHaveBeenCalled();
+		expect(maybeAutoSyncBackupMock).toHaveBeenCalledTimes(4);
+	});
+
+	it("prints typed FxTwitter failures without syncing partial command state", async () => {
+		const consoleErrorMock = vi
+			.spyOn(console, "error")
+			.mockImplementation(() => {});
+		importSearchViaFxTwitterMock.mockRejectedValue(
+			new FxTwitterErrorMock({
+				kind: "rate_limited",
+				message: "Too many requests",
+				status: 429,
+				retryAfterMs: 1000,
+			}),
+		);
+		const { runCli } = await loadCli();
+
+		await runCli([
+			"node",
+			"birdclaw",
+			"--json",
+			"search",
+			"tweets",
+			"busy query",
+			"--fxtwitter",
+		]);
+
+		expect(process.exitCode).toBe(1);
+		expect(consoleErrorMock).toHaveBeenCalledWith(
+			expect.stringContaining('"kind":"rate_limited"'),
+		);
+		expect(maybeAutoSyncBackupMock).not.toHaveBeenCalled();
+		consoleErrorMock.mockRestore();
+	});
+
+	it("rejects account-scoped filters before FxTwitter public search", async () => {
+		const consoleErrorMock = vi
+			.spyOn(console, "error")
+			.mockImplementation(() => {});
+		const { runCli } = await loadCli();
+
+		await runCli([
+			"node",
+			"birdclaw",
+			"search",
+			"tweets",
+			"public query",
+			"--liked",
+			"--fxtwitter",
+		]);
+
+		expect(process.exitCode).toBe(1);
+		expect(importSearchViaFxTwitterMock).not.toHaveBeenCalled();
+		expect(consoleErrorMock).toHaveBeenCalledWith(
+			expect.stringContaining('"kind":"capability_rejected"'),
+		);
+		consoleErrorMock.mockRestore();
 	});
 
 	it("rejects unknown archive import slices", async () => {
