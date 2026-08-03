@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.11.3 - Unreleased
+## 0.12.0 - 2026-08-02
 
 ### Highlights
 
