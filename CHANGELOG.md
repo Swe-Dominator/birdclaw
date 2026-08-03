@@ -2,6 +2,14 @@
 
 ## 0.11.3 - Unreleased
 
+### Highlights
+
+- Expand the explicit fixed-origin FxTwitter transport with public thread, conversation, profile, and bounded search imports while treating ambiguous or interrupted collections conservatively and preserving only positive observations.
+
+### Added
+
+- Add typed FxTwitter failures, cursor-aware public search, conservative partial-state metadata, monotonic canonical provenance, portable fetch/observation shards, and fixture coverage for silent truncation, cursor anomalies, rate limits, and mid-pagination failures. (#99)
+
 ### Fixed
 
 - Stream portable database fingerprint rows after the import transaction commits and skip recursive topology rewrites for canonical singleton revisions, reducing large Birdclaw backup imports from hour-scale work to seconds while keeping the same deterministic fingerprint contract.
