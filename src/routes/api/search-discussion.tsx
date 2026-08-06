@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Effect } from "effect";
 import { searchDiscussionStreamEventSchema } from "#/lib/client-stream-contracts";
-import { maybeAutoUpdateBackupEffect } from "#/lib/backup";
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import {
 	parseBoundedInteger,
 	runRouteEffect,
@@ -82,26 +82,23 @@ export const Route = createFileRoute("/api/search-discussion")({
 						const denied = sensitiveRequestErrorResponse(request);
 						if (denied) return denied;
 
+						requestBackupAutoUpdate();
 						const url = new URL(request.url);
 						const options = parseOptions(url);
 						return createEffectNdjsonResponse<SearchDiscussionStreamEvent>({
 							request,
 							schema: searchDiscussionStreamEventSchema,
 							run: ({ signal, emit }) =>
-								maybeAutoUpdateBackupEffect().pipe(
-									Effect.flatMap(() =>
-										signal.aborted
-											? Effect.succeed(undefined)
-											: streamSearchDiscussionEffect(
-													{
-														...options,
-														signal,
-														prefetchAvatars: true,
-													},
-													{ onEvent: emit },
-												),
-									),
-								),
+								signal.aborted
+									? Effect.succeed(undefined)
+									: streamSearchDiscussionEffect(
+											{
+												...options,
+												signal,
+												prefetchAvatars: true,
+											},
+											{ onEvent: emit },
+										),
 							errorEvent: (error) => ({
 								type: "error",
 								error:

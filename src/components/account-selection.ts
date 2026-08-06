@@ -24,7 +24,10 @@ export function setStoredAccountId(accountId: string) {
 	);
 }
 
-export function useSelectedAccountId(accounts: AccountRecord[] | undefined) {
+export function useSelectedAccountId(
+	accounts: AccountRecord[] | undefined,
+	options: { allowStoredBeforeAccounts?: boolean } = {},
+) {
 	const fallbackAccountId = useMemo(
 		() => defaultAccountId(accounts),
 		[accounts],
@@ -57,6 +60,7 @@ export function useSelectedAccountId(accounts: AccountRecord[] | undefined) {
 		}
 	}, [accounts, fallbackAccountId]);
 
+	if (!accounts && options.allowStoredBeforeAccounts) return selectedAccountId;
 	return selectedAccountId &&
 		accounts?.some((account) => account.id === selectedAccountId)
 		? selectedAccountId

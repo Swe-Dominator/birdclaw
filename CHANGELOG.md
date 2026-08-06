@@ -14,6 +14,7 @@
 
 ### Fixed
 
+- Serve web/API reads from the current local snapshot while backup freshness runs in the background, skip unchanged manifest imports, recycle readers after bulk imports, and avoid the duplicate unscoped Home request before account selection resolves.
 - Preserve the original spelling of valid HTTP URLs during backup import so non-canonical but distinct URL-expansion keys round-trip instead of collapsing onto one normalized key.
 - Stream portable database fingerprint rows after the import transaction commits and skip recursive topology rewrites for canonical singleton revisions, reducing large Birdclaw backup imports from hour-scale work to seconds while keeping the same deterministic fingerprint contract.
 

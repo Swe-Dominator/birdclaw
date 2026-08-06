@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Effect } from "effect";
 import { queryResponseSchema } from "#/lib/api-contracts";
-import { maybeAutoUpdateBackupEffect } from "#/lib/backup";
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import {
 	jsonResponse,
 	parseBoundedInteger,
@@ -50,11 +50,11 @@ export const Route = createFileRoute("/api/query")({
 		handlers: {
 			GET: ({ request }) =>
 				runRouteEffect(
-					Effect.gen(function* () {
+					Effect.sync(() => {
 						const denied = sensitiveRequestErrorResponse(request);
 						if (denied) return denied;
 
-						yield* maybeAutoUpdateBackupEffect();
+						requestBackupAutoUpdate();
 						const url = new URL(request.url);
 						const resource = (url.searchParams.get("resource") ??
 							"home") as ResourceKind;

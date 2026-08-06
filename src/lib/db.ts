@@ -1274,6 +1274,22 @@ export function getReadDb(options: InitDatabaseOptions = {}) {
 	return nextReadDb();
 }
 
+export function refreshReadDatabasePoolAfterBulkWrite(db: Database) {
+	if (db !== nativeDb) return false;
+
+	const readers = readDbs;
+	readDbs = [];
+	readDbIndex = 0;
+	for (const reader of readers) closeDatabaseIgnoringErrors(reader);
+
+	try {
+		db.exec("pragma wal_checkpoint(passive)");
+	} catch {
+		// The import is already committed; a busy external reader may delay cleanup.
+	}
+	return true;
+}
+
 export function getStrictReadDb() {
 	if (readDbs.length > 0) {
 		assertCurrentDatabaseSchema(readDbs[0] as Database);

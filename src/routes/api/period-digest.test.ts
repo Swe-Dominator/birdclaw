@@ -7,9 +7,7 @@ const maybeAutoUpdateBackupMock = vi.fn();
 const streamPeriodDigestMock = vi.fn();
 
 vi.mock("#/lib/backup", () => ({
-	maybeAutoUpdateBackup: () => maybeAutoUpdateBackupMock(),
-	maybeAutoUpdateBackupEffect: () =>
-		Effect.promise(() => Promise.resolve(maybeAutoUpdateBackupMock())),
+	requestBackupAutoUpdate: () => maybeAutoUpdateBackupMock(),
 }));
 vi.mock("#/lib/period-digest", () => ({
 	normalizeDigestLanguage: (value: string | undefined) => {
@@ -132,7 +130,8 @@ describe("api period digest route", () => {
 		const text = new TextDecoder().decode(first.value);
 		expect(text).toContain('"type":"status"');
 		expect(text).toContain("Preparing local archive");
-		expect(streamPeriodDigestMock).not.toHaveBeenCalled();
+		await vi.waitFor(() => expect(streamPeriodDigestMock).toHaveBeenCalled());
+		expect(maybeAutoUpdateBackupMock).toHaveBeenCalled();
 
 		resolveBackup?.({ skipped: true });
 		await reader!.cancel();

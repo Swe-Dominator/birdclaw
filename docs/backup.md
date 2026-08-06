@@ -145,9 +145,12 @@ Exits non-zero on validation failure. Run it in CI before publishing a backup, o
 
 When `autoSync` is enabled:
 
-- read paths (CLI search, inbox, API status/query, web startup) pull + merge from Git **only** when the last backup check is older than `staleAfterSeconds`
+- CLI read paths pull + merge from Git before returning when the last backup check is older than `staleAfterSeconds`
+- web startup and API reads serve the current local SQLite snapshot immediately and request the stale backup check in the background
+- stale checks compare the manifest `backupHash` and skip validation/import when the already-applied backup is unchanged
+- after a changed backup import, Birdclaw reopens its read pool and requests a passive WAL checkpoint
 - data-changing commands (compose, sync, blocks, mutes, etc.) run a full backup sync afterward
-- the freshness window is per-process; nothing pings Git on every command
+- a changed import still uses synchronous SQLite work in the server process, so concurrent requests may briefly pause while that import commits; use a separate scheduled updater when strict isolation is required
 
 Set `BIRDCLAW_BACKUP_AUTO_SYNC=0` to disable auto-sync for one process — useful for local debugging.
 

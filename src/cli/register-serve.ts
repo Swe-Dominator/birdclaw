@@ -1,12 +1,9 @@
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import { runProductionServer } from "#/lib/production-server";
 import { printError, type CliCommandContext } from "./command-context";
 
 export function registerServeCommand(
-	{
-		program,
-		autoUpdateBeforeRead,
-		parseNonNegativeIntegerOption,
-	}: CliCommandContext,
+	{ program, parseNonNegativeIntegerOption }: CliCommandContext,
 	packageRoot: string,
 	serverVersion: string,
 ) {
@@ -32,12 +29,12 @@ export function registerServeCommand(
 			}
 			const port = parseNonNegativeIntegerOption(options.port, "--port");
 			if (port === undefined) return;
-			await autoUpdateBeforeRead();
 			await runProductionServer({
 				packageRoot,
 				host,
 				port,
 				serverVersion,
+				onListening: () => requestBackupAutoUpdate(),
 			});
 		});
 }

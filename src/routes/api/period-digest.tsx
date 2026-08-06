@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Effect } from "effect";
 import { periodDigestStreamEventSchema } from "#/lib/client-stream-contracts";
-import { maybeAutoUpdateBackupEffect } from "#/lib/backup";
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import {
 	jsonResponse,
 	parseBoundedInteger,
@@ -73,6 +73,7 @@ export const Route = createFileRoute("/api/period-digest")({
 								{ status: 400 },
 							);
 						}
+						requestBackupAutoUpdate();
 						return createEffectNdjsonResponse<PeriodDigestStreamEvent>({
 							request,
 							schema: periodDigestStreamEventSchema,
@@ -80,17 +81,14 @@ export const Route = createFileRoute("/api/period-digest")({
 								{
 									type: "status",
 									label: "Preparing local archive",
-									detail: "Checking for backup updates.",
+									detail: "Using local data while checking for updates.",
 								},
 							],
 							run: ({ signal, emit }) =>
-								Effect.gen(function* () {
-									yield* maybeAutoUpdateBackupEffect();
-									return yield* streamPeriodDigestEffect(
-										{ ...options, signal },
-										{ onEvent: emit },
-									);
-								}),
+								streamPeriodDigestEffect(
+									{ ...options, signal },
+									{ onEvent: emit },
+								),
 							errorEvent: (error) => ({
 								type: "error",
 								error: error instanceof Error ? error.message : "Digest failed",

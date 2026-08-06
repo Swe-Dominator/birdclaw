@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Effect } from "effect";
 import { tweetConversationResponseSchema } from "#/lib/api-contracts";
-import { maybeAutoUpdateBackupEffect } from "#/lib/backup";
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import {
 	runRouteEffect,
 	sensitiveRequestErrorResponse,
@@ -22,11 +22,11 @@ export const Route = createFileRoute("/api/conversation")({
 		handlers: {
 			GET: ({ request }) =>
 				runRouteEffect(
-					Effect.gen(function* () {
+					Effect.sync(() => {
 						const denied = sensitiveRequestErrorResponse(request);
 						if (denied) return denied;
 
-						yield* maybeAutoUpdateBackupEffect();
+						requestBackupAutoUpdate();
 						const url = new URL(request.url);
 						const tweetId = url.searchParams.get("tweetId")?.trim();
 						if (!tweetId) {

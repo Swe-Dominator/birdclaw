@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Effect } from "effect";
 import { inboxResponseSchema } from "#/lib/api-contracts";
-import { maybeAutoUpdateBackupEffect } from "#/lib/backup";
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import {
 	jsonResponse,
 	runRouteEffect,
@@ -21,11 +21,11 @@ export const Route = createFileRoute("/api/inbox")({
 		handlers: {
 			GET: ({ request }) =>
 				runRouteEffect(
-					Effect.gen(function* () {
+					Effect.sync(() => {
 						const denied = sensitiveRequestErrorResponse(request);
 						if (denied) return denied;
 
-						yield* maybeAutoUpdateBackupEffect();
+						requestBackupAutoUpdate();
 						const url = new URL(request.url);
 						const kind = (url.searchParams.get("kind") ?? "mixed") as InboxKind;
 						return jsonResponse(

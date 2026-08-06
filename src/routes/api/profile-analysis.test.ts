@@ -7,9 +7,7 @@ const maybeAutoUpdateBackupMock = vi.fn();
 const streamProfileAnalysisMock = vi.fn();
 
 vi.mock("#/lib/backup", () => ({
-	maybeAutoUpdateBackup: () => maybeAutoUpdateBackupMock(),
-	maybeAutoUpdateBackupEffect: () =>
-		Effect.promise(() => Promise.resolve(maybeAutoUpdateBackupMock())),
+	requestBackupAutoUpdate: () => maybeAutoUpdateBackupMock(),
 }));
 vi.mock("#/lib/profile-analysis", () => ({
 	streamProfileAnalysisEffect: (...args: unknown[]) =>
@@ -124,7 +122,10 @@ describe("api profile analysis route", () => {
 		const text = new TextDecoder().decode(first.value);
 		expect(text).toContain('"type":"status"');
 		expect(text).toContain("Starting profile analysis");
-		expect(streamProfileAnalysisMock).not.toHaveBeenCalled();
+		await vi.waitFor(() =>
+			expect(streamProfileAnalysisMock).toHaveBeenCalled(),
+		);
+		expect(maybeAutoUpdateBackupMock).toHaveBeenCalled();
 
 		resolveBackup?.({ skipped: true });
 		await reader!.cancel();

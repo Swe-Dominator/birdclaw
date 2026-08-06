@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Effect } from "effect";
 import { profileAnalysisStreamEventSchema } from "#/lib/client-stream-contracts";
-import { maybeAutoUpdateBackupEffect } from "#/lib/backup";
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import {
 	parseBoundedInteger,
 	runRouteEffect,
@@ -65,6 +65,7 @@ export const Route = createFileRoute("/api/profile-analysis")({
 						const denied = sensitiveRequestErrorResponse(request);
 						if (denied) return denied;
 
+						requestBackupAutoUpdate();
 						const url = new URL(request.url);
 						const options = parseOptions(url);
 						return createEffectNdjsonResponse<ProfileAnalysisStreamEvent>({
@@ -77,13 +78,10 @@ export const Route = createFileRoute("/api/profile-analysis")({
 								},
 							],
 							run: ({ signal, emit }) =>
-								Effect.gen(function* () {
-									yield* maybeAutoUpdateBackupEffect();
-									return yield* streamProfileAnalysisEffect(
-										{ ...options, signal },
-										{ onEvent: emit },
-									);
-								}),
+								streamProfileAnalysisEffect(
+									{ ...options, signal },
+									{ onEvent: emit },
+								),
 							errorEvent: (error) => ({
 								type: "error",
 								error:
