@@ -219,11 +219,18 @@ function seedBackupFixture() {
     insert into url_expansions (
       short_url, expanded_url, final_url, status, expanded_tweet_id,
       expanded_handle, title, description, error, source, updated_at
-    ) values (
+    ) values
+    (
       'https://t.co/shared', 'https://x.com/friend/status/2039395915421942108',
       'https://x.com/friend/status/2039395915421942108', 'hit',
       '2039395915421942108', 'friend', 'Shared tweet', 'An expanded DM share',
       null, 'network', '2025-01-05T10:01:00.000Z'
+    ),
+    (
+      'https://T.CO/shared', 'https://X.COM/friend/status/2039395915421942108',
+      'https://X.COM/friend/status/2039395915421942108', 'hit',
+      '2039395915421942108', 'friend', 'Shared tweet variant', 'Preserve valid URL spelling',
+      null, 'network', '2025-01-05T10:02:00.000Z'
     );
 
     insert into link_occurrences (
@@ -454,7 +461,7 @@ describe("text backup", () => {
 			collections_likes: 2,
 			dm_conversations: 1,
 			dm_messages: 2,
-			url_expansions: 1,
+			url_expansions: 2,
 			link_occurrences: 1,
 			blocks: 1,
 			mutes: 1,
@@ -557,6 +564,10 @@ describe("text backup", () => {
 				)
 				.all(),
 		).toEqual([
+			{
+				short_url: "https://T.CO/shared",
+				expanded_tweet_id: "2039395915421942108",
+			},
 			{
 				short_url: "https://t.co/shared",
 				expanded_tweet_id: "2039395915421942108",
@@ -1060,7 +1071,7 @@ describe("text backup", () => {
 			collections_likes: 2,
 			dm_conversations: 1,
 			dm_messages: 2,
-			url_expansions: 1,
+			url_expansions: 2,
 			link_occurrences: 1,
 			blocks: 1,
 			mutes: 1,

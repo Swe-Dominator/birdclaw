@@ -127,16 +127,16 @@ function sanitizeImportedTweetRevisions(rows: BackupJsonRecord[]) {
 	}));
 }
 
+function preserveSafeHttpUrl(value: BackupJsonValue | undefined) {
+	if (typeof value !== "string") return null;
+	return safeHttpUrl(value) ? value : null;
+}
+
 function sanitizeImportedUrlExpansions(rows: BackupJsonRecord[]) {
 	return rows.map((row) => {
-		const shortUrl =
-			typeof row.short_url === "string" ? safeHttpUrl(row.short_url) : null;
-		const expandedUrl =
-			typeof row.expanded_url === "string"
-				? safeHttpUrl(row.expanded_url)
-				: null;
-		const finalUrl =
-			typeof row.final_url === "string" ? safeHttpUrl(row.final_url) : null;
+		const shortUrl = preserveSafeHttpUrl(row.short_url);
+		const expandedUrl = preserveSafeHttpUrl(row.expanded_url);
+		const finalUrl = preserveSafeHttpUrl(row.final_url);
 		const safe = Boolean(shortUrl || expandedUrl || finalUrl);
 		return {
 			...row,
@@ -147,7 +147,7 @@ function sanitizeImportedUrlExpansions(rows: BackupJsonRecord[]) {
 			error: safe ? row.error : "unsafe URL stripped from backup import",
 			image_url:
 				typeof row.image_url === "string"
-					? (safeHttpUrl(row.image_url) ?? "")
+					? (preserveSafeHttpUrl(row.image_url) ?? "")
 					: row.image_url,
 		};
 	});
