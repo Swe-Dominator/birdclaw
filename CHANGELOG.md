@@ -14,6 +14,7 @@
 
 ### Fixed
 
+- Preserve the original spelling of valid HTTP URLs during backup import so non-canonical but distinct URL-expansion keys round-trip instead of collapsing onto one normalized key.
 - Stream portable database fingerprint rows after the import transaction commits and skip recursive topology rewrites for canonical singleton revisions, reducing large Birdclaw backup imports from hour-scale work to seconds while keeping the same deterministic fingerprint contract.
 
 ### Docs
