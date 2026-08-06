@@ -84,7 +84,11 @@ export function useTimelineRouteData({
 		queryFn: ({ signal }) => fetchQueryEnvelope({ signal }),
 	});
 	const meta = statusQuery.data ?? null;
-	const selectedAccountId = useSelectedAccountId(meta?.accounts);
+	const selectedAccountId = useSelectedAccountId(meta?.accounts, {
+		allowStoredBeforeAccounts: true,
+	});
+	const accountSelectionSettled =
+		Boolean(selectedAccountId) || statusQuery.isSuccess || statusQuery.isError;
 	const debouncedSearch = useDebouncedValue(search, 180);
 	const timelineQueryKey = [
 		...queryKeys.timelines,
@@ -99,6 +103,7 @@ export function useTimelineRouteData({
 	] as const;
 	const timelineQuery = useInfiniteQuery({
 		queryKey: timelineQueryKey,
+		enabled: accountSelectionSettled,
 		initialPageParam: undefined as TimelinePageParam | undefined,
 		queryFn: ({ pageParam, signal }) =>
 			fetchQueryResponse(

@@ -25,6 +25,7 @@ vi.mock("#/components/TimelineCard", () => ({
 describe("SavedTimelineView", () => {
 	beforeEach(() => {
 		vi.restoreAllMocks();
+		window.localStorage.clear();
 	});
 
 	afterEach(() => {
@@ -119,21 +120,21 @@ describe("SavedTimelineView", () => {
 		expect(queryUrl?.searchParams.get("liked")).toBeNull();
 	});
 
-	it("shows item count before status metadata arrives and trims search params", async () => {
+	it("waits for the default account before querying and trims search params", async () => {
 		const queryUrls: URL[] = [];
+		let resolveStatus!: (response: Response) => void;
+		const statusResponse = new Promise<Response>((resolve) => {
+			resolveStatus = resolve;
+		});
 		const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
 			const url = String(input);
-			if (url.endsWith("/api/status")) {
-				return new Promise<Response>(() => {});
-			}
+			if (url.endsWith("/api/status")) return statusResponse;
 			if (url.includes("/api/query")) {
 				queryUrls.push(new URL(url));
-				return new Response(
-					JSON.stringify({
-						resource: "home",
-						items: [{ id: "liked_2", text: "searchable thing" }],
-					}),
-				);
+				return Response.json({
+					resource: "home",
+					items: [{ id: "liked_2", text: "searchable thing" }],
+				});
 			}
 			throw new Error(`Unexpected fetch ${url}`);
 		});
@@ -149,8 +150,28 @@ describe("SavedTimelineView", () => {
 			/>,
 		);
 
+		expect(queryUrls).toHaveLength(0);
+		resolveStatus(
+			Response.json({
+				stats: { home: 3, mentions: 1, dms: 4, needsReply: 2, inbox: 3 },
+				transport: { statusText: "local" },
+				accounts: [
+					{
+						id: "acct_primary",
+						name: "Primary",
+						handle: "steipete",
+						transport: "archive",
+						isDefault: 1,
+						createdAt: "2026-01-01T00:00:00.000Z",
+					},
+				],
+				archives: [],
+			}),
+		);
+
 		expect(await screen.findByText("searchable thing")).toBeInTheDocument();
-		expect(await screen.findByText("1 visible")).toBeInTheDocument();
+		expect(queryUrls).toHaveLength(1);
+		expect(queryUrls[0]?.searchParams.get("account")).toBe("acct_primary");
 		fireEvent.change(screen.getByPlaceholderText("Search likes"), {
 			target: { value: "  launch  " },
 		});
@@ -158,6 +179,91 @@ describe("SavedTimelineView", () => {
 		await waitFor(() => {
 			expect(queryUrls.at(-1)?.searchParams.get("search")).toBe("launch");
 		});
+	});
+
+	it("uses a stored account immediately while status is pending", async () => {
+		window.localStorage.setItem("birdclaw:selected-account-id", "acct_primary");
+		const queryUrls: URL[] = [];
+		let resolveStatus!: (response: Response) => void;
+		const statusResponse = new Promise<Response>((resolve) => {
+			resolveStatus = resolve;
+		});
+		const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+			const url = String(input);
+			if (url.endsWith("/api/status")) return statusResponse;
+			if (url.includes("/api/query")) {
+				queryUrls.push(new URL(url));
+				return Response.json({
+					resource: "home",
+					items: [{ id: "liked_stored", text: "stored account item" }],
+				});
+			}
+			throw new Error(`Unexpected fetch ${url}`);
+		});
+		vi.stubGlobal("fetch", fetchMock);
+
+		render(
+			<SavedTimelineView
+				eyebrow="liked posts"
+				filter="liked"
+				loadingLabel="Loading liked posts..."
+				searchPlaceholder="Search likes"
+				title="Liked"
+			/>,
+		);
+
+		expect(await screen.findByText("stored account item")).toBeInTheDocument();
+		expect(queryUrls).toHaveLength(1);
+		expect(queryUrls[0]?.searchParams.get("account")).toBe("acct_primary");
+		resolveStatus(
+			Response.json({
+				stats: { home: 3, mentions: 1, dms: 4, needsReply: 2, inbox: 3 },
+				transport: { statusText: "local" },
+				accounts: [
+					{
+						id: "acct_primary",
+						name: "Primary",
+						handle: "steipete",
+						transport: "archive",
+						isDefault: 1,
+						createdAt: "2026-01-01T00:00:00.000Z",
+					},
+				],
+				archives: [],
+			}),
+		);
+		await waitFor(() => expect(queryUrls).toHaveLength(1));
+	});
+
+	it("falls back to one unscoped query when status fails", async () => {
+		const queryUrls: URL[] = [];
+		const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+			const url = String(input);
+			if (url.endsWith("/api/status")) throw new Error("status unavailable");
+			if (url.includes("/api/query")) {
+				queryUrls.push(new URL(url));
+				return Response.json({
+					resource: "home",
+					items: [{ id: "liked_fallback", text: "fallback item" }],
+				});
+			}
+			throw new Error(`Unexpected fetch ${url}`);
+		});
+		vi.stubGlobal("fetch", fetchMock);
+
+		render(
+			<SavedTimelineView
+				eyebrow="liked posts"
+				filter="liked"
+				loadingLabel="Loading liked posts..."
+				searchPlaceholder="Search likes"
+				title="Liked"
+			/>,
+		);
+
+		expect(await screen.findByText("fallback item")).toBeInTheDocument();
+		expect(queryUrls).toHaveLength(1);
+		expect(queryUrls[0]?.searchParams.has("account")).toBe(false);
 	});
 
 	it("syncs the matching saved collection and reloads local data", async () => {

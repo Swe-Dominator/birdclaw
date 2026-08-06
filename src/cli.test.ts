@@ -177,6 +177,9 @@ vi.mock("#/lib/backup", async (importOriginal) => {
 		exportBackup: (...args: unknown[]) => exportBackupMock(...args),
 		importBackup: (...args: unknown[]) => importBackupMock(...args),
 		maybeAutoUpdateBackup: () => maybeAutoUpdateBackupMock(),
+		requestBackupAutoUpdate: () => {
+			void maybeAutoUpdateBackupMock();
+		},
 		maybeAutoSyncBackup: () => maybeAutoSyncBackupMock(),
 		syncBackup: (...args: unknown[]) => syncBackupMock(...args),
 		validateBackup: (...args: unknown[]) => validateBackupMock(...args),
@@ -722,6 +725,7 @@ describe("cli", () => {
 			host: "127.0.0.1",
 			port: 3000,
 			serverVersion: packageVersion,
+			onListening: expect.any(Function),
 		});
 		expect(getNativeDbMock).toHaveBeenCalledWith({ seedDemoData: false });
 		expect(seedDemoDataMock).not.toHaveBeenCalled();

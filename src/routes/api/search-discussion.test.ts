@@ -7,9 +7,7 @@ const maybeAutoUpdateBackupMock = vi.fn();
 const streamSearchDiscussionMock = vi.fn();
 
 vi.mock("#/lib/backup", () => ({
-	maybeAutoUpdateBackup: () => maybeAutoUpdateBackupMock(),
-	maybeAutoUpdateBackupEffect: () =>
-		Effect.promise(() => Promise.resolve(maybeAutoUpdateBackupMock())),
+	requestBackupAutoUpdate: () => maybeAutoUpdateBackupMock(),
 }));
 vi.mock("#/lib/search-discussion", () => ({
 	streamSearchDiscussionEffect: (...args: unknown[]) =>

@@ -209,6 +209,11 @@ function apiBucket(rawUrl) {
 	if (url.pathname === "/api/link-insights") {
 		return `${url.pathname}:${url.searchParams.get("kind") ?? "unknown"}`;
 	}
+	if (url.pathname === "/api/query") {
+		const resource = url.searchParams.get("resource") ?? "home";
+		const scope = url.searchParams.has("account") ? "scoped" : "unscoped";
+		return `${url.pathname}:${resource}:${scope}`;
+	}
 	return url.pathname;
 }
 

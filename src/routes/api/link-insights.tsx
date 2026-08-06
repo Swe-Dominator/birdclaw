@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Effect } from "effect";
 import { linkInsightResponseSchema } from "#/lib/api-contracts";
-import { maybeAutoUpdateBackupEffect } from "#/lib/backup";
+import { requestBackupAutoUpdate } from "#/lib/backup";
 import { getNativeDb } from "#/lib/db";
 import {
 	jsonResponse,
@@ -58,11 +58,11 @@ export const Route = createFileRoute("/api/link-insights")({
 		handlers: {
 			GET: ({ request }) =>
 				runRouteEffect(
-					Effect.gen(function* () {
+					Effect.sync(() => {
 						const denied = sensitiveRequestErrorResponse(request);
 						if (denied) return denied;
 
-						yield* maybeAutoUpdateBackupEffect();
+						requestBackupAutoUpdate();
 						getNativeDb();
 						const url = new URL(request.url);
 						return jsonResponse(

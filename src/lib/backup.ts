@@ -17,9 +17,13 @@ import {
 	type BackupJsonValue as JsonValue,
 } from "./backup-table-codecs";
 import { getBirdclawConfig } from "./config";
-import { getNativeDb } from "./db";
+import { getNativeDb, refreshReadDatabasePoolAfterBulkWrite } from "./db";
 import { databaseWriteEffect } from "./database-writer";
-import { runEffectPromise, tryPromise } from "./effect-runtime";
+import {
+	runEffectBackground,
+	runEffectPromise,
+	tryPromise,
+} from "./effect-runtime";
 import { getImportRepository } from "./import-repository";
 import {
 	mergeTweetRevisionChain,
@@ -39,7 +43,9 @@ const DATA_DIR = "data";
 const GITATTRIBUTES_PATH = ".gitattributes";
 const AUTO_SYNC_CACHE_KEY = "backup:auto-sync";
 const DEFAULT_STALE_AFTER_SECONDS = 15 * 60;
+const BACKGROUND_AUTO_UPDATE_DELAY_MS = 5_000;
 let autoUpdateInFlight: Promise<BackupAutoUpdateResult> | null = null;
+let autoUpdateBackgroundScheduled = false;
 
 export interface BackupFileManifest {
 	path: string;
@@ -97,7 +103,15 @@ export interface BackupAutoUpdateResult {
 	remote?: string;
 	pulled?: boolean;
 	imported?: boolean;
+	backupHash?: string;
 	error?: string;
+}
+
+interface BackupAutoSyncState {
+	checkedAt?: string;
+	ok?: boolean;
+	error?: string;
+	backupHash?: string;
 }
 
 export interface BackupValidationResult {
@@ -1223,6 +1237,7 @@ export function importBackupEffect({
 			}
 			reconcileTweetTombstones(writeDb);
 		}, db);
+		yield* trySync(() => refreshReadDatabasePoolAfterBulkWrite(db));
 		const fingerprint = yield* trySync(() =>
 			db.readTransaction(() => getBackupDatabaseFingerprint(db))(),
 		);
@@ -1303,6 +1318,7 @@ export interface UpdateBackupFromGitOptions {
 	repoPath: string;
 	remote?: string;
 	db?: Database;
+	appliedBackupHash?: string;
 }
 
 export interface UpdateBackupFromGitResult {
@@ -1311,6 +1327,7 @@ export interface UpdateBackupFromGitResult {
 	remote?: string;
 	pulled: boolean;
 	imported: boolean;
+	backupHash?: string;
 	importResult?: BackupImportResult;
 }
 
@@ -1318,6 +1335,7 @@ export function updateBackupFromGitEffect({
 	repoPath,
 	remote,
 	db,
+	appliedBackupHash,
 }: UpdateBackupFromGitOptions): Effect.Effect<
 	UpdateBackupFromGitResult,
 	unknown
@@ -1331,13 +1349,17 @@ export function updateBackupFromGitEffect({
 		const manifestExists = yield* trySync(() =>
 			existsSync(path.join(resolvedRepoPath, MANIFEST_PATH)),
 		);
-		const importResult = manifestExists
-			? yield* importBackupEffect({
-					repoPath: resolvedRepoPath,
-					db: database,
-					mode: "merge",
-				})
+		const manifest = manifestExists
+			? yield* readManifestEffect(resolvedRepoPath)
 			: undefined;
+		const importResult =
+			manifest && manifest.backupHash !== appliedBackupHash
+				? yield* importBackupEffect({
+						repoPath: resolvedRepoPath,
+						db: database,
+						mode: "merge",
+					})
+				: undefined;
 
 		return {
 			ok: true,
@@ -1345,6 +1367,7 @@ export function updateBackupFromGitEffect({
 			...(remote ? { remote: redactSecretUrl(remote) } : {}),
 			pulled,
 			imported: Boolean(importResult),
+			...(manifest ? { backupHash: manifest.backupHash } : {}),
 			...(importResult ? { importResult } : {}),
 		};
 	});
@@ -1358,11 +1381,7 @@ function readAutoSyncState(db: Database) {
 		return null;
 	}
 	try {
-		return JSON.parse(row.value_json) as {
-			checkedAt?: string;
-			ok?: boolean;
-			error?: string;
-		};
+		return JSON.parse(row.value_json) as BackupAutoSyncState;
 	} catch {
 		return null;
 	}
@@ -1370,7 +1389,7 @@ function readAutoSyncState(db: Database) {
 
 function writeAutoSyncState(
 	db: Database,
-	value: { checkedAt: string; ok: boolean; error?: string },
+	value: BackupAutoSyncState & { checkedAt: string; ok: boolean },
 ) {
 	db.prepare(
 		`
@@ -1471,6 +1490,7 @@ function runMaybeAutoUpdateBackupEffect(
 			repoPath: config.repoPath,
 			remote: config.remote,
 			db: database,
+			appliedBackupHash: state?.backupHash,
 		}).pipe(
 			Effect.map((value) => ({ ok: true as const, value })),
 			Effect.catchAll((error) => Effect.succeed({ ok: false as const, error })),
@@ -1478,18 +1498,32 @@ function runMaybeAutoUpdateBackupEffect(
 
 		if (result.ok) {
 			yield* trySync(() =>
-				writeAutoSyncState(database, { checkedAt: now, ok: true }),
+				writeAutoSyncState(database, {
+					checkedAt: now,
+					ok: true,
+					...(result.value.backupHash
+						? { backupHash: result.value.backupHash }
+						: state?.backupHash
+							? { backupHash: state.backupHash }
+							: {}),
+				}),
 			).pipe(Effect.orDie);
 			return {
 				ok: true,
 				enabled: true,
-				skipped: false,
+				skipped: Boolean(result.value.backupHash) && !result.value.imported,
+				...(result.value.backupHash && !result.value.imported
+					? { reason: "backup auto-sync manifest is unchanged" }
+					: {}),
 				repoPath: result.value.repoPath,
 				...(result.value.remote
 					? { remote: redactSecretUrl(result.value.remote) }
 					: {}),
 				pulled: result.value.pulled,
 				imported: result.value.imported,
+				...(result.value.backupHash
+					? { backupHash: result.value.backupHash }
+					: {}),
 			};
 		}
 
@@ -1502,6 +1536,7 @@ function runMaybeAutoUpdateBackupEffect(
 				checkedAt: now,
 				ok: false,
 				error: message,
+				...(state?.backupHash ? { backupHash: state.backupHash } : {}),
 			}),
 		).pipe(Effect.orDie);
 		return {
@@ -1541,6 +1576,29 @@ export function maybeAutoUpdateBackup(
 	return runEffectPromise(maybeAutoUpdateBackupEffect(db));
 }
 
+export function requestBackupAutoUpdate(db?: Database) {
+	if (autoUpdateBackgroundScheduled || autoUpdateInFlight) return;
+	autoUpdateBackgroundScheduled = true;
+	const timer = setTimeout(() => {
+		autoUpdateBackgroundScheduled = false;
+		runEffectBackground(maybeAutoUpdateBackupEffect(db), {
+			onSuccess: (result) => {
+				if (!result.ok) {
+					console.error(`birdclaw backup auto-sync failed: ${result.error}`);
+				}
+			},
+			onFailure: (error) => {
+				console.error(
+					`birdclaw backup auto-sync failed: ${
+						error instanceof Error ? error.message : String(error)
+					}`,
+				);
+			},
+		});
+	}, BACKGROUND_AUTO_UPDATE_DELAY_MS);
+	timer.unref();
+}
+
 export function maybeAutoSyncBackupEffect(
 	db?: Database,
 ): Effect.Effect<BackupAutoUpdateResult, never> {
@@ -1570,6 +1628,9 @@ export function maybeAutoSyncBackupEffect(
 		const database = yield* trySync(
 			() => db ?? getNativeDb({ seedDemoData: false }),
 		).pipe(Effect.orDie);
+		const state = yield* trySync(() => readAutoSyncState(database)).pipe(
+			Effect.catchAll(() => Effect.succeed(null)),
+		);
 		const now = new Date().toISOString();
 		const result = yield* syncBackupEffect({
 			repoPath: config.repoPath,
@@ -1582,7 +1643,11 @@ export function maybeAutoSyncBackupEffect(
 
 		if (result.ok) {
 			yield* trySync(() =>
-				writeAutoSyncState(database, { checkedAt: now, ok: true }),
+				writeAutoSyncState(database, {
+					checkedAt: now,
+					ok: true,
+					backupHash: result.value.exportResult.manifest.backupHash,
+				}),
 			).pipe(Effect.orDie);
 			return {
 				ok: true,
@@ -1604,6 +1669,7 @@ export function maybeAutoSyncBackupEffect(
 				checkedAt: now,
 				ok: false,
 				error: message,
+				...(state?.backupHash ? { backupHash: state.backupHash } : {}),
 			}),
 		).pipe(Effect.orDie);
 		return {

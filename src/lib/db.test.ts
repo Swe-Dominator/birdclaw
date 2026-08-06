@@ -9,6 +9,7 @@ import {
 	getNativeDb,
 	getReadDb,
 	getStrictReadDb,
+	refreshReadDatabasePoolAfterBulkWrite,
 	resetDatabaseForTests,
 } from "./db";
 import { seedDemoData } from "./seed";
@@ -526,6 +527,74 @@ describe("database init", () => {
 		} finally {
 			writer.exec("rollback");
 		}
+	});
+
+	it("refreshes managed readers after a bulk write without closing the writer", () => {
+		const tempDir = mkdtempSync(path.join(os.tmpdir(), "birdclaw-db-refresh-"));
+		tempDirs.push(tempDir);
+		process.env.BIRDCLAW_HOME = tempDir;
+
+		const writer = getNativeDb({ seedDemoData: false });
+		writer.exec("create table refresh_probe (value text)");
+		const firstReader = getReadDb({ seedDemoData: false });
+		const secondReader = getReadDb({ seedDemoData: false });
+		const closeSpy = vi.spyOn(NativeSqliteDatabase.prototype, "close");
+
+		writer.prepare("insert into refresh_probe (value) values ('ready')").run();
+		expect(refreshReadDatabasePoolAfterBulkWrite(writer)).toBe(true);
+		expect(closeSpy).toHaveBeenCalledTimes(2);
+		expect(new Set(closeSpy.mock.instances)).toEqual(
+			new Set([firstReader, secondReader]),
+		);
+		expect(writer.prepare("select value from refresh_probe").get()).toEqual({
+			value: "ready",
+		});
+
+		const refreshedReader = getReadDb({ seedDemoData: false });
+		expect(refreshedReader === firstReader).toBe(false);
+		expect(refreshedReader === secondReader).toBe(false);
+		expect(refreshedReader.pragma("query_only", { simple: true })).toBe(1);
+		expect(
+			refreshedReader.prepare("select value from refresh_probe").get(),
+		).toEqual({ value: "ready" });
+	});
+
+	it("ignores reader refresh for an unmanaged writer", () => {
+		const tempDir = mkdtempSync(
+			path.join(os.tmpdir(), "birdclaw-db-refresh-other-"),
+		);
+		tempDirs.push(tempDir);
+		process.env.BIRDCLAW_HOME = tempDir;
+
+		getNativeDb({ seedDemoData: false });
+		const reader = getReadDb({ seedDemoData: false });
+		const other = new NativeSqliteDatabase(path.join(tempDir, "other.sqlite"));
+		try {
+			expect(refreshReadDatabasePoolAfterBulkWrite(other)).toBe(false);
+			expect(reader.pragma("query_only", { simple: true })).toBe(1);
+		} finally {
+			other.close();
+		}
+	});
+
+	it("keeps imports successful when the passive checkpoint is unavailable", () => {
+		const tempDir = mkdtempSync(
+			path.join(os.tmpdir(), "birdclaw-db-refresh-checkpoint-"),
+		);
+		tempDirs.push(tempDir);
+		process.env.BIRDCLAW_HOME = tempDir;
+
+		const writer = getNativeDb({ seedDemoData: false });
+		getReadDb({ seedDemoData: false });
+		const originalExec = writer.exec.bind(writer);
+		const execSpy = vi.spyOn(writer, "exec").mockImplementation((sql) => {
+			if (sql.includes("wal_checkpoint")) throw new Error("checkpoint busy");
+			return originalExec(sql);
+		});
+
+		expect(refreshReadDatabasePoolAfterBulkWrite(writer)).toBe(true);
+		expect(execSpy).toHaveBeenCalledWith("pragma wal_checkpoint(passive)");
+		expect(getReadDb().pragma("query_only", { simple: true })).toBe(1);
 	});
 
 	it("opens strict readers without initialization and rejects writes", () => {

@@ -8,9 +8,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("#/lib/backup", () => ({
-	maybeAutoUpdateBackup: mocks.maybeAutoUpdateBackup,
-	maybeAutoUpdateBackupEffect: () =>
-		Effect.promise(() => Promise.resolve(mocks.maybeAutoUpdateBackup())),
+	requestBackupAutoUpdate: mocks.maybeAutoUpdateBackup,
 }));
 
 vi.mock("#/lib/query-status", () => ({

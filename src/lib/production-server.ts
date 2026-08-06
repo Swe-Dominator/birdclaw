@@ -31,6 +31,7 @@ export interface ProductionServerOptions {
 	requestTimeoutMs?: number;
 	headersTimeoutMs?: number;
 	mcpResponseTimeoutMs?: number;
+	onListening?: (address: { host: string; port: number }) => void;
 }
 
 const DEFAULT_REQUEST_TIMEOUT_MS = 35_000;
@@ -413,9 +414,9 @@ export async function runProductionServer(options: ProductionServerOptions) {
 	if (!address || typeof address === "string") {
 		throw new Error("Production server did not bind a TCP address");
 	}
-	console.log(
-		`Birdclaw listening on http://${options.host ?? "127.0.0.1"}:${String(address.port)}`,
-	);
+	const host = options.host ?? "127.0.0.1";
+	console.log(`Birdclaw listening on http://${host}:${String(address.port)}`);
+	options.onListening?.({ host, port: address.port });
 
 	await new Promise<never>((_, reject) => {
 		const signals = ["SIGINT", "SIGTERM", "SIGHUP", "SIGQUIT"] as const;

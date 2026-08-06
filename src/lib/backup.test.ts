@@ -12,7 +12,7 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { Effect } from "effect";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
 	insertTestAccount,
 	insertTestProfile,
@@ -27,6 +27,7 @@ import {
 	importBackupEffect,
 	maybeAutoSyncBackup,
 	maybeAutoUpdateBackup,
+	requestBackupAutoUpdate,
 	syncBackup,
 	updateBackupFromGitEffect,
 	validateBackup,
@@ -1265,7 +1266,7 @@ describe("text backup", () => {
 		);
 	}, 20000);
 
-	it("auto-updates from the configured backup repo only when stale", async () => {
+	it("imports a changed automatic backup once and skips an unchanged manifest", async () => {
 		const previousAutoSyncEnv = process.env.BIRDCLAW_BACKUP_AUTO_SYNC;
 		process.env.BIRDCLAW_BACKUP_AUTO_SYNC = "1";
 		const remotePath = path.join(makeTempDir("birdclaw-remote-"), "remote.git");
@@ -1289,7 +1290,7 @@ describe("text backup", () => {
 						repoPath,
 						remote: remotePath,
 						autoSync: true,
-						staleAfterSeconds: 900,
+						staleAfterSeconds: 0,
 					},
 				}),
 			);
@@ -1301,6 +1302,7 @@ describe("text backup", () => {
 				enabled: true,
 				skipped: false,
 				imported: true,
+				backupHash: expect.any(String),
 			});
 			expect(
 				getNativeDb()
@@ -1316,7 +1318,9 @@ describe("text backup", () => {
 				ok: true,
 				enabled: true,
 				skipped: true,
-				reason: "backup auto-sync is fresh",
+				reason: "backup auto-sync manifest is unchanged",
+				imported: false,
+				backupHash: first.backupHash,
 			});
 		} finally {
 			if (previousAutoSyncEnv === undefined) {
@@ -1326,6 +1330,36 @@ describe("text backup", () => {
 			}
 		}
 	}, 20000);
+
+	it("requests web backup updates without blocking or rejecting the caller", async () => {
+		const previousAutoSyncEnv = process.env.BIRDCLAW_BACKUP_AUTO_SYNC;
+		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+		vi.useFakeTimers();
+		try {
+			process.env.BIRDCLAW_BACKUP_AUTO_SYNC = "1";
+			switchHome("birdclaw-auto-background-");
+			writeFileSync(path.join(testHome().root, "config.json"), "{bad");
+			resetBirdclawPathsForTests();
+
+			expect(requestBackupAutoUpdate()).toBeUndefined();
+			expect(requestBackupAutoUpdate()).toBeUndefined();
+			expect(errorSpy).not.toHaveBeenCalled();
+			await vi.advanceTimersByTimeAsync(5_000);
+			await Promise.resolve();
+			expect(errorSpy).toHaveBeenCalledTimes(1);
+			expect(errorSpy).toHaveBeenCalledWith(
+				expect.stringContaining("birdclaw backup auto-sync failed"),
+			);
+		} finally {
+			vi.useRealTimers();
+			errorSpy.mockRestore();
+			if (previousAutoSyncEnv === undefined) {
+				delete process.env.BIRDCLAW_BACKUP_AUTO_SYNC;
+			} else {
+				process.env.BIRDCLAW_BACKUP_AUTO_SYNC = previousAutoSyncEnv;
+			}
+		}
+	});
 
 	it("skips automatic backup work when disabled or unconfigured", async () => {
 		const previousAutoSyncEnv = process.env.BIRDCLAW_BACKUP_AUTO_SYNC;
