@@ -12,6 +12,7 @@
 
 ### Testing and maintenance
 
+- Refresh all direct and transitive dependencies to current stable releases and remediate Hono and nanoid security advisories.
 - Add Bun/Istanbul and Node/V8 coverage lanes, dual-runtime installed-package smoke, Playwright against the built Bun production server, and explicit runtime performance metadata.
 
 ## 0.12.0 - 2026-08-02

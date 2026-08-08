@@ -64,7 +64,11 @@ describe("package configuration", () => {
 			bun: "1.4.0",
 			node: ">=26.5.1 <27",
 		});
-		expect(packageJson.overrides).toEqual({ "@hono/node-server": "2.0.12" });
+		expect(packageJson.overrides).toEqual({
+			"@hono/node-server": "2.1.0",
+			hono: "4.13.1",
+			nanoid: "3.3.18",
+		});
 		expect(packageJson.trustedDependencies).toEqual([
 			"esbuild",
 			"lightningcss",
