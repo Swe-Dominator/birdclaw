@@ -4,7 +4,7 @@ import {
 	useQuery,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AvatarChip } from "#/components/AvatarChip";
 import { useDebouncedValue } from "#/components/useDebouncedValue";
 import { blockListResponseSchema } from "#/lib/api-contracts";
@@ -71,6 +71,12 @@ export function BlocksRouteView({
 		onSearchChange ? onSearchChange(next, options) : setLocalSearch(next);
 	const accountId = searchState.account;
 	const search = searchState.q;
+	const searchStateRef = useRef(searchState);
+	searchStateRef.current = searchState;
+	const [searchInput, setSearchInput] = useState(search);
+	const searchInputRef = useRef(search);
+	const searchInputDirtyRef = useRef(false);
+	const pendingSearchRef = useRef<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [message, setMessage] = useState("");
 	const [actionError, setActionError] = useState("");
@@ -79,7 +85,7 @@ export function BlocksRouteView({
 		queryFn: ({ signal }) => fetchQueryEnvelope({ signal }),
 	});
 	const meta = statusQuery.data ?? null;
-	const debouncedSearch = useDebouncedValue(search, 180);
+	const debouncedSearch = useDebouncedValue(searchInput, 180);
 	const hasAccountId = accountId.trim().length > 0;
 	const isReady = Boolean(meta);
 	const blocksQueryKey = [
@@ -136,6 +142,33 @@ export function BlocksRouteView({
 			: queryError
 				? "Unable to load blocklist"
 				: "");
+
+	useEffect(() => {
+		const pendingSearch = pendingSearchRef.current;
+		if (pendingSearch !== null) {
+			if (search !== pendingSearch) return;
+			pendingSearchRef.current = null;
+		}
+		if (searchInputDirtyRef.current) {
+			if (searchInputRef.current !== search) return;
+			searchInputDirtyRef.current = false;
+		}
+		searchInputRef.current = search;
+		setSearchInput(search);
+	}, [search]);
+
+	useEffect(() => {
+		const currentSearch = searchStateRef.current;
+		if (currentSearch.q === debouncedSearch) {
+			pendingSearchRef.current = null;
+			if (searchInputRef.current === debouncedSearch) {
+				searchInputDirtyRef.current = false;
+			}
+			return;
+		}
+		pendingSearchRef.current = debouncedSearch;
+		updateSearch({ ...currentSearch, q: debouncedSearch }, { replace: true });
+	}, [debouncedSearch]);
 
 	useEffect(() => {
 		if (!meta?.accounts.length) return;
@@ -238,19 +271,20 @@ export function BlocksRouteView({
 					<input
 						className={cx(textFieldClass, "flex-1 min-w-[200px]")}
 						disabled={!hasAccountId}
-						onChange={(event) =>
-							updateSearch(
-								{ ...searchState, q: event.target.value },
-								{ replace: true },
-							)
-						}
+						onChange={(event) => {
+							const nextSearch = event.target.value;
+							searchInputRef.current = nextSearch;
+							searchInputDirtyRef.current =
+								nextSearch !== searchStateRef.current.q;
+							setSearchInput(nextSearch);
+						}}
 						placeholder="Handle, name, bio, or Twitter URL"
-						value={search}
+						value={searchInput}
 					/>
 					<button
 						className={primaryButtonClass}
-						disabled={!hasAccountId || isSubmitting || !search.trim()}
-						onClick={() => void submit("blockProfile", search)}
+						disabled={!hasAccountId || isSubmitting || !searchInput.trim()}
+						onClick={() => void submit("blockProfile", searchInput)}
 						type="button"
 					>
 						{isSubmitting ? "Working..." : "Block"}

@@ -14,6 +14,89 @@ describe("blocks route", () => {
 		vi.unstubAllGlobals();
 	});
 
+	it("preserves a newer draft across stale controlled navigation responses", async () => {
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async (input: RequestInfo | URL) => {
+				const url = String(input);
+				if (url.endsWith("/api/status")) {
+					return new Response(
+						JSON.stringify({
+							stats: { home: 0, mentions: 0, dms: 0, needsReply: 0, inbox: 0 },
+							transport: { statusText: "local" },
+							accounts: [
+								{ id: "acct_primary", handle: "@steipete", name: "Peter" },
+							],
+							archives: [],
+						}),
+					);
+				}
+				if (url.includes("/api/blocks")) {
+					return new Response(JSON.stringify({ items: [], matches: [] }));
+				}
+				if (url.endsWith("/api/action")) {
+					return new Response(
+						JSON.stringify({
+							ok: true,
+							transport: { ok: true, output: "remote block sync disabled" },
+						}),
+					);
+				}
+				throw new Error(`Unexpected fetch ${url}`);
+			}),
+		);
+		const onSearchChange = vi.fn();
+		const { rerender } = render(
+			<BlocksRoute
+				onSearchChange={onSearchChange}
+				searchState={{ account: "acct_primary", q: "" }}
+			/>,
+		);
+
+		const input = (await screen.findByPlaceholderText(
+			"Handle, name, bio, or Twitter URL",
+		)) as HTMLInputElement;
+		fireEvent.change(input, { target: { value: "a" } });
+		await waitFor(() => {
+			expect(onSearchChange).toHaveBeenCalledWith(
+				{ account: "acct_primary", q: "a" },
+				{ replace: true },
+			);
+		});
+
+		fireEvent.change(input, { target: { value: "amelia" } });
+		expect(input).toHaveValue("amelia");
+		rerender(
+			<BlocksRoute
+				onSearchChange={onSearchChange}
+				searchState={{ account: "acct_primary", q: "a" }}
+			/>,
+		);
+		expect(input).toHaveValue("amelia");
+
+		await waitFor(() => {
+			expect(onSearchChange).toHaveBeenCalledWith(
+				{ account: "acct_primary", q: "amelia" },
+				{ replace: true },
+			);
+		});
+		rerender(
+			<BlocksRoute
+				onSearchChange={onSearchChange}
+				searchState={{ account: "acct_primary", q: "amelia" }}
+			/>,
+		);
+		expect(input).toHaveValue("amelia");
+
+		rerender(
+			<BlocksRoute
+				onSearchChange={onSearchChange}
+				searchState={{ account: "acct_primary", q: "external" }}
+			/>,
+		);
+		expect(input).toHaveValue("external");
+	});
+
 	it("loads blocks and submits block/unblock actions", async () => {
 		let blockResponse = {
 			items: [
