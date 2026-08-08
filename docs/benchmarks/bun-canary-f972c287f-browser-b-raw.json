@@ -1,0 +1,4586 @@
+{
+  "schemaVersion": 1,
+  "candidate": {
+    "bunRevision": "1.4.0-canary.1+f972c287f",
+    "sourceSha": "f972c287f9b7a71754b0b0b1cd18722aa3c75280"
+  },
+  "baseline": {
+    "gitSha": "ae21996dad8ed7d82e545c22b9b9de7a47f840f2"
+  },
+  "cell": "B",
+  "name": "migration-node",
+  "browser": {
+    "home": [
+      {
+        "readyMs": 88.65808300000003,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.14058399999998983,
+          1.8548330000000988,
+          2.344875000000002,
+          2.4046670000000177,
+          2.4356250000000728,
+          2.4435000000000855,
+          1.484749999999849,
+          2.0243339999999534,
+          2.596917000000076,
+          1.5205829999999878,
+          2.5711659999999483,
+          1.6331659999998465
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 88.57904199999984,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.12112500000012005,
+          1.6394580000001042,
+          2.6107090000000426,
+          2.59112499999992,
+          2.6137919999998758,
+          7.210417000000007,
+          1.695207999999866,
+          2.145042000000103,
+          2.5913750000001983,
+          1.1558330000000296,
+          1.7557079999999132,
+          0.9712919999999485
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 86.99420800000007,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.10216700000000856,
+          1.743167000000085,
+          2.5968330000000606,
+          2.6646670000000086,
+          2.6476659999998446,
+          2.6438750000002074,
+          1.2854170000000522,
+          1.7655829999998787,
+          2.1742080000003625,
+          1.1287499999998545,
+          1.8157090000004246,
+          0.97137500000008
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 85.59729199999992,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.1274159999998119,
+          1.7806249999998727,
+          2.3003749999998035,
+          2.378541999999925,
+          2.39029199999959,
+          2.8078340000001845,
+          1.4013749999999163,
+          1.86391599999979,
+          2.2224160000000666,
+          1.3272499999998217,
+          2.113916999999674,
+          1.2533330000001115
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.03337499999998,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8102090000002136,
+          1.8385830000001988,
+          2.43941599999971,
+          2.537083000000166,
+          2.551708999999846,
+          2.5824579999998605,
+          1.1022500000003674,
+          1.324500000000171,
+          1.5855830000000424,
+          0.2723750000000109,
+          0.23208400000021356,
+          0.9327499999999418
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.78558299999986,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11095900000009351,
+          1.505083999999897,
+          2.359207999999853,
+          2.529125000000022,
+          2.5412499999997635,
+          2.5607500000000982,
+          1.5081660000000738,
+          1.8966669999999795,
+          2.3241659999998774,
+          1.722458000000188,
+          2.3878749999998945,
+          1.548041000000012
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.66483400000016,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.7366250000000036,
+          1.5727499999998145,
+          2.2617089999998825,
+          2.336999999999989,
+          2.3665000000000873,
+          2.3943749999998545,
+          1.4706670000000486,
+          1.9187910000000556,
+          2.2623749999997926,
+          1.233375000000251,
+          1.9574999999999818,
+          1.039375000000291
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.42300000000023,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11529200000040873,
+          1.5617919999995138,
+          2.2324170000001686,
+          2.2930420000002414,
+          2.3001249999997526,
+          2.3202919999994265,
+          1.5283330000002024,
+          1.7663329999995767,
+          2.0082079999992857,
+          1.3267920000007507,
+          2.2230829999998605,
+          1.2113339999996242
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.91925000000083,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8519580000001952,
+          1.7195419999998194,
+          2.3319170000004306,
+          2.4480419999999867,
+          2.4312079999999696,
+          2.4713339999998425,
+          1.2879590000002281,
+          1.7360829999997804,
+          2.0809589999998934,
+          1.3611250000003565,
+          4.464792000000671,
+          2.198333000000275
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.547458,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11008300000048621,
+          1.3697080000001733,
+          2.4767919999994774,
+          2.5470409999998083,
+          2.601166999999805,
+          2.604624999999942,
+          1.2761669999999867,
+          1.6632079999999405,
+          1.962999999999738,
+          1.3080410000002303,
+          2.134166999999252,
+          1.1462090000004537
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 87.3085000000001,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.20679100000006656,
+          1.6782089999999243,
+          2.299541999999974,
+          2.361541999999872,
+          2.7692919999999503,
+          3.019792000000052,
+          1.5045000000000073,
+          1.8160830000001624,
+          2.172833999999966,
+          1.034708000000137,
+          1.5917090000000371,
+          1.014791999999943
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.80866700000001,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.12670800000000781,
+          1.5979999999999563,
+          2.4456669999999576,
+          2.4756250000000364,
+          2.50591600000007,
+          4.408582999999908,
+          1.4457500000000891,
+          1.9581250000001091,
+          2.2614169999999376,
+          1.375833000000057,
+          2.1133749999999054,
+          1.3709590000000844
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.34954199999993,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11687499999993634,
+          1.4925410000000738,
+          2.383000000000038,
+          2.4049999999999727,
+          2.4561670000000504,
+          2.4550829999998314,
+          1.483167000000094,
+          1.9460409999999229,
+          2.4577919999999267,
+          1.9232500000000528,
+          2.735916999999972,
+          1.3443750000001273
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 86.87554199999977,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.7587079999998423,
+          1.6516249999999673,
+          2.3347499999999854,
+          2.4320419999999103,
+          2.4099999999998545,
+          2.4390410000000884,
+          1.4328749999999673,
+          1.8817080000003443,
+          2.351875000000291,
+          1.5674579999999878,
+          2.0878750000001673,
+          1.2500830000003589
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.46725000000015,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.7683750000001055,
+          1.6116250000000036,
+          2.2802919999999176,
+          2.4172499999999673,
+          2.4251670000003287,
+          2.4362500000002,
+          0.9461660000001757,
+          1.1970830000000205,
+          1.4059579999998277,
+          1.2221250000002328,
+          1.8335839999999735,
+          1.2114160000000993
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.92312500000025,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8536669999998594,
+          1.5126249999998436,
+          2.2147500000000946,
+          2.272958000000017,
+          2.2984160000000884,
+          2.301582999999937,
+          1.0687920000000304,
+          1.4588330000001406,
+          1.6997910000000047,
+          0.9060420000000704,
+          1.4909170000000813,
+          0.9457920000004378
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 87.2822500000002,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8436659999997573,
+          1.4410000000002583,
+          2.358624999999847,
+          2.5335000000000036,
+          2.5258340000000317,
+          2.530666999999994,
+          1.3243750000001455,
+          1.6701669999997648,
+          2.098124999999982,
+          1.082915999999841,
+          1.6787500000000364,
+          1.0992080000000897
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.90270800000008,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.18087500000001455,
+          1.849583000000166,
+          2.3582910000000084,
+          2.451665999999932,
+          2.4517909999999574,
+          2.486291999999594,
+          1.3044169999998303,
+          1.62237499999992,
+          1.9557920000002014,
+          1.4174590000002354,
+          2.2942920000000413,
+          1.3667089999999007
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 86.33662499999991,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          2.0960830000003625,
+          2.707959000000301,
+          2.482665999999881,
+          2.5910839999996824,
+          2.6010419999993246,
+          2.6255419999997684,
+          1.1842500000002474,
+          1.5313339999993332,
+          1.9222500000005311,
+          1.2439580000000205,
+          1.9365420000003724,
+          1.1355410000005577
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 92.29975000000013,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11275000000023283,
+          1.7521249999999782,
+          2.3282909999998083,
+          2.4190419999995356,
+          2.46612499999992,
+          2.474833000000217,
+          1.41150000000016,
+          1.8990420000000086,
+          2.3422920000002705,
+          1.7767910000002303,
+          2.6677090000002863,
+          1.3961249999993015
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 88.30312499999991,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.1076660000001084,
+          1.829834000000119,
+          2.378665999999839,
+          2.29095899999993,
+          2.3477909999999156,
+          2.6923330000001897,
+          1.5150409999998828,
+          2.093667000000096,
+          2.625874999999951,
+          1.2051249999999527,
+          1.9372909999999592,
+          1.2344170000001213
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 101.61404199999993,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.09829100000001745,
+          1.9333749999998417,
+          1.5335000000000036,
+          2.374083000000155,
+          2.4470830000000205,
+          2.755541000000221,
+          1.0397080000000187,
+          1.5070839999998498,
+          1.996167000000014,
+          1.068667000000005,
+          1.6441669999999249,
+          1.2149580000000242
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 86.85733400000026,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.10849999999982174,
+          1.8467909999999392,
+          2.5084170000000086,
+          2.5263749999999163,
+          2.558791999999812,
+          2.860041999999794,
+          1.3476250000003347,
+          1.7796250000001237,
+          2.239708000000064,
+          1.1984160000001793,
+          1.8156659999999647,
+          1.215624999999818
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.44054200000028,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.16116699999975026,
+          2.1189580000000205,
+          2.3577919999997903,
+          3.8552920000001905,
+          4.11462500000016,
+          4.502666000000318,
+          1.2181660000001102,
+          1.7246249999998327,
+          2.3114999999997963,
+          1.0817919999999503,
+          1.6655839999998534,
+          1.331749999999829
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.42833299999984,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.9667500000000473,
+          1.6363750000000437,
+          2.379667000000154,
+          2.392457999999806,
+          2.439875000000029,
+          2.452332999999726,
+          1.3628749999998035,
+          1.8112920000003214,
+          2.116667000000234,
+          1.377415999999812,
+          2.081542000000354,
+          1.2720829999998386
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.28720900000008,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.10891600000013568,
+          1.4532909999998083,
+          2.429667000000336,
+          2.451249999999618,
+          2.495792000000165,
+          2.7869580000001406,
+          1.2968339999997625,
+          1.446374999999989,
+          1.920332999999573,
+          1.4731249999999818,
+          2.3882909999997537,
+          1.267250000000331
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 88.52433399999973,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.12945799999988594,
+          1.4148340000001554,
+          2.3792920000000777,
+          2.413665999999921,
+          2.4874589999999444,
+          2.505916999999954,
+          1.3804169999998521,
+          1.6562909999997828,
+          1.9472920000002887,
+          1.587333999999828,
+          2.2842500000001564,
+          1.1378329999997732
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 88.3172910000003,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.14825000000018917,
+          1.5490419999996448,
+          2.478874999999789,
+          2.495082999999795,
+          2.5435419999994338,
+          2.548667000000023,
+          1.5096250000005966,
+          1.8258749999995416,
+          2.1650829999998678,
+          1.4591250000003129,
+          2.1817080000000715,
+          1.3007079999997586
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.2617909999999,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8595830000003843,
+          1.8335420000003069,
+          2.3339169999999285,
+          2.4156670000002123,
+          2.426166999999623,
+          2.446791999999732,
+          1.10991599999943,
+          1.5381250000000364,
+          1.8005000000002838,
+          2.0075000000006185,
+          2.588832999999795,
+          1.3395000000000437
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 93.16437500000029,
+        "actionMs": null,
+        "apiCalls": 12,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 7,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.7848329999997077,
+          1.5407079999995403,
+          2.4602079999995112,
+          2.480666000000383,
+          2.5219999999999345,
+          2.5502919999998994,
+          1.290791999999783,
+          1.5974590000005264,
+          1.8582500000002256,
+          0.8423750000001746,
+          1.5015840000005483,
+          0.8229579999997441
+        ],
+        "rows": 3,
+        "previews": 3
+      }
+    ],
+    "mentions": [
+      {
+        "readyMs": 82.60208300000068,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.197041999999783,
+          1.380750000000262,
+          1.1531669999994847,
+          1.762499999999818,
+          0.10445900000013353,
+          0.06812499999978172
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 88.561917,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.15983400000004622,
+          1.4689160000007178,
+          1.2082499999996799,
+          1.5125830000006317,
+          1.3271249999997963,
+          1.8473329999997077
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 93.95195899999999,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.08945899999980611,
+          1.4520419999998921,
+          1.170749999999316,
+          1.4690419999997175,
+          1.3072919999995065,
+          1.6902920000002268
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 88.46429200000057,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.7938340000000608,
+          1.3777920000002268,
+          1.2790420000001177,
+          1.6266249999998763,
+          1.1708340000004682,
+          1.5317500000001019
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 90.64329199999975,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.24083299999983865,
+          1.473707999999533,
+          1.3596669999997175,
+          1.78912500000024,
+          1.2483749999992142,
+          1.572041999999783
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 86.3149999999996,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.974583999999595,
+          1.8105420000001686,
+          1.5018749999999272,
+          1.9572499999994761,
+          1.1462080000001151,
+          1.5409579999995913
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 105.76908299999923,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.12525000000005093,
+          1.3849159999999756,
+          2.6523329999999987,
+          1.4166660000000775,
+          1.3066659999994954,
+          1.651332999999795
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 90.79079100000126,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.06574999999975262,
+          1.4185419999994338,
+          1.3746250000003783,
+          1.8634169999986625,
+          1.3404579999987618,
+          1.7762499999989814
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 99.16666600000099,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          2.085041000000274,
+          1.4409169999998994,
+          1.3114580000001297,
+          1.6552910000009433,
+          1.2162910000006377,
+          1.6867919999986043
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 102.34929100000045,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.21704200000021956,
+          1.3185410000005504,
+          1.4575839999997697,
+          1.7118750000008731,
+          0.8525419999987207,
+          1.219082999999955
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 90.90058299999964,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.7525000000005093,
+          1.2781669999994847,
+          1.3837090000006356,
+          2.2584590000005846,
+          1.2844169999998485,
+          1.6780829999997877
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 90.7699160000002,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.13733400000000984,
+          1.9147089999996751,
+          0.991874999999709,
+          1.3451249999998254,
+          1.357915999999932,
+          1.6714160000001357
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 86.9790410000005,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.12233299999934388,
+          1.2408750000004147,
+          0.951958999999988,
+          1.2510409999995318,
+          1.284165999999459,
+          1.5483750000003056
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 92.04491700000017,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.1239159999995536,
+          1.17712500000016,
+          1.2349160000003394,
+          1.7451249999994616,
+          1.1563339999993332,
+          1.495332999999846
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.91604200000074,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.14454099999966274,
+          1.3262920000006488,
+          0.9640409999992698,
+          1.2785830000002534,
+          1.13287500000024,
+          1.3940410000004704
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 93.44637500000044,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.06570899999951507,
+          1.884208000000399,
+          1.9172090000001845,
+          2.492875000000822,
+          1.0374590000001263,
+          1.5312089999997625
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 90.75183300000026,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.08233299999938026,
+          1.268750000000182,
+          1.3688750000001164,
+          1.9020000000000437,
+          1.2171250000001237,
+          1.5357080000003407
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.92712499999925,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.10270800000034797,
+          1.2222079999992275,
+          1.3271250000016153,
+          1.5909169999995356,
+          1.2064580000005662,
+          1.5221669999991718
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 93.47624999999971,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.9275409999991098,
+          1.3982919999998558,
+          1.3282090000011522,
+          1.7169169999997393,
+          1.2517079999997804,
+          1.5546250000006694
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 91.9091669999998,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.7919590000001335,
+          1.3604169999998703,
+          1.3610829999997804,
+          1.836250000000291,
+          1.1863329999996495,
+          1.634249999999156
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 91.30008399999952,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.7732499999992797,
+          1.3097910000005868,
+          1.3163749999994252,
+          2.082499999999527,
+          1.191874999999527,
+          1.6017499999998108
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 83.21970899999997,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.11808300000029703,
+          1.154583000000457,
+          1.1795830000000933,
+          1.6517079999994166,
+          1.1086660000000848,
+          1.4367499999998472
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 91.20529199999964,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.940667000000758,
+          1.357332999999926,
+          1.2956249999997453,
+          1.7301250000000437,
+          1.3204580000001442,
+          1.7099580000003698
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 92.00533300000006,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.11508299999968585,
+          1.2100420000006125,
+          1.3235420000000886,
+          1.9060420000005251,
+          1.1719169999996666,
+          1.4485830000003261
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.12800000000061,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.9433749999998327,
+          1.5172080000002097,
+          1.1685410000000047,
+          1.5859169999994265,
+          1.414875000000393,
+          1.828667000000678
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 90.76058299999931,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.09116699999958655,
+          1.2696249999999054,
+          1.252375000000029,
+          1.5467499999995198,
+          1.2580840000000535,
+          1.5070830000004207
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 91.39958399999978,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.11866599999939353,
+          1.1871249999994689,
+          1.2524169999996957,
+          1.8366670000004888,
+          1.2283330000000205,
+          1.6674999999995634
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 108.01087499999994,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.10766599999988102,
+          4.80041700000038,
+          1.2315830000006827,
+          1.2851670000000013,
+          1.4422910000012052,
+          1.8314580000005662
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 99.22933300000113,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.14016699999956472,
+          1.3193330000012793,
+          2.549875000000611,
+          1.2009159999997792,
+          1.2339169999995647,
+          1.6581249999999272
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.26858299999913,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 1,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.7370000000009895,
+          1.1853339999997843,
+          1.0360830000008718,
+          1.2077919999992446,
+          1.321165999999721,
+          1.608791000000565
+        ],
+        "rows": 1,
+        "previews": 0
+      }
+    ],
+    "sidebar-roundtrip": [
+      {
+        "readyMs": 91.76491700000042,
+        "actionMs": 568.3835830000007,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8311250000006112,
+          1.5284579999988637,
+          3.48962500000016,
+          3.5394169999999576,
+          3.5507500000003347,
+          3.576333999999406,
+          1.2612910000007105,
+          1.4981669999997393,
+          1.7646249999997963,
+          1.5008750000015425,
+          1.232292000000598,
+          1.3081249999995634,
+          1.794041000001016,
+          1.899874999999156,
+          2.157375000000684,
+          2.4865000000008877,
+          1.162333000000217,
+          1.8159169999998994,
+          1.4715419999993173
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.30574999999953,
+        "actionMs": 576.5763750000006,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.1617499999993015,
+          1.6414999999997235,
+          3.6785840000011376,
+          3.6478749999987485,
+          3.7040409999990516,
+          3.711165999999139,
+          1.6754579999997077,
+          1.9342909999995754,
+          2.3245829999996204,
+          1.7041669999998703,
+          1.2654999999995198,
+          1.3014579999999114,
+          1.8737920000003214,
+          1.7976669999989099,
+          2.4448339999999007,
+          2.7229580000002898,
+          2.014791999999943,
+          3.176583999998911,
+          1.7150830000009591
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 92.63125000000036,
+        "actionMs": 604.6091669999987,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.16941700000097626,
+          1.7351670000007289,
+          3.5724580000005517,
+          3.5424999999995634,
+          3.6027090000006865,
+          3.6098330000004353,
+          1.4802079999990383,
+          1.9162080000005517,
+          2.3574159999989206,
+          1.633417000000918,
+          1.20458299999882,
+          1.222749999998996,
+          1.7894169999999576,
+          3.034125000000131,
+          3.540666999999303,
+          3.407042000000729,
+          3.0226670000010927,
+          4.473040999999284,
+          2.606499999999869
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 98.64258300000074,
+        "actionMs": 595.2834170000006,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11395900000024994,
+          1.5448749999995925,
+          1.392708000001221,
+          3.3502079999998386,
+          3.4070409999985714,
+          3.39195799999834,
+          1.5044160000015836,
+          1.7579580000001442,
+          2.0873329999994894,
+          1.6830840000002354,
+          0.892959000000701,
+          1.175042000000758,
+          1.6048339999997552,
+          2.824000000000524,
+          3.088999999999942,
+          3.487959000000046,
+          0.4799590000002354,
+          0.35958300000129384,
+          0.8436249999995198
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 92.7989579999994,
+        "actionMs": 593.5131659999988,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8133340000003955,
+          1.8411249999990105,
+          3.5232080000005226,
+          3.512958000001163,
+          3.547833000000537,
+          3.5557079999998678,
+          1.1347919999989244,
+          1.3017080000008718,
+          1.5356250000004366,
+          2.352208000000246,
+          1.5203750000000582,
+          1.1979580000006536,
+          1.59954099999959,
+          2.597291000000041,
+          3.034750000000713,
+          3.384582999999111,
+          6.040499999999156,
+          5.999291000000085,
+          0.1719169999996666
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 96.62883300000067,
+        "actionMs": 583.1621660000001,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.23887499999909778,
+          3.644625000000815,
+          1.6433329999999842,
+          3.5186670000002778,
+          3.501250000001164,
+          3.52599999999984,
+          1.4240410000002157,
+          1.7489170000008016,
+          2.2030830000003334,
+          1.609375,
+          1.0922090000003664,
+          1.1643330000006245,
+          1.6096249999991414,
+          2.7564999999995052,
+          3.5474580000009155,
+          4.437291999998706,
+          3.3717089999991003,
+          0.5198329999984708,
+          1.9840000000003783
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 87.91770800000086,
+        "actionMs": 585.0612499999988,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.1211250000014843,
+          1.2963750000017171,
+          3.4607919999980368,
+          3.5252919999984442,
+          3.511000000002241,
+          3.539042000000336,
+          1.4560420000016165,
+          1.7981250000011642,
+          2.2658750000009604,
+          1.678874999997788,
+          1.2120839999988675,
+          1.253166999998939,
+          1.6317500000004657,
+          1.2752499999987776,
+          1.8789580000011483,
+          2.338208000001032,
+          1.805791999999201,
+          2.5165000000015425,
+          1.2706670000006852
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 103.41120800000135,
+        "actionMs": 591.5067500000005,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.14570800000001327,
+          1.7524169999996957,
+          4.147708000000421,
+          3.4974999999976717,
+          3.5032499999979336,
+          3.5116670000024897,
+          1.4339170000021113,
+          1.8526660000025004,
+          2.3120830000007118,
+          1.6314580000034766,
+          1.1644169999999576,
+          1.1652920000015001,
+          1.5953750000007858,
+          2.292291000001569,
+          2.7383330000011483,
+          3.0855830000000424,
+          2.013999999999214,
+          3.2687500000029104,
+          1.0211249999993015
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 97.2476659999993,
+        "actionMs": 611.5744580000028,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.10358300000007148,
+          3.492499999996653,
+          1.5158340000016324,
+          3.372624999999971,
+          3.429082999999082,
+          3.4366659999977855,
+          1.4872079999986454,
+          1.827292000001762,
+          2.3184589999982563,
+          1.681124999999156,
+          1.197374999999738,
+          1.2037079999972775,
+          1.530416999998124,
+          3.1804159999992407,
+          3.740249999998923,
+          4.090166999998473,
+          3.214332999999897,
+          4.50537500000064,
+          1.9358750000028522
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 99.29516700000022,
+        "actionMs": 581.0316249999996,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.14016699999774573,
+          3.5897080000031565,
+          1.6842909999977564,
+          3.15704199999891,
+          3.203250000002299,
+          3.2100829999981215,
+          1.4361659999995027,
+          1.8155000000006112,
+          2.228000000002794,
+          1.6341670000001614,
+          1.15483299999687,
+          1.3127090000016324,
+          1.5994579999969574,
+          2.1350409999977273,
+          2.4995419999977457,
+          2.9550000000017462,
+          3.0507499999985157,
+          4.313207999999577,
+          2.515416999998706
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 101.24237499999981,
+        "actionMs": 565.0712910000002,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.13958400000046822,
+          3.790666999999303,
+          1.9645000000000437,
+          3.6890839999996388,
+          3.65558400000009,
+          3.6807079999998678,
+          1.2102910000012344,
+          1.266750000000684,
+          1.4689170000001468,
+          1.2822500000002037,
+          1.1447920000009617,
+          1.1937920000000304,
+          1.6813340000007884,
+          2.0877089999994496,
+          2.5752920000013546,
+          3.3922920000004524,
+          2.222874999999476,
+          3.868083999999726,
+          2.0061249999998836
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 86.86091699999997,
+        "actionMs": 574.0851669999993,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          2.0513750000009168,
+          1.574124999999185,
+          3.372624999999971,
+          3.4321659999986878,
+          3.4093339999999444,
+          3.4357920000002196,
+          1.5054589999999735,
+          1.9788749999988795,
+          2.4429589999999735,
+          1.7789580000007845,
+          1.2403749999994034,
+          1.101249999999709,
+          1.4636249999985012,
+          1.7573750000010477,
+          2.2310419999994338,
+          2.6125409999986005,
+          1.8071249999993597,
+          2.7588329999998678,
+          1.0630420000015874
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 93.23283300000003,
+        "actionMs": 582.8780829999996,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.10329200000160199,
+          4.414249999999811,
+          1.5588329999991402,
+          3.709167000000889,
+          3.6813340000007884,
+          3.672083000001294,
+          1.3264579999995476,
+          1.6340000000000146,
+          2.034625000000233,
+          1.4156660000007832,
+          1.2842919999984588,
+          0.973374999999578,
+          1.3359590000000026,
+          1.7290420000008453,
+          2.333042000000205,
+          2.7235410000012052,
+          1.6302079999986745,
+          2.9286250000004657,
+          1.6182079999998678
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.87270799999897,
+        "actionMs": 565.6822080000002,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.12137500000062573,
+          1.8630000000011933,
+          3.4872079999986454,
+          3.4637089999996533,
+          3.512708999998722,
+          3.4969579999997222,
+          1.1438749999997526,
+          1.3867079999999987,
+          1.5491250000013679,
+          1.4306250000008731,
+          1.1049160000002303,
+          1.3564580000002024,
+          1.8997500000004948,
+          2.171875,
+          2.6897079999998823,
+          3.216374999999971,
+          0.6917499999999563,
+          0.5947500000002037,
+          1.4946249999993597
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 85.55970799999886,
+        "actionMs": 583.6927919999998,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.10645800000020245,
+          1.7794580000008864,
+          3.4472079999995913,
+          3.451583000000028,
+          3.46349999999984,
+          3.467333000000508,
+          1.267334000000119,
+          1.5673330000008718,
+          1.8570419999996375,
+          1.5827079999999114,
+          1.2482079999990674,
+          1.0683749999989232,
+          1.405416999999943,
+          1.649041999999099,
+          1.8642499999987194,
+          2.5378329999985,
+          1.6524159999989934,
+          2.88104199999907,
+          1.7315830000006827
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 85.60866700000042,
+        "actionMs": 609.9997920000005,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.13391600000068138,
+          1.4402500000014697,
+          3.8242079999999987,
+          3.801833000001352,
+          3.840667000000394,
+          3.8325000000004366,
+          1.537333000000217,
+          1.877833999998984,
+          2.178125000000364,
+          1.659417000000758,
+          1.1991660000003321,
+          1.4831249999988358,
+          1.8563329999997222,
+          2.4792080000006536,
+          2.665291999999681,
+          3.193041999998968,
+          2.522541000000274,
+          3.8313749999997526,
+          2.0536659999997937
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 92.0825420000001,
+        "actionMs": 567.7477090000011,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8890420000006998,
+          1.866874999999709,
+          3.421875,
+          3.411707999999635,
+          3.4389590000009775,
+          3.464292000000569,
+          0.8420839999998861,
+          1.0814160000008997,
+          1.2344580000008136,
+          1.512124999999287,
+          1.105666999999812,
+          1.119166000000405,
+          1.5355839999992895,
+          2.1413329999995767,
+          2.8189579999998386,
+          3.389082999998209,
+          2.7339580000007118,
+          4.017124999998487,
+          1.9149170000018785
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 85.99916699999812,
+        "actionMs": 580.617542,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.12774999999965075,
+          1.5292500000032305,
+          3.5932079999984126,
+          3.577624999998079,
+          3.6190000000024156,
+          3.6253749999996217,
+          0.8179159999999683,
+          0.7961660000000848,
+          1.0031249999992724,
+          1.6496670000015001,
+          0.9992910000000848,
+          1.3222500000010768,
+          1.9104169999991427,
+          1.5143749999988358,
+          2.1835840000021562,
+          2.4318329999987327,
+          2.7168750000018917,
+          2.7214999999996508,
+          1.2207500000004075
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 93.31629099999918,
+        "actionMs": 585.5108749999999,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.1466660000005504,
+          1.589125000002241,
+          3.686582999998791,
+          3.690999999998894,
+          3.7361669999991136,
+          3.7133749999993597,
+          1.2920419999973092,
+          1.7594169999974838,
+          2.2087500000016007,
+          1.6340000000018335,
+          1.1821249999993597,
+          1.2998750000006112,
+          1.6237079999991693,
+          2.5072499999987485,
+          3.0773750000007567,
+          3.4679999999971187,
+          2.6203330000025744,
+          3.8294999999998254,
+          2.343875000002299
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 87.53004200000214,
+        "actionMs": 597.0973329999979,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.0944999999992433,
+          1.488375000000815,
+          3.735458999999537,
+          3.6987499999995634,
+          3.7428340000005846,
+          3.7452919999996084,
+          0.9667090000002645,
+          1.2342090000020107,
+          1.1632919999974547,
+          1.5585410000021511,
+          1.0768330000028072,
+          1.255833999999595,
+          1.680292000000918,
+          1.7934580000001006,
+          2.5233750000006694,
+          3.093125000003056,
+          1.566791999997804,
+          2.0925419999985024,
+          1.2062089999999444
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 97.44045900000128,
+        "actionMs": 568.6946670000016,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.13225000000056752,
+          1.5694169999987935,
+          4.341167000000496,
+          3.4364580000001297,
+          3.468957999999475,
+          3.473415999998906,
+          1.2444589999995515,
+          1.6308750000007421,
+          1.988374999998996,
+          1.5365839999994932,
+          1.1384169999982987,
+          1.2180000000007567,
+          1.9463749999995343,
+          1.9231659999986732,
+          2.6100419999984297,
+          3.020375000000058,
+          2.0952909999996336,
+          2.979084000000512,
+          1.2586670000000595
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 88.11495900000045,
+        "actionMs": 563.0076659999995,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.778416000001016,
+          1.6833329999990383,
+          3.540583999998489,
+          3.5487080000002607,
+          3.5756249999994907,
+          3.578417000000627,
+          1.3615410000002157,
+          1.7611249999990832,
+          2.1519590000007156,
+          1.5553340000005846,
+          1.1144160000003467,
+          1.252082999999402,
+          1.6778340000000753,
+          1.7299579999998969,
+          1.8127499999991414,
+          2.0072499999987485,
+          3.2588749999995343,
+          3.876917000001413,
+          1.6472080000003189
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 107.30370800000128,
+        "actionMs": 609.533625,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.09258399999998801,
+          3.18291599999975,
+          3.7314169999990554,
+          3.738792000000103,
+          3.767875000001368,
+          3.771582999999737,
+          2.5483750000003056,
+          2.5512499999986176,
+          2.988499999999476,
+          1.8076249999994616,
+          1.2584999999999127,
+          1.233249999999316,
+          1.497084000000541,
+          1.537000000000262,
+          1.773417000000336,
+          2.155625000001237,
+          1.9235000000007858,
+          3.1693749999994907,
+          1.3639170000005834
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 97.48858300000029,
+        "actionMs": 563.3960000000006,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.1037079999987327,
+          1.9973749999990105,
+          4.856499999999869,
+          3.73962500000016,
+          3.7213749999991705,
+          3.7226670000000013,
+          0.9085420000010345,
+          1.197041999999783,
+          1.4167499999985012,
+          3.6037089999990712,
+          1.1949170000007143,
+          1.2571250000000873,
+          1.7152919999989535,
+          1.4404589999994641,
+          2.1115829999998823,
+          2.6159590000006574,
+          0.21700000000055297,
+          0.18074999999953434,
+          0.2784169999995356
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 94.74566599999889,
+        "actionMs": 614.6386669999993,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11624999999912689,
+          1.5322499999983847,
+          3.810250000000451,
+          3.9023329999999987,
+          3.9108329999999114,
+          3.9365000000016153,
+          1.2357080000001588,
+          1.293999999999869,
+          1.5676669999993464,
+          1.513875000000553,
+          1.265917000000627,
+          1.271166999998968,
+          1.5704590000004828,
+          1.4790000000011787,
+          1.8294999999998254,
+          2.4317080000000715,
+          1.9976669999996375,
+          2.840959000001021,
+          1.1040420000008453
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.39608299999963,
+        "actionMs": 581.7882910000008,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.0907920000008744,
+          1.5950409999986732,
+          3.56866699999955,
+          3.649708000000828,
+          3.675374999998894,
+          3.6982090000001335,
+          1.5282499999993888,
+          1.929708000001483,
+          2.4823749999995925,
+          1.4437920000000304,
+          1.354750000000422,
+          1.3007500000003347,
+          1.7082080000000133,
+          1.7039170000007289,
+          1.894333000000188,
+          2.2619589999994787,
+          7.5679999999993015,
+          7.497792000000118,
+          0.11412500000005821
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 89.2867499999993,
+        "actionMs": 570.6984999999986,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.7853330000034475,
+          1.865750000000844,
+          3.364916999998968,
+          3.401458000000275,
+          3.451042000000598,
+          3.458582999999635,
+          1.3422080000018468,
+          1.7592079999994894,
+          2.07995899999878,
+          1.5177910000020347,
+          1.330666999998357,
+          1.405166000000463,
+          1.876458000002458,
+          1.682291000000987,
+          2.3397919999988517,
+          2.660916000000725,
+          2.09599999999773,
+          3.648917000002257,
+          1.5076669999980368
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 90.1025840000002,
+        "actionMs": 616.3172919999997,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.12154200000077253,
+          1.5350839999991877,
+          3.540499999999156,
+          3.52324999999837,
+          3.5584579999995185,
+          3.560249999998632,
+          1.03416599999764,
+          0.9667499999995925,
+          1.1728750000002037,
+          1.151957999998558,
+          1.252583000001323,
+          1.2663339999999152,
+          1.6985830000012356,
+          2.16820799999914,
+          3.013582999999926,
+          3.58100000000195,
+          3.042375000000902,
+          4.4102920000004815,
+          2.8082920000015292
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 103.22899999999936,
+        "actionMs": 602.7627919999977,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          0.11812500000087311,
+          1.766749999998865,
+          3.625332999999955,
+          3.6309580000015558,
+          3.6610839999993914,
+          3.6523750000014843,
+          1.4321659999986878,
+          1.8559999999997672,
+          2.3974170000001322,
+          1.6298329999990528,
+          1.0915829999976268,
+          1.2234169999974256,
+          1.6817909999990661,
+          2.5558340000025055,
+          2.8658329999998386,
+          3.268832999998267,
+          2.937625000002299,
+          4.698875000001863,
+          2.576415999999881
+        ],
+        "rows": 3,
+        "previews": 3
+      },
+      {
+        "readyMs": 91.3852079999997,
+        "actionMs": 599.9974170000023,
+        "apiCalls": 19,
+        "previewCalls": 3,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:home:scoped": 1,
+          "/api/avatar": 13,
+          "/api/query:mentions:scoped": 1,
+          "/api/link-preview": 3
+        },
+        "apiDurationsMs": [
+          1.8512080000000424,
+          1.4933750000018335,
+          3.5056250000016007,
+          3.514208000000508,
+          3.529583999999886,
+          3.5319999999992433,
+          1.4402919999993173,
+          1.8887910000012198,
+          2.170458000000508,
+          1.6400419999990845,
+          1.297207999999955,
+          1.1832499999982247,
+          1.5177499999990687,
+          2.1533330000020214,
+          2.4999580000003334,
+          3.516250000000582,
+          2.140292000000045,
+          3.0506249999998545,
+          1.928583000000799
+        ],
+        "rows": 3,
+        "previews": 3
+      }
+    ],
+    "mentions-search": [
+      {
+        "readyMs": 87.35945899999933,
+        "actionMs": 218.64166699999987,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.13633399999889662,
+          1.1679579999981797,
+          1.3340420000022277,
+          1.5759169999982987,
+          1.3859169999996084,
+          1.7498330000016722,
+          2.801707999999053
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 86.203125,
+        "actionMs": 216.96091700000034,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.1571250000015425,
+          2.525499999999738,
+          1.4751670000005106,
+          1.8259170000019367,
+          1.4022080000031565,
+          1.8019160000003467,
+          1.2386249999981374
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 84.65620800000033,
+        "actionMs": 216.59866700000202,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.14041599999836762,
+          1.2550419999970472,
+          1.6852499999986321,
+          2.8594169999996666,
+          1.228332999999111,
+          1.5953749999971478,
+          1.6402909999997064
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 94.69574999999895,
+        "actionMs": 217.92616700000144,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.13245800000004238,
+          3.1115419999987353,
+          1.201415999999881,
+          1.2621669999971346,
+          1.302084000002651,
+          1.7293339999996533,
+          0.10425000000032014
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 99.88320899999962,
+        "actionMs": 217.71729200000118,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.14958300000216695,
+          1.6351250000006985,
+          1.6304589999999735,
+          1.769124999998894,
+          1.333041999998386,
+          1.8197499999987485,
+          1.3449170000021695
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 87.42791600000055,
+        "actionMs": 217.9403749999983,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.12641599999915343,
+          1.2341669999987062,
+          1.4618330000012065,
+          1.7346660000002885,
+          1.3389590000006137,
+          1.7881669999987935,
+          1.7532089999986056
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 86.44691699999748,
+        "actionMs": 217.625,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.7466249999997672,
+          1.4416249999994761,
+          1.4217910000006668,
+          1.75,
+          1.4210839999977907,
+          1.818249999996624,
+          1.5241669999995793
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 87.21312500000204,
+        "actionMs": 217.87283300000126,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.8015420000010636,
+          1.5746670000007725,
+          1.4841249999990396,
+          1.7732080000023416,
+          1.5590830000001006,
+          2.0631670000002487,
+          3.0440830000006827
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 83.02729099999851,
+        "actionMs": 219.2253329999985,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.15987500000119326,
+          1.2186670000010054,
+          1.5132919999996375,
+          2.957582999999431,
+          1.277750000001106,
+          1.6327909999999974,
+          1.3201249999983702
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 88.26887500000157,
+        "actionMs": 218.9510420000006,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.156542000000627,
+          1.515665999999328,
+          1.441500000000815,
+          1.7898339999992459,
+          1.3760829999991984,
+          1.7607500000012806,
+          1.6777500000025611
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 90.04845800000112,
+        "actionMs": 217.7954159999972,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.18220799999835435,
+          1.1940840000024764,
+          1.3527499999981956,
+          2.9943329999987327,
+          1.2877499999995052,
+          1.5551249999989523,
+          1.964749999999185
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 87.05508299999929,
+        "actionMs": 217.73783399999957,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.1121659999989788,
+          1.1570420000025479,
+          1.3346669999991718,
+          2.6426250000004075,
+          1.383625000002212,
+          1.6540839999979653,
+          1.3291250000002037
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 88.02850000000035,
+        "actionMs": 217.68183300000237,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.9370419999977457,
+          1.5467080000016722,
+          1.2075420000001031,
+          1.4511249999995925,
+          1.411166999998386,
+          1.7437089999984892,
+          1.2185420000023441
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.5968329999996,
+        "actionMs": 218.20712500000081,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.137166000000434,
+          1.297500000000582,
+          1.4362080000028072,
+          2.710457999997743,
+          1.2747920000001614,
+          1.748250000000553,
+          2.328291999998328
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 85.11816700000054,
+        "actionMs": 218.29658299999937,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.13324999999895226,
+          1.2341659999983676,
+          1.261333000002196,
+          1.307249999998021,
+          1.3974580000030983,
+          2.054041999999754,
+          4.045000000001892
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.1216659999991,
+        "actionMs": 217.92533300000287,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.758165999999619,
+          1.2647499999984575,
+          1.2266669999989972,
+          1.6743750000023283,
+          1.4512079999985872,
+          1.8222920000007434,
+          1.4261660000011034
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 100.72920800000065,
+        "actionMs": 217.74720800000068,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.08366599999862956,
+          1.434625000001688,
+          3.0398329999989073,
+          1.3450000000011642,
+          1.1785000000018044,
+          1.36083299999882,
+          1.5713340000002063
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.94441599999845,
+        "actionMs": 217.7898329999989,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.9661250000026484,
+          1.7229589999988093,
+          1.4252919999998994,
+          1.7515419999981532,
+          1.7564999999995052,
+          2.1745000000009895,
+          0.08695799999986775
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 86.4006249999984,
+        "actionMs": 201.0860840000023,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          1.7084580000009737,
+          1.5531669999982114,
+          1.5683330000028946,
+          1.8882919999996375,
+          1.2542910000011034,
+          1.6574170000021695,
+          1.437792000000627
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 88.09154200000194,
+        "actionMs": 217.7263329999987,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.17716699999800767,
+          1.5765839999985474,
+          1.3284590000002936,
+          1.4747080000015558,
+          1.3027079999992566,
+          1.601582999999664,
+          1.5196670000004815
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 88.44487500000105,
+        "actionMs": 218.5325419999972,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.11508300000059535,
+          1.3900419999990845,
+          1.2175420000021404,
+          1.2956250000024738,
+          1.562207999999373,
+          1.844875000002503,
+          2.8847079999977723
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 85.15874999999869,
+        "actionMs": 202.9440829999985,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.12183300000106101,
+          1.2625420000003942,
+          1.4372499999990396,
+          1.6285420000021986,
+          1.258332999997947,
+          1.592832999998791,
+          1.388290999999299
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 85.54624999999942,
+        "actionMs": 216.45091700000194,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.13716700000077253,
+          3.289667000000918,
+          1.3215840000011667,
+          1.598374999997759,
+          1.3658749999995052,
+          1.7438330000004498,
+          1.5075419999993755
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 101.35350000000108,
+        "actionMs": 208.44754100000137,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.254040999996505,
+          3.4711669999996957,
+          3.9714999999996508,
+          1.3068750000020373,
+          1.2584999999999127,
+          1.7335830000010901,
+          0.18074999999953434
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 83.43862499999886,
+        "actionMs": 218.7481250000019,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.13250000000334694,
+          1.2217499999969732,
+          1.3550840000025346,
+          2.9462920000005397,
+          1.2568749999991269,
+          1.6748330000009446,
+          2.603500000001077
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 85.61470800000097,
+        "actionMs": 218.6157499999972,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.15495800000280724,
+          1.331916999999521,
+          1.3881670000009763,
+          1.609415999999328,
+          1.3476250000021537,
+          1.701042000000598,
+          2.4989590000004682
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 89.703042000001,
+        "actionMs": 218.74266699999862,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.16741600000023027,
+          1.294291999998677,
+          1.3927499999990687,
+          1.5187079999996058,
+          1.258084000000963,
+          1.655709000002389,
+          2.564249999999447
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 85.8501249999972,
+        "actionMs": 218.44787499999802,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.12804200000027777,
+          1.4705839999987802,
+          1.3127079999976559,
+          1.5652499999996508,
+          1.6384169999982987,
+          2.2900829999998678,
+          2.524042000000918
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 91.42912500000239,
+        "actionMs": 218.54445900000064,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.09708300000056624,
+          1.4228330000005371,
+          1.3060409999998228,
+          1.5679999999993015,
+          1.3067919999994047,
+          1.6654579999994894,
+          2.7873749999998836
+        ],
+        "rows": 0,
+        "previews": 0
+      },
+      {
+        "readyMs": 99.71062499999971,
+        "actionMs": 217.7520829999994,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/query:mentions:scoped": 2,
+          "/api/avatar": 4
+        },
+        "apiDurationsMs": [
+          0.06299999999828287,
+          1.324625000001106,
+          1.3826670000016748,
+          1.5957499999967695,
+          1.2377080000005662,
+          1.4439169999968726,
+          1.4994580000020505
+        ],
+        "rows": 0,
+        "previews": 0
+      }
+    ],
+    "links": [
+      {
+        "readyMs": 348.7882920000011,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.15212500000052387,
+          1.2391670000033628,
+          1.508625000002212,
+          1.8873340000027383,
+          2.4741659999999683,
+          5.675875000000815
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 347.93420799999876,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.20437500000116415,
+          0.7820000000028813,
+          1.2498340000020107,
+          1.5051249999996799,
+          1.7162919999973383,
+          5.97899999999936
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 349.046875,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.15433299999858718,
+          7.674040999998397,
+          1.287000000000262,
+          1.522041000000172,
+          1.7435000000004948,
+          5.884332999998151
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 346.89658300000156,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.9037500000013097,
+          1.0113340000025346,
+          1.2423750000016298,
+          1.7591250000004948,
+          1.8735000000015134,
+          0.21537499999976717
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 353.21379199999865,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7446669999990263,
+          0.8574579999985872,
+          1.5298340000008466,
+          1.9612079999969865,
+          2.0528339999982563,
+          4.916500000002998
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 349.46333400000003,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.8305000000000291,
+          0.9829160000008414,
+          1.445958000000246,
+          1.8129589999989548,
+          2.103417000002082,
+          5.0164999999979045
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 341.44574999999895,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.1274169999996957,
+          1.1507499999970605,
+          1.405917000000045,
+          1.6887079999978596,
+          2.0401249999995343,
+          3.6661669999994047
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 346.2770419999979,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.16012500000215368,
+          7.144625000000815,
+          4.102208000000246,
+          1.0807500000009895,
+          1.3200839999990421,
+          3.558458999999857
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 347.03079199999775,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7624999999970896,
+          0.8102499999949941,
+          1.5426670000015292,
+          1.959208000000217,
+          2.265750000005937,
+          5.1085000000020955
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 347.2884170000034,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.1790839999957825,
+          1.272624999997788,
+          1.450541999998677,
+          1.949124999999185,
+          2.426625000000058,
+          5.598209000003408
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 348.47670899999866,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.14808300000004238,
+          0.8612499999981083,
+          1.3705000000009022,
+          1.9286670000001322,
+          2.5053329999973357,
+          3.7088330000005953
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 345.8470000000016,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.20916700000088895,
+          1.1906249999992724,
+          1.253833000002487,
+          1.4677499999997963,
+          1.721041000000696,
+          5.53229199999987
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 343.82966699999815,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.16379199999937555,
+          1.1579170000004524,
+          1.4027080000014394,
+          1.904833000000508,
+          2.234915999997611,
+          5.177707999999257
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 342.6401249999981,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7464580000014394,
+          0.836542000000918,
+          1.539334000000963,
+          1.947874999998021,
+          2.4362920000021404,
+          6.1041670000013255
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 344.03258399999686,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.8141660000001139,
+          0.9559159999989788,
+          1.5692500000004657,
+          2.0614999999997963,
+          2.3711250000014843,
+          0.24804100000255858
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 343.5690829999985,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.14870800000062445,
+          1.166124999999738,
+          1.4784159999981057,
+          1.8938750000015716,
+          2.4315829999977723,
+          3.78637499999968
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 335.72362500000236,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7572080000027199,
+          0.8141249999971478,
+          1.5392080000019632,
+          2.067250000000058,
+          2.339250000000902,
+          3.3029999999998836
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 359.8485839999994,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.13070800000059535,
+          7.054374999999709,
+          1.481500000001688,
+          1.8202500000006694,
+          1.956292000002577,
+          0.262458000001061
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 341.36620900000344,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.19754200000170385,
+          1.2320829999989655,
+          1.4802500000005239,
+          1.3250419999967562,
+          1.6809999999968568,
+          3.505749999996624
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 337.69241599999805,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.14329200000065612,
+          0.8759169999975711,
+          1.2828749999971478,
+          1.5356669999964652,
+          1.7830420000027516,
+          5.39891599999828
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 344.6269590000011,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.792249999998603,
+          0.9166669999976875,
+          1.4826670000002196,
+          1.9937500000014552,
+          2.4397920000010345,
+          0.23058300000047893
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 354.15379199999734,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7773329999981797,
+          0.8598750000019209,
+          1.556416999999783,
+          1.9326659999969706,
+          2.3753749999996217,
+          4.28045800000109
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 343.47891700000037,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.12795900000128313,
+          1.2635410000002594,
+          1.3953330000003916,
+          1.199083999999857,
+          1.4894160000003467,
+          0.2684589999989839
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 337.4617499999986,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.13991700000042329,
+          2.213958000000275,
+          1.5855420000007143,
+          2.1112080000020796,
+          2.4063329999989946,
+          0.896667000000889
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 348.76595799999996,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.17375000000174623,
+          0.8740830000024289,
+          1.3287909999999101,
+          1.751749999999447,
+          2.0948330000028363,
+          6.613291999998182
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 339.9090419999993,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.13949999999749707,
+          1.2157079999997222,
+          1.5786250000019209,
+          2.08795900000041,
+          2.3527499999981956,
+          5.927124999998341
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 339.18595800000185,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.14095799999995506,
+          1.1715000000003783,
+          1.4827089999998861,
+          2.0156669999996666,
+          2.3508330000004207,
+          5.715750000003027
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 348.31275000000096,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.14737500000046566,
+          6.683708000000479,
+          2.451499999999214,
+          1.4279999999998836,
+          1.9679579999974521,
+          3.5579170000019076
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 358.4767079999947,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.281834000001254,
+          1.2022909999941476,
+          1.7562909999978729,
+          2.5267909999965923,
+          3.246166999997513,
+          3.8866669999988517
+        ],
+        "rows": 2,
+        "previews": 0
+      },
+      {
+        "readyMs": 362.98545800000284,
+        "actionMs": null,
+        "apiCalls": 6,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 3,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.8712080000041169,
+          6.918916000002355,
+          1.3255409999983385,
+          1.6492919999946025,
+          1.8722920000000158,
+          3.6250419999996666
+        ],
+        "rows": 2,
+        "previews": 0
+      }
+    ],
+    "links-toggle": [
+      {
+        "readyMs": 358.6594999999943,
+        "actionMs": 48.18320799999492,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7526250000009895,
+          0.8263329999972484,
+          1.33945799999492,
+          1.5412080000023707,
+          1.7420419999980368,
+          5.665291999997862,
+          1.6545829999959096
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 368.91991699999926,
+        "actionMs": 39.94733400000405,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7985409999964759,
+          0.934000000001106,
+          1.588292000000365,
+          1.8797080000003916,
+          2.4285410000011325,
+          0.4300839999996242,
+          1.4223330000022543
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 359.9087500000023,
+        "actionMs": 47.16479200000322,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7714580000028946,
+          0.8573749999995925,
+          1.5600829999966663,
+          1.9674169999998412,
+          2.3271249999961583,
+          5.020333000000392,
+          1.4720000000015716
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 357.78924999999435,
+        "actionMs": 42.233916999997746,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.19233299999905284,
+          1.5705000000016298,
+          2.8236249999972642,
+          1.2144159999952535,
+          1.6132920000018203,
+          0.1854170000005979,
+          1.489332999997714
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 347.3132919999989,
+        "actionMs": 45.15729200000351,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.13591599999926984,
+          1.1864589999968302,
+          1.3425419999985024,
+          1.5524589999986347,
+          1.7771250000005239,
+          2.881415999996534,
+          1.446750000002794
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 363.55433300000004,
+        "actionMs": 50.752624999993714,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.17833400000381516,
+          2.2315830000006827,
+          1.4894170000043232,
+          1.7385829999984708,
+          2.084999999999127,
+          3.5832920000029844,
+          1.5469999999986612
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 340.45266699999775,
+        "actionMs": 35.655290999995486,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.15316599999641767,
+          1.2481249999982538,
+          1.4743750000052387,
+          1.9787500000020373,
+          2.5745420000021113,
+          3.878499999998894,
+          1.6032500000001164
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 344.84300000000076,
+        "actionMs": 44.24537500000588,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.13104200000088895,
+          1.1810420000037993,
+          1.4066670000029262,
+          1.6596250000002328,
+          1.8221669999984442,
+          2.8648749999993015,
+          1.2711250000065775
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 339.23337499999616,
+        "actionMs": 35.063750000001164,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.1735419999968144,
+          1.2727500000037253,
+          1.561083000000508,
+          2.128375000000233,
+          2.432249999998021,
+          3.119708999998693,
+          1.3551250000018626
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 350.0970000000016,
+        "actionMs": 47.85837499999616,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.1656250000014552,
+          1.1735419999968144,
+          1.4492499999978463,
+          1.8430410000000848,
+          2.41387499999837,
+          5.456500000000233,
+          1.3578329999945709
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 357.91445800000656,
+        "actionMs": 48.0192920000045,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.8290839999972377,
+          1.960040999998455,
+          1.2721660000024713,
+          1.5202919999937876,
+          1.712707999999111,
+          6.230834000001778,
+          1.5244160000002012
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 346.8715420000008,
+        "actionMs": 35.74274999999761,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.14766600000439212,
+          1.28125,
+          1.4717499999969732,
+          1.2317499999990105,
+          1.5466669999950682,
+          3.40400000000227,
+          1.350125000004482
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 348.38587499999994,
+        "actionMs": 47.46637500000361,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.12483300000167219,
+          1.4025830000027781,
+          1.322375000003376,
+          1.637750000001688,
+          1.9539169999989099,
+          0.20000000000436557,
+          1.6341249999968568
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 358.65400000000227,
+        "actionMs": 48.214249999997264,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.22108299999672454,
+          0.9708749999990687,
+          1.332709000002069,
+          1.5603329999939888,
+          1.7359579999974812,
+          5.954041999997571,
+          1.4983339999962482
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 359.8839169999992,
+        "actionMs": 47.105250000000524,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.17516699999396224,
+          0.8753749999959837,
+          1.420957999995153,
+          1.9168330000029528,
+          2.355542000004789,
+          4.835542000000714,
+          1.5392500000016298
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 340.10958400000527,
+        "actionMs": 43.02324999999837,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.16104099999938626,
+          0.8108750000028522,
+          1.4501660000023548,
+          1.82958299999882,
+          2.050167000001238,
+          3.3189580000034766,
+          1.3991660000028787
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 347.5720000000001,
+        "actionMs": 47.143457999998645,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.17020900000352412,
+          1.2554999999993015,
+          1.225749999997788,
+          1.4379579999949783,
+          1.752541999994719,
+          3.4452909999963595,
+          1.665791999999783
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 342.63683299999684,
+        "actionMs": 43.25299999999697,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.13804200000595301,
+          0.8898330000010901,
+          1.3785829999978887,
+          1.6317920000001322,
+          1.9003749999974389,
+          3.3052499999976135,
+          1.2958340000041062
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 350.1021669999973,
+        "actionMs": 42.557833999999275,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.15608400000201073,
+          1.2493329999997513,
+          1.4142500000016298,
+          1.8567499999990105,
+          2.2510830000028363,
+          4.209249999999884,
+          1.3945420000018203
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 349.0972499999989,
+        "actionMs": 44.07879099999991,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.12516600000526523,
+          1.2767499999972642,
+          1.3420419999965816,
+          1.573208000001614,
+          1.8357919999980368,
+          0.24704199999541743,
+          1.6841669999994338
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 350.65087499999936,
+        "actionMs": 41.90550000000076,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7396670000016456,
+          0.7910420000043814,
+          1.3283329999976559,
+          1.7438750000001164,
+          2.026958000002196,
+          6.181833000002371,
+          1.5552499999976135
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 366.14429100000416,
+        "actionMs": 47.909208999997645,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.16962499999499414,
+          6.988625000005413,
+          1.5603330000012647,
+          1.2642089999935706,
+          1.7721660000024713,
+          6.31699999999546,
+          1.6766669999997248
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 347.7636249999996,
+        "actionMs": 41.50233399999706,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.7945420000032755,
+          0.905916999996407,
+          1.3233749999999418,
+          1.6568749999933061,
+          1.8373329999958514,
+          5.562540999999328,
+          2.045665999998164
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 355.8818749999991,
+        "actionMs": 42.39654200000223,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.15087499999935972,
+          1.2237920000043232,
+          1.3889580000031856,
+          1.710332999995444,
+          2.332249999999476,
+          4.097000000001572,
+          1.4581669999970472
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 348.2885830000014,
+        "actionMs": 48.66783299999952,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.12670799999614246,
+          1.1711250000007567,
+          1.167208999999275,
+          1.3907079999989946,
+          1.629000000000815,
+          0.3072080000056303,
+          1.5049999999973807
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 348.4203340000022,
+        "actionMs": 35.70049999999901,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.17629199999646517,
+          1.2763340000019525,
+          1.4323750000039581,
+          1.815707999994629,
+          2.055000000000291,
+          3.219042000004265,
+          3.8631249999962165
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 359.159166999998,
+        "actionMs": 48.34033400000044,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.16066699999646517,
+          1.133625000002212,
+          1.1002920000028098,
+          1.483250000004773,
+          1.6617499999993015,
+          5.826750000000175,
+          1.4833340000041062
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 345.12820799999463,
+        "actionMs": 47.318249999996624,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.12970799999311566,
+          1.1806250000008731,
+          2.167250000005879,
+          1.4240839999984019,
+          1.7947910000002594,
+          0.2737919999999576,
+          1.348334000002069
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 360.40987500000483,
+        "actionMs": 37.27666699999827,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.21991700000216952,
+          1.5042089999988093,
+          1.2964579999970738,
+          1.7490840000027674,
+          1.8985410000022966,
+          3.2611249999972642,
+          1.5199589999974705
+        ],
+        "rows": 1,
+        "previews": 0
+      },
+      {
+        "readyMs": 347.2482500000042,
+        "actionMs": 43.05758400000195,
+        "apiCalls": 7,
+        "previewCalls": 0,
+        "apiEndpoints": {
+          "/api/status": 1,
+          "/api/link-insights:links": 1,
+          "/api/avatar": 4,
+          "/api/link-insights:videos": 1
+        },
+        "apiDurationsMs": [
+          0.14999999999417923,
+          1.398124999999709,
+          1.2191249999959837,
+          1.648416999996698,
+          1.8578750000015134,
+          3.92949999999837,
+          1.2983339999991586
+        ],
+        "rows": 1,
+        "previews": 0
+      }
+    ]
+  }
+}

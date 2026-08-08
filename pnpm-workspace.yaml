@@ -1,6 +1,0 @@
-allowBuilds:
-  esbuild: true
-  lightningcss: true
-
-overrides:
-  "@hono/node-server": 2.0.12

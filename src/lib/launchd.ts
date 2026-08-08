@@ -55,16 +55,39 @@ export function buildLaunchProgramArguments({
 	program = "birdclaw",
 	args,
 	envFile,
+	runtime,
+	runtimeArgs = [],
 }: {
 	program?: string;
 	args: string[];
 	envFile?: string;
+	runtime?: string;
+	runtimeArgs?: string[];
 }) {
-	const programArguments =
-		path.isAbsolute(program) || program.includes("/")
-			? [program]
-			: ["/usr/bin/env", program];
-	programArguments.push(...args);
+	let programArguments: string[];
+	if (runtime) {
+		const expandedRuntime = expandHomePath(runtime);
+		const expandedProgram = expandHomePath(program);
+		if (!path.isAbsolute(expandedRuntime)) {
+			throw new Error("launchd runtime must be an absolute path");
+		}
+		if (!path.isAbsolute(expandedProgram)) {
+			throw new Error(
+				"launchd program must be an absolute path when --runtime is used",
+			);
+		}
+		programArguments = [
+			path.resolve(expandedRuntime),
+			...runtimeArgs,
+			path.resolve(expandedProgram),
+			...args,
+		];
+	} else {
+		programArguments =
+			path.isAbsolute(program) || program.includes("/")
+				? [program, ...args]
+				: ["/usr/bin/env", program, ...args];
+	}
 	if (!envFile) return programArguments;
 
 	const resolvedEnvFile = resolveUserPath(envFile);

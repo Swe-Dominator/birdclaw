@@ -69,12 +69,7 @@ export function formatShortTimestamp(value: string) {
 	const date = parseTimestamp(value);
 	if (!date) return value;
 
-	return new Intl.DateTimeFormat("en", {
-		hour: "numeric",
-		minute: "2-digit",
-		month: "short",
-		day: "numeric",
-	}).format(date);
+	return `${sameYearDateFormatter.format(date)}, ${timeFormatter.format(date)}`;
 }
 
 export function formatExactTimestamp(value: string) {

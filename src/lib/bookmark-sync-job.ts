@@ -83,6 +83,8 @@ export interface BookmarkSyncLaunchAgentOptions {
 	label?: string;
 	intervalSeconds?: number;
 	program?: string;
+	runtime?: string;
+	runtimeArgs?: string[];
 	mode?: TimelineCollectionMode;
 	limit?: number;
 	all?: boolean;
@@ -252,6 +254,8 @@ export function runBookmarkSyncJob(
 
 function buildProgramArguments({
 	program = "birdclaw",
+	runtime,
+	runtimeArgs,
 	account,
 	mode = "auto",
 	limit = DEFAULT_BOOKMARK_SYNC_LIMIT,
@@ -288,7 +292,13 @@ function buildProgramArguments({
 	if (cacheTtlSeconds !== undefined) {
 		args.push("--cache-ttl", String(cacheTtlSeconds));
 	}
-	return buildLaunchProgramArguments({ program, args, envFile });
+	return buildLaunchProgramArguments({
+		program,
+		args,
+		envFile,
+		runtime,
+		runtimeArgs,
+	});
 }
 
 export function buildBookmarkSyncLaunchAgentPlist(

@@ -48,7 +48,7 @@ Repo: `steipete/birdclaw`
 ## Decisions
 
 - language: TypeScript
-- runtime: Node 26.5.1+ with pnpm workspace
+- source/runtime toolchain: checksum-pinned Bun 1.4 Rust-port canary; Node 26.5.1+ remains the npm/Homebrew compatibility contract
 - database: SQLite
 - query layer: native SQLite with focused typed row codecs
 - search: FTS5 day 1
@@ -81,17 +81,21 @@ Repo: `steipete/birdclaw`
 
 ### Runtime / workspace
 
-- Node.js 26.5.1
-- pnpm workspace
+- Bun `1.4.0-canary.1+f972c287f` from source revision `f972c287f9b7a71754b0b0b1cd18722aa3c75280`
+- `bun.lock` as the source dependency graph and Bun as the default command runner
+- Node.js `>=26.5.1 <27` as a first-class compatibility and npm/Homebrew runtime
 - TypeScript `strict: true`
 - ESM only
 - latest stable dependencies at scaffold time
+
+The selected Bun is the first Rust-port release line, not a pure-Rust stack: JavaScriptCore, SQLite, and other native components remain embedded. The rolling canary URL is not immutable, so Birdclaw pins archive and binary digests plus the full source revision and fails closed if the public asset changes.
 
 ### Tooling
 
 - formatter: `oxfmt`
 - linter: `oxlint`
-- tests: `vitest`
+- tests: `vitest` under Bun and Node; Istanbul is the Bun coverage provider and V8 preserves the original Node branch-coverage gate
+- browser E2E: Playwright runner and built production server under Bun, with Node package smoke retained
 - migrations: checked-in, append-only, transactional native SQLite migrations
 
 ### App shell
@@ -298,7 +302,7 @@ Both modes are first-class and must converge on the same canonical tables.
 
 Build `birdclaw` as:
 - TypeScript
-- pnpm workspace
+- pinned Bun source workspace with a tested Node package/runtime lane
 - React + TanStack Start
 - native SQLite + FTS5
 - shared multi-account DB in `~/.birdclaw`

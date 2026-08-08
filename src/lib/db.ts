@@ -1213,7 +1213,11 @@ function closeDatabaseIgnoringErrors(db: Database) {
 }
 
 function createReadDatabaseConnection(dbPath: string) {
-	const db = createDatabaseConnection(dbPath, "reader", { readonly: true });
+	// Bun WAL readers may need to create shared-memory sidecars after a clean exit.
+	// Preserve Node's read-only open and enforce query_only for both runtimes below.
+	const db = createDatabaseConnection(dbPath, "reader", {
+		readonly: !process.versions.bun,
+	});
 	try {
 		db.exec(`
 		  pragma busy_timeout = ${SQLITE_BUSY_TIMEOUT_MS};

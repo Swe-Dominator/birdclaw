@@ -1,0 +1,744 @@
+{
+  "schemaVersion": 1,
+  "candidate": {
+    "bunRevision": "1.4.0-canary.1+f972c287f",
+    "sourceSha": "f972c287f9b7a71754b0b0b1cd18722aa3c75280"
+  },
+  "baseline": {
+    "gitSha": "ae21996dad8ed7d82e545c22b9b9de7a47f840f2"
+  },
+  "runtime": {
+    "A": [
+      {
+        "round": 1,
+        "runtimeIdentity": "v26.7.0",
+        "runtimeArgs": [],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8784718fe3fddbe9c1a1cc9193cc8f203adc4c6b509fffe8e8708c8c2f9c1de5",
+          "serverSha256": "b2bbbff525999ce674cfd14782900eb27a30dd511a199072864bfebd2c84c732"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            211.68712499999992,
+            207.24245799999994,
+            217.5797910000001,
+            217.71054099999992,
+            212.6212499999997,
+            209.0039999999999,
+            268.1932079999997,
+            236.94537500000024,
+            226.4586250000002,
+            218.3921250000003
+          ],
+          "server": [
+            {
+              "listeningMs": 240.000625,
+              "firstResponseMs": 104.23649999999998,
+              "rssKb": 177920
+            },
+            {
+              "listeningMs": 236.29537500000015,
+              "firstResponseMs": 104.36904200000004,
+              "rssKb": 175312
+            },
+            {
+              "listeningMs": 261.6416250000002,
+              "firstResponseMs": 109.26358399999981,
+              "rssKb": 176256
+            },
+            {
+              "listeningMs": 250.7308750000002,
+              "firstResponseMs": 108.4597920000001,
+              "rssKb": 175456
+            },
+            {
+              "listeningMs": 238.5335409999998,
+              "firstResponseMs": 104.1711250000003,
+              "rssKb": 175264
+            },
+            {
+              "listeningMs": 303.376209,
+              "firstResponseMs": 117.87358399999994,
+              "rssKb": 178352
+            },
+            {
+              "listeningMs": 270.4728750000004,
+              "firstResponseMs": 115.35312499999964,
+              "rssKb": 177904
+            },
+            {
+              "listeningMs": 299.96629199999916,
+              "firstResponseMs": 113.17779200000041,
+              "rssKb": 176256
+            },
+            {
+              "listeningMs": 252.43266700000004,
+              "firstResponseMs": 108.94662499999959,
+              "rssKb": 175008
+            },
+            {
+              "listeningMs": 251.4623330000004,
+              "firstResponseMs": 108.90345900000011,
+              "rssKb": 175680
+            }
+          ]
+        }
+      },
+      {
+        "round": 2,
+        "runtimeIdentity": "v26.7.0",
+        "runtimeArgs": [],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8784718fe3fddbe9c1a1cc9193cc8f203adc4c6b509fffe8e8708c8c2f9c1de5",
+          "serverSha256": "b2bbbff525999ce674cfd14782900eb27a30dd511a199072864bfebd2c84c732"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            247.22837500000003,
+            257.4146250000001,
+            243.77091599999994,
+            244.31408299999975,
+            240.5702080000001,
+            208.40224999999964,
+            274.283958,
+            226.03700000000026,
+            228.7817500000001,
+            220.16112500000054
+          ],
+          "server": [
+            {
+              "listeningMs": 278.0093750000001,
+              "firstResponseMs": 114.26637500000015,
+              "rssKb": 176256
+            },
+            {
+              "listeningMs": 282.52429099999995,
+              "firstResponseMs": 115.18954200000007,
+              "rssKb": 175920
+            },
+            {
+              "listeningMs": 295.8920830000002,
+              "firstResponseMs": 116.3337919999999,
+              "rssKb": 176000
+            },
+            {
+              "listeningMs": 279.1719579999999,
+              "firstResponseMs": 119.25458299999991,
+              "rssKb": 176080
+            },
+            {
+              "listeningMs": 272.7267499999998,
+              "firstResponseMs": 110.54329200000029,
+              "rssKb": 174896
+            },
+            {
+              "listeningMs": 250.5838330000006,
+              "firstResponseMs": 130.52679199999966,
+              "rssKb": 178848
+            },
+            {
+              "listeningMs": 291.116583,
+              "firstResponseMs": 110.40979199999947,
+              "rssKb": 175936
+            },
+            {
+              "listeningMs": 278.7158330000002,
+              "firstResponseMs": 140.03920800000014,
+              "rssKb": 175664
+            },
+            {
+              "listeningMs": 254.37912499999948,
+              "firstResponseMs": 111.582042,
+              "rssKb": 175536
+            },
+            {
+              "listeningMs": 270.38174999999956,
+              "firstResponseMs": 119.16575000000012,
+              "rssKb": 178416
+            }
+          ]
+        }
+      },
+      {
+        "round": 3,
+        "runtimeIdentity": "v26.7.0",
+        "runtimeArgs": [],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8784718fe3fddbe9c1a1cc9193cc8f203adc4c6b509fffe8e8708c8c2f9c1de5",
+          "serverSha256": "b2bbbff525999ce674cfd14782900eb27a30dd511a199072864bfebd2c84c732"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            209.05366600000002,
+            207.35729100000003,
+            217.52937500000007,
+            214.96137499999986,
+            207.54541700000027,
+            208.7372909999999,
+            231.4233750000003,
+            208.80979099999968,
+            207.15187499999956,
+            208.5649169999997
+          ],
+          "server": [
+            {
+              "listeningMs": 251.52104200000008,
+              "firstResponseMs": 107.13320799999997,
+              "rssKb": 175328
+            },
+            {
+              "listeningMs": 239.0311670000001,
+              "firstResponseMs": 105.43375000000015,
+              "rssKb": 177088
+            },
+            {
+              "listeningMs": 252.83208299999978,
+              "firstResponseMs": 108.62554200000022,
+              "rssKb": 176064
+            },
+            {
+              "listeningMs": 238.38795800000025,
+              "firstResponseMs": 105.07712500000025,
+              "rssKb": 175296
+            },
+            {
+              "listeningMs": 238.66158300000006,
+              "firstResponseMs": 104.40054200000031,
+              "rssKb": 174768
+            },
+            {
+              "listeningMs": 241.4468750000001,
+              "firstResponseMs": 106.20599999999968,
+              "rssKb": 181648
+            },
+            {
+              "listeningMs": 239.53029200000037,
+              "firstResponseMs": 105.37116699999933,
+              "rssKb": 175952
+            },
+            {
+              "listeningMs": 237.59591699999964,
+              "firstResponseMs": 103.46799999999985,
+              "rssKb": 174448
+            },
+            {
+              "listeningMs": 246.81674999999996,
+              "firstResponseMs": 106.38633300000038,
+              "rssKb": 175200
+            },
+            {
+              "listeningMs": 268.29212499999994,
+              "firstResponseMs": 115.58358299999963,
+              "rssKb": 175664
+            }
+          ]
+        }
+      }
+    ],
+    "B": [
+      {
+        "round": 1,
+        "runtimeIdentity": "v26.7.0",
+        "runtimeArgs": [],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            212.6401669999999,
+            211.49304200000006,
+            204.2369580000002,
+            199.73920799999996,
+            218.47241699999995,
+            201.669625,
+            203.0346669999999,
+            202.38437499999964,
+            201.06912499999999,
+            205.08729199999925
+          ],
+          "server": [
+            {
+              "listeningMs": 244.34900000000005,
+              "firstResponseMs": 107.21679199999994,
+              "rssKb": 175616
+            },
+            {
+              "listeningMs": 254.61637500000006,
+              "firstResponseMs": 115.06462499999998,
+              "rssKb": 176416
+            },
+            {
+              "listeningMs": 231.35249999999996,
+              "firstResponseMs": 101.97387499999968,
+              "rssKb": 174080
+            },
+            {
+              "listeningMs": 225.70958400000018,
+              "firstResponseMs": 102.92958399999998,
+              "rssKb": 174064
+            },
+            {
+              "listeningMs": 231.13345899999968,
+              "firstResponseMs": 101.81645800000024,
+              "rssKb": 174112
+            },
+            {
+              "listeningMs": 231.0060000000003,
+              "firstResponseMs": 102.69279199999983,
+              "rssKb": 174240
+            },
+            {
+              "listeningMs": 229.43958399999974,
+              "firstResponseMs": 102.98500000000058,
+              "rssKb": 174080
+            },
+            {
+              "listeningMs": 235.64233299999978,
+              "firstResponseMs": 102.5209590000004,
+              "rssKb": 174016
+            },
+            {
+              "listeningMs": 259.2302919999993,
+              "firstResponseMs": 104.31554099999994,
+              "rssKb": 174256
+            },
+            {
+              "listeningMs": 236.65604199999962,
+              "firstResponseMs": 106.34941600000002,
+              "rssKb": 174896
+            }
+          ]
+        }
+      },
+      {
+        "round": 2,
+        "runtimeIdentity": "v26.7.0",
+        "runtimeArgs": [],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            219.74687499999993,
+            260.3085409999999,
+            238.59983300000022,
+            236.6747909999999,
+            229.2317079999998,
+            232.48091599999998,
+            231.65687500000058,
+            229.78750000000036,
+            224.7215839999999,
+            231.13025000000016
+          ],
+          "server": [
+            {
+              "listeningMs": 273.66708300000005,
+              "firstResponseMs": 118.95825000000013,
+              "rssKb": 178528
+            },
+            {
+              "listeningMs": 277.077125,
+              "firstResponseMs": 117.11608299999989,
+              "rssKb": 174544
+            },
+            {
+              "listeningMs": 280.3356670000003,
+              "firstResponseMs": 124.65299999999979,
+              "rssKb": 177376
+            },
+            {
+              "listeningMs": 267.18566699999974,
+              "firstResponseMs": 114.90737500000023,
+              "rssKb": 176128
+            },
+            {
+              "listeningMs": 263.4234590000001,
+              "firstResponseMs": 117.72987499999999,
+              "rssKb": 175664
+            },
+            {
+              "listeningMs": 262.68475000000035,
+              "firstResponseMs": 114.11887500000012,
+              "rssKb": 174064
+            },
+            {
+              "listeningMs": 268.13258399999995,
+              "firstResponseMs": 114.80583300000035,
+              "rssKb": 175008
+            },
+            {
+              "listeningMs": 279.8266249999997,
+              "firstResponseMs": 107.82600000000002,
+              "rssKb": 176208
+            },
+            {
+              "listeningMs": 250.37070799999947,
+              "firstResponseMs": 114.82462499999929,
+              "rssKb": 174784
+            },
+            {
+              "listeningMs": 256.7873750000008,
+              "firstResponseMs": 105.42095800000061,
+              "rssKb": 175984
+            }
+          ]
+        }
+      },
+      {
+        "round": 3,
+        "runtimeIdentity": "v26.7.0",
+        "runtimeArgs": [],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            216.74316699999997,
+            263.07004200000006,
+            219.42554199999972,
+            269.37379199999987,
+            214.15195799999992,
+            216.66775000000007,
+            213.1199999999999,
+            223.61270799999966,
+            204.25179099999968,
+            210.3759169999994
+          ],
+          "server": [
+            {
+              "listeningMs": 242.86141700000007,
+              "firstResponseMs": 108.32737500000007,
+              "rssKb": 174848
+            },
+            {
+              "listeningMs": 302.90525,
+              "firstResponseMs": 128.5068749999998,
+              "rssKb": 174912
+            },
+            {
+              "listeningMs": 244.61900000000014,
+              "firstResponseMs": 110.21587500000032,
+              "rssKb": 174656
+            },
+            {
+              "listeningMs": 253.75545899999997,
+              "firstResponseMs": 108.60500000000002,
+              "rssKb": 174512
+            },
+            {
+              "listeningMs": 249.34741600000007,
+              "firstResponseMs": 108.73524999999972,
+              "rssKb": 175648
+            },
+            {
+              "listeningMs": 245.99979200000053,
+              "firstResponseMs": 109.34462500000063,
+              "rssKb": 174064
+            },
+            {
+              "listeningMs": 252.21866600000067,
+              "firstResponseMs": 113.71837499999947,
+              "rssKb": 175232
+            },
+            {
+              "listeningMs": 240.89654100000007,
+              "firstResponseMs": 103.09195799999998,
+              "rssKb": 173840
+            },
+            {
+              "listeningMs": 232.2952499999992,
+              "firstResponseMs": 103.07116700000006,
+              "rssKb": 174048
+            },
+            {
+              "listeningMs": 240.30141600000024,
+              "firstResponseMs": 106.34604199999922,
+              "rssKb": 173904
+            }
+          ]
+        }
+      }
+    ],
+    "C": [
+      {
+        "round": 1,
+        "runtimeIdentity": "1.4.0-canary.1+f972c287f",
+        "runtimeArgs": [
+          "--no-env-file"
+        ],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            136.958458,
+            132.964291,
+            130.5145419999999,
+            123.23466699999994,
+            124.20629099999996,
+            121.33383299999991,
+            112.824208,
+            113.94108300000016,
+            113.71454199999971,
+            124.94399999999996
+          ],
+          "server": [
+            {
+              "listeningMs": 137.75475000000006,
+              "firstResponseMs": 52.09516600000006,
+              "rssKb": 141792
+            },
+            {
+              "listeningMs": 136.89812499999994,
+              "firstResponseMs": 50.98329100000001,
+              "rssKb": 141088
+            },
+            {
+              "listeningMs": 144.4775830000001,
+              "firstResponseMs": 55.17491700000005,
+              "rssKb": 140880
+            },
+            {
+              "listeningMs": 141.79058299999997,
+              "firstResponseMs": 53.88916700000004,
+              "rssKb": 141904
+            },
+            {
+              "listeningMs": 143.17612499999996,
+              "firstResponseMs": 54.65754100000004,
+              "rssKb": 140832
+            },
+            {
+              "listeningMs": 136.17233299999998,
+              "firstResponseMs": 49.1944169999997,
+              "rssKb": 140752
+            },
+            {
+              "listeningMs": 142.09749999999985,
+              "firstResponseMs": 51.23174999999992,
+              "rssKb": 141648
+            },
+            {
+              "listeningMs": 157.84920899999997,
+              "firstResponseMs": 51.44225000000006,
+              "rssKb": 142032
+            },
+            {
+              "listeningMs": 141.47775000000001,
+              "firstResponseMs": 50.69604100000015,
+              "rssKb": 139520
+            },
+            {
+              "listeningMs": 131.74712500000032,
+              "firstResponseMs": 49.263666999999714,
+              "rssKb": 142768
+            }
+          ]
+        }
+      },
+      {
+        "round": 2,
+        "runtimeIdentity": "1.4.0-canary.1+f972c287f",
+        "runtimeArgs": [
+          "--no-env-file"
+        ],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            124.50262500000002,
+            127.099917,
+            133.4990409999998,
+            127.47395800000004,
+            117.70708300000001,
+            118.6518329999999,
+            139.31770899999992,
+            138.37008400000013,
+            125.19383400000015,
+            122.88899999999967
+          ],
+          "server": [
+            {
+              "listeningMs": 166.959,
+              "firstResponseMs": 56.60074999999995,
+              "rssKb": 144608
+            },
+            {
+              "listeningMs": 153.85308299999997,
+              "firstResponseMs": 55.41645799999992,
+              "rssKb": 144016
+            },
+            {
+              "listeningMs": 144.61479099999997,
+              "firstResponseMs": 67.44675000000007,
+              "rssKb": 142064
+            },
+            {
+              "listeningMs": 144.8349999999998,
+              "firstResponseMs": 52.863624999999956,
+              "rssKb": 140528
+            },
+            {
+              "listeningMs": 138.73708299999998,
+              "firstResponseMs": 50.99120800000014,
+              "rssKb": 141568
+            },
+            {
+              "listeningMs": 140.04412500000035,
+              "firstResponseMs": 54.334292000000005,
+              "rssKb": 141808
+            },
+            {
+              "listeningMs": 144.55216700000028,
+              "firstResponseMs": 53.025208999999904,
+              "rssKb": 142832
+            },
+            {
+              "listeningMs": 145.39575000000013,
+              "firstResponseMs": 56.52404200000001,
+              "rssKb": 142336
+            },
+            {
+              "listeningMs": 146.39108300000044,
+              "firstResponseMs": 55.06679200000008,
+              "rssKb": 141232
+            },
+            {
+              "listeningMs": 145.46487499999967,
+              "firstResponseMs": 56.52295799999956,
+              "rssKb": 142336
+            }
+          ]
+        }
+      },
+      {
+        "round": 3,
+        "runtimeIdentity": "1.4.0-canary.1+f972c287f",
+        "runtimeArgs": [
+          "--no-env-file"
+        ],
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseFileSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "inputDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "finalDatabaseLogicalSha256": "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f",
+        "samples": {
+          "cliMs": [
+            123.96216600000002,
+            118.12529099999995,
+            118.18925000000002,
+            112.22637499999996,
+            111.51104099999998,
+            110.954792,
+            111.57133399999975,
+            110.19291699999985,
+            112.6723750000001,
+            113.1857500000001
+          ],
+          "server": [
+            {
+              "listeningMs": 138.59295799999995,
+              "firstResponseMs": 53.26808300000005,
+              "rssKb": 143520
+            },
+            {
+              "listeningMs": 136.95833300000004,
+              "firstResponseMs": 52.966749999999934,
+              "rssKb": 140704
+            },
+            {
+              "listeningMs": 134.640083,
+              "firstResponseMs": 48.45191599999998,
+              "rssKb": 143264
+            },
+            {
+              "listeningMs": 131.04229199999986,
+              "firstResponseMs": 48.518542000000025,
+              "rssKb": 142224
+            },
+            {
+              "listeningMs": 130.6746250000001,
+              "firstResponseMs": 48.37458300000003,
+              "rssKb": 141664
+            },
+            {
+              "listeningMs": 131.3565000000001,
+              "firstResponseMs": 48.03054199999997,
+              "rssKb": 142320
+            },
+            {
+              "listeningMs": 131.2640409999999,
+              "firstResponseMs": 48.00987499999974,
+              "rssKb": 143424
+            },
+            {
+              "listeningMs": 131.1416250000002,
+              "firstResponseMs": 47.9982500000001,
+              "rssKb": 140256
+            },
+            {
+              "listeningMs": 131.5231249999997,
+              "firstResponseMs": 48.97979200000009,
+              "rssKb": 144528
+            },
+            {
+              "listeningMs": 132.16470800000025,
+              "firstResponseMs": 48.527042000000165,
+              "rssKb": 142768
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

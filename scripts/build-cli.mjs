@@ -11,7 +11,7 @@ await build({
 	bundle: true,
 	platform: "node",
 	format: "esm",
-	target: "node25",
+	target: "node26",
 	packages: "external",
 	logLevel: "info",
 });

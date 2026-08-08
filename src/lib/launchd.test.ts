@@ -40,6 +40,56 @@ describe("launchd runtime", () => {
 		expect(args[2]).toContain("'value with spaces' 'it'\\''s-safe'");
 	});
 
+	it("builds an explicit runtime and source-program command vector", () => {
+		const args = buildLaunchProgramArguments({
+			runtime: "/Users/test/.local/share/birdclaw/bun/bin/bun",
+			runtimeArgs: ["--no-env-file"],
+			program: "/Users/test/Projects/birdclaw/bin/birdclaw.mjs",
+			args: ["--json", "jobs", "sync-account"],
+		});
+
+		expect(args).toEqual([
+			"/Users/test/.local/share/birdclaw/bun/bin/bun",
+			"--no-env-file",
+			"/Users/test/Projects/birdclaw/bin/birdclaw.mjs",
+			"--json",
+			"jobs",
+			"sync-account",
+		]);
+	});
+
+	it("requires absolute runtime and program paths", () => {
+		expect(() =>
+			buildLaunchProgramArguments({
+				runtime: "bun",
+				program: "/tmp/birdclaw.mjs",
+				args: [],
+			}),
+		).toThrow("runtime must be an absolute path");
+		expect(() =>
+			buildLaunchProgramArguments({
+				runtime: "/tmp/bun",
+				program: "birdclaw",
+				args: [],
+			}),
+		).toThrow("program must be an absolute path");
+	});
+
+	it("quotes the complete runtime vector when sourcing an env file", () => {
+		const args = buildLaunchProgramArguments({
+			runtime: "/tmp/Bun Runtime/bin/bun",
+			runtimeArgs: ["--no-env-file"],
+			program: "/tmp/Birdclaw Source/bin/birdclaw.mjs",
+			args: ["jobs", "sync-bookmarks"],
+			envFile: "~/private env/birdclaw.env",
+		});
+
+		expect(args).toEqual(["/bin/bash", "-lc", expect.any(String)]);
+		expect(args[2]).toContain(
+			"exec '/tmp/Bun Runtime/bin/bun' '--no-env-file' '/tmp/Birdclaw Source/bin/birdclaw.mjs' 'jobs' 'sync-bookmarks'",
+		);
+	});
+
 	it("renders one escaped launch agent plist shape", () => {
 		const agent = buildLaunchAgent({
 			label: "com.example.sync&test",

@@ -1,0 +1,1352 @@
+{
+  "schemaVersion": 1,
+  "candidate": {
+    "bunRevision": "1.4.0-canary.1+f972c287f",
+    "sourceSha": "f972c287f9b7a71754b0b0b1cd18722aa3c75280"
+  },
+  "baseline": {
+    "gitSha": "ae21996dad8ed7d82e545c22b9b9de7a47f840f2"
+  },
+  "environment": {
+    "hardware": "Apple Silicon M4 Max",
+    "os": "macOS 27.0",
+    "node": "v26.7.0",
+    "data": "byte-identical demo database copies",
+    "writesDisabled": true,
+    "backupAutoSyncDisabled": true,
+    "liveProfileLookupDisabled": true
+  },
+  "runtimeSummary": {
+    "host": "Apple Silicon M4 Max benchmark host",
+    "cells": {
+      "A": {
+        "name": "baseline-node",
+        "runtime": {
+          "identity": "v26.7.0",
+          "args": []
+        },
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8784718fe3fddbe9c1a1cc9193cc8f203adc4c6b509fffe8e8708c8c2f9c1de5",
+          "serverSha256": "b2bbbff525999ce674cfd14782900eb27a30dd511a199072864bfebd2c84c732"
+        },
+        "inputDatabaseFileSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "finalDatabaseFileSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "inputDatabaseLogicalSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "finalDatabaseLogicalSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "samples": 30,
+        "cliMs": {
+          "median": 217.5797910000001,
+          "p95": 268.1932079999997,
+          "min": 207.15187499999956,
+          "max": 274.283958
+        },
+        "serverListeningMs": {
+          "median": 252.43266700000004,
+          "p95": 299.96629199999916,
+          "min": 236.29537500000015,
+          "max": 303.376209
+        },
+        "firstResponseMs": {
+          "median": 108.94662499999959,
+          "p95": 130.52679199999966,
+          "min": 103.46799999999985,
+          "max": 140.03920800000014
+        },
+        "rssKb": {
+          "median": 175920,
+          "p95": 178848,
+          "min": 174448,
+          "max": 181648
+        }
+      },
+      "B": {
+        "name": "migration-node",
+        "runtime": {
+          "identity": "v26.7.0",
+          "args": []
+        },
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "finalDatabaseFileSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "inputDatabaseLogicalSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "finalDatabaseLogicalSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "samples": 30,
+        "cliMs": {
+          "median": 216.74316699999997,
+          "p95": 263.07004200000006,
+          "min": 199.73920799999996,
+          "max": 269.37379199999987
+        },
+        "serverListeningMs": {
+          "median": 249.34741600000007,
+          "p95": 280.3356670000003,
+          "min": 225.70958400000018,
+          "max": 302.90525
+        },
+        "firstResponseMs": {
+          "median": 108.32737500000007,
+          "p95": 124.65299999999979,
+          "min": 101.81645800000024,
+          "max": 128.5068749999998
+        },
+        "rssKb": {
+          "median": 174656,
+          "p95": 177376,
+          "min": 173840,
+          "max": 178528
+        }
+      },
+      "C": {
+        "name": "migration-bun",
+        "runtime": {
+          "identity": "1.4.0-canary.1+f972c287f",
+          "args": [
+            "--no-env-file"
+          ]
+        },
+        "artifacts": {
+          "launcherSha256": "4869a5f9fc9ceca266698beb1c0d9f3c18d6981ae1449a82dbd42125782ec865",
+          "cliSha256": "8f7b6b5fbc083ec30ffb953b9b65935ac740d68872d89ae742b933db9e2775c2",
+          "serverSha256": "d861a18fe2e1cfe403c3e9b950f7044e478842ba736da1e6466fbc0ac2cea5f5"
+        },
+        "inputDatabaseFileSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "finalDatabaseFileSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "inputDatabaseLogicalSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "finalDatabaseLogicalSha256": [
+          "b80194fa705ad362c02979773820ad644e8198776e67ea1bf1784a0aa2bbf04f"
+        ],
+        "samples": 30,
+        "cliMs": {
+          "median": 121.33383299999991,
+          "p95": 138.37008400000013,
+          "min": 110.19291699999985,
+          "max": 139.31770899999992
+        },
+        "serverListeningMs": {
+          "median": 138.73708299999998,
+          "p95": 157.84920899999997,
+          "min": 130.6746250000001,
+          "max": 166.959
+        },
+        "firstResponseMs": {
+          "median": 51.44225000000006,
+          "p95": 56.60074999999995,
+          "min": 47.9982500000001,
+          "max": 67.44675000000007
+        },
+        "rssKb": {
+          "median": 141904,
+          "p95": 144528,
+          "min": 139520,
+          "max": 144608
+        }
+      }
+    },
+    "comparisons": {
+      "migration_vs_baseline": {
+        "cliMs": {
+          "medianPct": -0.38451365182170516,
+          "p95Pct": -1.9102519553737651
+        },
+        "serverListeningMs": {
+          "medianPct": -1.2222075045461467,
+          "p95Pct": -6.544276981627961
+        },
+        "firstResponseMs": {
+          "medianPct": -0.5683975983648115,
+          "p95Pct": -4.500066162661753
+        },
+        "rssKb": {
+          "medianPct": -0.7185084129149644,
+          "p95Pct": -0.8230452674897082
+        }
+      },
+      "bun_vs_node_same_artifact": {
+        "cliMs": {
+          "medianPct": -44.019534881115796,
+          "p95Pct": -47.40180867877001
+        },
+        "serverListeningMs": {
+          "medianPct": -44.35992751575177,
+          "p95Pct": -43.692784193600374
+        },
+        "firstResponseMs": {
+          "medianPct": -52.51223432673411,
+          "p95Pct": -54.593351142772306
+        },
+        "rssKb": {
+          "medianPct": -18.75229021619641,
+          "p95Pct": -18.518852606891578
+        }
+      },
+      "bun_vs_baseline": {
+        "cliMs": {
+          "medianPct": -44.234787411851194,
+          "p95Pct": -48.40656665697504
+        },
+        "serverListeningMs": {
+          "medianPct": -45.03996465718917,
+          "p95Pct": -47.37768435661417
+        },
+        "firstResponseMs": {
+          "medianPct": -52.782153646338045,
+          "p95Pct": -56.63668038359504
+        },
+        "rssKb": {
+          "medianPct": -19.336061846293774,
+          "p95Pct": -19.18947933440687
+        }
+      }
+    }
+  },
+  "browserSummary": {
+    "host": "Apple Silicon M4 Max benchmark host",
+    "node": "v26.7.0",
+    "bun": "1.4.0-canary.1+f972c287f",
+    "cells": {
+      "A": {
+        "name": "baseline-node",
+        "scenarios": {
+          "home": {
+            "samples": 30,
+            "readyMs": {
+              "median": 90.64941700000054,
+              "p95": 102.17029200000002,
+              "min": 84.06950000000052,
+              "max": 107.37370799999985
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 2.5614580000001297,
+              "p95": 4.608375000000024,
+              "min": 2.361291999999594,
+              "max": 4.678042000000005
+            },
+            "apiCalls": {
+              "median": 12,
+              "p95": 12,
+              "min": 12,
+              "max": 12
+            },
+            "previewCalls": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "rows": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "previews": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 7,
+              "/api/link-preview": 3,
+              "/api/query:home:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "mentions": {
+            "samples": 30,
+            "readyMs": {
+              "median": 90.44870900000024,
+              "p95": 105.38970900000004,
+              "min": 86.38704199999938,
+              "max": 106.7256669999997
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 1.8177910000003976,
+              "p95": 3.0754159999996773,
+              "min": 1.409708000000137,
+              "max": 3.8039169999992737
+            },
+            "apiCalls": {
+              "median": 6,
+              "p95": 6,
+              "min": 6,
+              "max": 6
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 1,
+              "p95": 1,
+              "min": 1,
+              "max": 1
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/query:mentions:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "sidebar-roundtrip": {
+            "samples": 30,
+            "readyMs": {
+              "median": 90.02058299999953,
+              "p95": 102.08829100000003,
+              "min": 86.35137500000019,
+              "max": 107.50783299999966
+            },
+            "actionMs": {
+              "median": 592.0209159999995,
+              "p95": 619.3487920000007,
+              "min": 563.8832919999986,
+              "max": 623.1959169999973
+            },
+            "apiP95PerRunMs": {
+              "median": 3.8103339999997843,
+              "p95": 5.770582999997714,
+              "min": 3.511791999997513,
+              "max": 5.883708999997907
+            },
+            "apiCalls": {
+              "median": 19,
+              "p95": 19,
+              "min": 19,
+              "max": 19
+            },
+            "previewCalls": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "rows": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "previews": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 13,
+              "/api/link-preview": 3,
+              "/api/query:home:scoped": 1,
+              "/api/query:mentions:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "mentions-search": {
+            "samples": 30,
+            "readyMs": {
+              "median": 90.23125000000073,
+              "p95": 100.79416700000002,
+              "min": 85.2658330000013,
+              "max": 104.48308299999917
+            },
+            "actionMs": {
+              "median": 217.8399160000008,
+              "p95": 219.64387499999793,
+              "min": 201.0150829999984,
+              "max": 222.95624999999927
+            },
+            "apiP95PerRunMs": {
+              "median": 2.8425419999985024,
+              "p95": 4.0260830000006536,
+              "min": 1.6824579999993148,
+              "max": 4.615417000000889
+            },
+            "apiCalls": {
+              "median": 7,
+              "p95": 7,
+              "min": 7,
+              "max": 7
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/query:mentions:scoped": 2,
+              "/api/status": 1
+            }
+          },
+          "links": {
+            "samples": 30,
+            "readyMs": {
+              "median": 349.55370799999946,
+              "p95": 365.1580419999991,
+              "min": 337.2192500000019,
+              "max": 366.1262080000015
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 4.118791000000783,
+              "p95": 6.518875000001572,
+              "min": 2.2738329999992857,
+              "max": 6.739749999997002
+            },
+            "apiCalls": {
+              "median": 6,
+              "p95": 6,
+              "min": 6,
+              "max": 6
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 2,
+              "p95": 2,
+              "min": 2,
+              "max": 2
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 3,
+              "/api/link-insights:links": 1,
+              "/api/link-insights:videos": 1,
+              "/api/status": 1
+            }
+          },
+          "links-toggle": {
+            "samples": 30,
+            "readyMs": {
+              "median": 346.9211660000001,
+              "p95": 359.7842909999963,
+              "min": 339.1292500000054,
+              "max": 361.1607909999948
+            },
+            "actionMs": {
+              "median": 42.96425000000454,
+              "p95": 49.29695899999933,
+              "min": 35.58404199999495,
+              "max": 66.14654200000223
+            },
+            "apiP95PerRunMs": {
+              "median": 3.8314580000005662,
+              "p95": 6.988041999997222,
+              "min": 1.7912920000017039,
+              "max": 7.110207999998238
+            },
+            "apiCalls": {
+              "median": 7,
+              "p95": 7,
+              "min": 7,
+              "max": 7
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 1,
+              "p95": 1,
+              "min": 1,
+              "max": 1
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/link-insights:links": 1,
+              "/api/link-insights:videos": 1,
+              "/api/status": 1
+            }
+          }
+        }
+      },
+      "B": {
+        "name": "migration-node",
+        "scenarios": {
+          "home": {
+            "samples": 30,
+            "readyMs": {
+              "median": 89.42300000000023,
+              "p95": 93.16437500000029,
+              "min": 85.59729199999992,
+              "max": 101.61404199999993
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 2.596917000000076,
+              "p95": 4.502666000000318,
+              "min": 2.301582999999937,
+              "max": 7.210417000000007
+            },
+            "apiCalls": {
+              "median": 12,
+              "p95": 12,
+              "min": 12,
+              "max": 12
+            },
+            "previewCalls": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "rows": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "previews": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 7,
+              "/api/link-preview": 3,
+              "/api/query:home:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "mentions": {
+            "samples": 30,
+            "readyMs": {
+              "median": 90.79079100000126,
+              "p95": 105.76908299999923,
+              "min": 82.60208300000068,
+              "max": 108.01087499999994
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 1.8473329999997077,
+              "p95": 2.6523329999999987,
+              "min": 1.3940410000004704,
+              "max": 4.80041700000038
+            },
+            "apiCalls": {
+              "median": 6,
+              "p95": 6,
+              "min": 6,
+              "max": 6
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 1,
+              "p95": 1,
+              "min": 1,
+              "max": 1
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/query:mentions:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "sidebar-roundtrip": {
+            "samples": 30,
+            "readyMs": {
+              "median": 92.0825420000001,
+              "p95": 103.41120800000135,
+              "min": 85.55970799999886,
+              "max": 107.30370800000128
+            },
+            "actionMs": {
+              "median": 583.1621660000001,
+              "p95": 614.6386669999993,
+              "min": 563.0076659999995,
+              "max": 616.3172919999997
+            },
+            "apiP95PerRunMs": {
+              "median": 3.868083999999726,
+              "p95": 6.040499999999156,
+              "min": 3.4357920000002196,
+              "max": 7.5679999999993015
+            },
+            "apiCalls": {
+              "median": 19,
+              "p95": 19,
+              "min": 19,
+              "max": 19
+            },
+            "previewCalls": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "rows": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "previews": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 13,
+              "/api/link-preview": 3,
+              "/api/query:home:scoped": 1,
+              "/api/query:mentions:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "mentions-search": {
+            "samples": 30,
+            "readyMs": {
+              "median": 87.42791600000055,
+              "p95": 100.72920800000065,
+              "min": 83.02729099999851,
+              "max": 101.35350000000108
+            },
+            "actionMs": {
+              "median": 217.7954159999972,
+              "p95": 218.9510420000006,
+              "min": 201.0860840000023,
+              "max": 219.2253329999985
+            },
+            "apiP95PerRunMs": {
+              "median": 2.564249999999447,
+              "p95": 3.9714999999996508,
+              "min": 1.5957499999967695,
+              "max": 4.045000000001892
+            },
+            "apiCalls": {
+              "median": 7,
+              "p95": 7,
+              "min": 7,
+              "max": 7
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/query:mentions:scoped": 2,
+              "/api/status": 1
+            }
+          },
+          "links": {
+            "samples": 30,
+            "readyMs": {
+              "median": 346.2770419999979,
+              "p95": 359.8485839999994,
+              "min": 335.72362500000236,
+              "max": 362.98545800000284
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 5.1085000000020955,
+              "p95": 7.144625000000815,
+              "min": 1.4894160000003467,
+              "max": 7.674040999998397
+            },
+            "apiCalls": {
+              "median": 6,
+              "p95": 6,
+              "min": 6,
+              "max": 6
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 2,
+              "p95": 2,
+              "min": 2,
+              "max": 2
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 3,
+              "/api/link-insights:links": 1,
+              "/api/link-insights:videos": 1,
+              "/api/status": 1
+            }
+          },
+          "links-toggle": {
+            "samples": 30,
+            "readyMs": {
+              "median": 349.0972499999989,
+              "p95": 366.14429100000416,
+              "min": 339.23337499999616,
+              "max": 368.91991699999926
+            },
+            "actionMs": {
+              "median": 44.07879099999991,
+              "p95": 48.66783299999952,
+              "min": 35.063750000001164,
+              "max": 50.752624999993714
+            },
+            "apiP95PerRunMs": {
+              "median": 3.5832920000029844,
+              "p95": 6.230834000001778,
+              "min": 1.629000000000815,
+              "max": 6.988625000005413
+            },
+            "apiCalls": {
+              "median": 7,
+              "p95": 7,
+              "min": 7,
+              "max": 7
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 1,
+              "p95": 1,
+              "min": 1,
+              "max": 1
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/link-insights:links": 1,
+              "/api/link-insights:videos": 1,
+              "/api/status": 1
+            }
+          }
+        }
+      },
+      "C": {
+        "name": "migration-bun",
+        "scenarios": {
+          "home": {
+            "samples": 30,
+            "readyMs": {
+              "median": 89.46920799999998,
+              "p95": 92.53570799999989,
+              "min": 84.49729200000002,
+              "max": 93.14874999999984
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 2.615291999999954,
+              "p95": 3.7142079999994166,
+              "min": 2.4103329999998095,
+              "max": 4.430166999999983
+            },
+            "apiCalls": {
+              "median": 12,
+              "p95": 12,
+              "min": 12,
+              "max": 12
+            },
+            "previewCalls": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "rows": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "previews": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 7,
+              "/api/link-preview": 3,
+              "/api/query:home:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "mentions": {
+            "samples": 30,
+            "readyMs": {
+              "median": 90.25079099999948,
+              "p95": 92.88658399999986,
+              "min": 84.94279099999949,
+              "max": 95.11766700000044
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 1.7498750000004293,
+              "p95": 3.0975829999997586,
+              "min": 1.4093339999999444,
+              "max": 5.884249999999156
+            },
+            "apiCalls": {
+              "median": 6,
+              "p95": 6,
+              "min": 6,
+              "max": 6
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 1,
+              "p95": 1,
+              "min": 1,
+              "max": 1
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/query:mentions:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "sidebar-roundtrip": {
+            "samples": 30,
+            "readyMs": {
+              "median": 86.66483399999925,
+              "p95": 93.68512499999997,
+              "min": 79.14462500000081,
+              "max": 93.82879099999991
+            },
+            "actionMs": {
+              "median": 581.6639589999995,
+              "p95": 605.6840419999971,
+              "min": 564.0822909999988,
+              "max": 624.1779169999991
+            },
+            "apiP95PerRunMs": {
+              "median": 3.743458000000828,
+              "p95": 5.863667000001442,
+              "min": 3.4354999999995925,
+              "max": 6.048791999999594
+            },
+            "apiCalls": {
+              "median": 19,
+              "p95": 19,
+              "min": 19,
+              "max": 19
+            },
+            "previewCalls": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "rows": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "previews": {
+              "median": 3,
+              "p95": 3,
+              "min": 3,
+              "max": 3
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 13,
+              "/api/link-preview": 3,
+              "/api/query:home:scoped": 1,
+              "/api/query:mentions:scoped": 1,
+              "/api/status": 1
+            }
+          },
+          "mentions-search": {
+            "samples": 30,
+            "readyMs": {
+              "median": 87.72333300000173,
+              "p95": 97.27137500000026,
+              "min": 78.65324999999939,
+              "max": 104.25891599999886
+            },
+            "actionMs": {
+              "median": 217.90058299999873,
+              "p95": 219.85704199999964,
+              "min": 200.8764999999985,
+              "max": 220.85712500000227
+            },
+            "apiP95PerRunMs": {
+              "median": 2.1829579999975977,
+              "p95": 5.134500000000116,
+              "min": 1.2617079999981797,
+              "max": 6.070999999999913
+            },
+            "apiCalls": {
+              "median": 7,
+              "p95": 7,
+              "min": 7,
+              "max": 7
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/query:mentions:scoped": 2,
+              "/api/status": 1
+            }
+          },
+          "links": {
+            "samples": 30,
+            "readyMs": {
+              "median": 340.82095800000025,
+              "p95": 358.84400000000096,
+              "min": 333.7742920000019,
+              "max": 363.04695899999933
+            },
+            "actionMs": null,
+            "apiP95PerRunMs": {
+              "median": 3.5270830000008573,
+              "p95": 10.264250000000175,
+              "min": 1.5181660000016564,
+              "max": 10.569249999996828
+            },
+            "apiCalls": {
+              "median": 6,
+              "p95": 6,
+              "min": 6,
+              "max": 6
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 2,
+              "p95": 2,
+              "min": 2,
+              "max": 2
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 3,
+              "/api/link-insights:links": 1,
+              "/api/link-insights:videos": 1,
+              "/api/status": 1
+            }
+          },
+          "links-toggle": {
+            "samples": 30,
+            "readyMs": {
+              "median": 344.3319580000025,
+              "p95": 355.403790999997,
+              "min": 330.8911250000019,
+              "max": 356.6886250000025
+            },
+            "actionMs": {
+              "median": 42.857499999998254,
+              "p95": 48.438583000002836,
+              "min": 34.28158299999632,
+              "max": 69.43129200000112
+            },
+            "apiP95PerRunMs": {
+              "median": 3.2347500000032596,
+              "p95": 5.9100000000034925,
+              "min": 1.5737080000035348,
+              "max": 10.072333999996772
+            },
+            "apiCalls": {
+              "median": 7,
+              "p95": 7,
+              "min": 7,
+              "max": 7
+            },
+            "previewCalls": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "rows": {
+              "median": 1,
+              "p95": 1,
+              "min": 1,
+              "max": 1
+            },
+            "previews": {
+              "median": 0,
+              "p95": 0,
+              "min": 0,
+              "max": 0
+            },
+            "endpointMedianCalls": {
+              "/api/avatar": 4,
+              "/api/link-insights:links": 1,
+              "/api/link-insights:videos": 1,
+              "/api/status": 1
+            }
+          }
+        }
+      }
+    },
+    "comparisons": {
+      "home": {
+        "migration_vs_baseline": {
+          "readyMs": {
+            "medianPct": -1.3529232074380615,
+            "p95Pct": -8.814614134605513
+          },
+          "apiP95PerRunMs": {
+            "medianPct": 1.3843287690036066,
+            "p95Pct": -2.29384544442901
+          }
+        },
+        "bun_vs_node_same_artifact": {
+          "readyMs": {
+            "medianPct": 0.05167350681565264,
+            "p95Pct": -0.674793342412705
+          },
+          "apiP95PerRunMs": {
+            "medianPct": 0.7075697837042094,
+            "p95Pct": -17.510914644809215
+          }
+        },
+        "bun_vs_baseline": {
+          "readyMs": {
+            "medianPct": -1.3019488034882287,
+            "p95Pct": -9.429927047678522
+          },
+          "apiP95PerRunMs": {
+            "medianPct": 2.101693644784408,
+            "p95Pct": -19.40308677138042
+          }
+        }
+      },
+      "mentions": {
+        "migration_vs_baseline": {
+          "readyMs": {
+            "medianPct": 0.378205508716567,
+            "p95Pct": 0.35997252824675474
+          },
+          "apiP95PerRunMs": {
+            "medianPct": 1.6251593279592358,
+            "p95Pct": -13.756935647070934
+          }
+        },
+        "bun_vs_node_same_artifact": {
+          "readyMs": {
+            "medianPct": -0.5947739787857675,
+            "p95Pct": -12.17983425269884
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -5.275605426812269,
+            "p95Pct": 16.787107802819644
+          }
+        },
+        "bun_vs_baseline": {
+          "readyMs": {
+            "medianPct": -0.21881793802137617,
+            "p95Pct": -11.863705781747791
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -3.7361830925531803,
+            "p95Pct": 0.7207805383103727
+          }
+        }
+      },
+      "sidebar-roundtrip": {
+        "migration_vs_baseline": {
+          "readyMs": {
+            "medianPct": 2.2905417086674262,
+            "p95Pct": 1.2958557607760657
+          },
+          "actionMs": {
+            "medianPct": -1.49635760504101,
+            "p95Pct": -0.7604963569544543
+          },
+          "apiP95PerRunMs": {
+            "medianPct": 1.5156151665430162,
+            "p95Pct": 4.677464997930869
+          }
+        },
+        "bun_vs_node_same_artifact": {
+          "readyMs": {
+            "medianPct": -5.883534362030152,
+            "p95Pct": -9.405250347719807
+          },
+          "actionMs": {
+            "medianPct": -0.2569108709978507,
+            "p95Pct": -1.4568925583072878
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -3.2219052119578206,
+            "p95Pct": -2.927456336358558
+          }
+        },
+        "bun_vs_baseline": {
+          "readyMs": {
+            "medianPct": -3.727757461868808,
+            "p95Pct": -8.231273065390088
+          },
+          "actionMs": {
+            "medianPct": -1.749424170682501,
+            "p95Pct": -2.206309300431075
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -1.7551217294588861,
+            "p95Pct": 1.6130779161094289
+          }
+        }
+      },
+      "mentions-search": {
+        "migration_vs_baseline": {
+          "readyMs": {
+            "medianPct": -3.106832721479702,
+            "p95Pct": -0.06444718174948294
+          },
+          "actionMs": {
+            "medianPct": -0.020427844823267538,
+            "p95Pct": -0.31543470082985303
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -9.790251120271998,
+            "p95Pct": -1.3557345936731524
+          }
+        },
+        "bun_vs_node_same_artifact": {
+          "readyMs": {
+            "medianPct": 0.3378977945684758,
+            "p95Pct": -3.432800742362996
+          },
+          "actionMs": {
+            "medianPct": 0.04828705853090476,
+            "p95Pct": 0.4137911341838052
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -14.869533001927726,
+            "p95Pct": 29.28364597760462
+          }
+        },
+        "bun_vs_baseline": {
+          "readyMs": {
+            "medianPct": -2.7794328461580364,
+            "p95Pct": -3.495035580778949
+          },
+          "actionMs": {
+            "medianPct": 0.02784934970223585,
+            "p95Pct": 0.09705119252776395
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -23.204019500899275,
+            "p95Pct": 27.530902865124318
+          }
+        }
+      },
+      "links": {
+        "migration_vs_baseline": {
+          "readyMs": {
+            "medianPct": -0.9373855647961227,
+            "p95Pct": -1.4540164502250597
+          },
+          "apiP95PerRunMs": {
+            "medianPct": 24.02911436878259,
+            "p95Pct": 9.599048915634878
+          }
+        },
+        "bun_vs_node_same_artifact": {
+          "readyMs": {
+            "medianPct": -1.5756412751145255,
+            "p95Pct": -0.27916852939413594
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -30.956582166988145,
+            "p95Pct": 43.663943174050466
+          }
+        },
+        "bun_vs_baseline": {
+          "readyMs": {
+            "medianPct": -2.4982570060447573,
+            "p95Pct": -1.729125823277955
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -14.366060331777298,
+            "p95Pct": 57.45431535345746
+          }
+        }
+      },
+      "links-toggle": {
+        "migration_vs_baseline": {
+          "readyMs": {
+            "medianPct": 0.6272560492889712,
+            "p95Pct": 1.7677258732810897
+          },
+          "actionMs": {
+            "medianPct": 2.5941125470484216,
+            "p95Pct": -1.2761963674064014
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -6.4770643446318665,
+            "p95Pct": -10.835767730012858
+          }
+        },
+        "bun_vs_node_same_artifact": {
+          "readyMs": {
+            "medianPct": -1.365032809624378,
+            "p95Pct": -2.9334063821322975
+          },
+          "actionMs": {
+            "medianPct": -2.7706998588088783,
+            "p95Pct": -0.47105035475215606
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -9.726865686620979,
+            "p95Pct": -5.149134128724886
+          }
+        },
+        "bun_vs_baseline": {
+          "readyMs": {
+            "medianPct": -0.7463390112085522,
+            "p95Pct": -1.217535092436639
+          },
+          "actionMs": {
+            "medianPct": -0.24846238443886337,
+            "p95Pct": -1.7412351946425542
+          },
+          "apiP95PerRunMs": {
+            "medianPct": -15.573914682014479,
+            "p95Pct": -15.426953644442287
+          }
+        }
+      }
+    },
+    "invariantDifferences": []
+  }
+}

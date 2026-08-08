@@ -99,6 +99,23 @@ describe("account sync job", () => {
 		expect(agent.plist).toContain("com.steipete.birdclaw.account-sync");
 	});
 
+	it("builds an account sync command through an explicit Bun runtime", () => {
+		const agent = buildAccountSyncLaunchAgentPlist({
+			program: "/Users/test/Projects/birdclaw/bin/birdclaw.mjs",
+			runtime: "/Users/test/.local/share/birdclaw/bun/bin/bun",
+			runtimeArgs: ["--no-env-file"],
+			steps: ["timeline"],
+		});
+
+		expect(agent.programArguments.slice(0, 4)).toEqual([
+			"/Users/test/.local/share/birdclaw/bun/bin/bun",
+			"--no-env-file",
+			"/Users/test/Projects/birdclaw/bin/birdclaw.mjs",
+			"--json",
+		]);
+		expect(agent.programArguments).toContain("sync-account");
+	});
+
 	it("builds default launchd arguments through env lookup when no program path is supplied", () => {
 		const agent = buildAccountSyncLaunchAgentPlist({
 			label: "com.example.birdclaw.sync&test",

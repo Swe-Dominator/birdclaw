@@ -17,4 +17,4 @@ todos.json
 coverage
 playwright-report
 test-results
-.pnpm-store/
+.toolchains/

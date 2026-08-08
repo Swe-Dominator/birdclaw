@@ -89,6 +89,8 @@ export interface AccountSyncLaunchAgentOptions {
 	label?: string;
 	intervalSeconds?: number;
 	program?: string;
+	runtime?: string;
+	runtimeArgs?: string[];
 	account?: string;
 	steps?: AccountSyncStepKind[];
 	mode?: TimelineCollectionMode;
@@ -415,6 +417,8 @@ export async function runAccountSyncJob({
 
 function buildProgramArguments({
 	program = "birdclaw",
+	runtime,
+	runtimeArgs,
 	account,
 	steps,
 	mode = "auto",
@@ -454,7 +458,13 @@ function buildProgramArguments({
 	if (cacheTtlSeconds !== undefined) {
 		args.push("--cache-ttl", String(cacheTtlSeconds));
 	}
-	return buildLaunchProgramArguments({ program, args, envFile });
+	return buildLaunchProgramArguments({
+		program,
+		args,
+		envFile,
+		runtime,
+		runtimeArgs,
+	});
 }
 
 export function buildAccountSyncLaunchAgentPlist(

@@ -26,7 +26,14 @@ const brewInstall = "brew install steipete/tap/birdclaw";
 const sections = [
 	[
 		"Start",
-		["index.md", "install.md", "auth.md", "quickstart.md", "configuration.md"],
+		[
+			"index.md",
+			"install.md",
+			"bun-canary.md",
+			"auth.md",
+			"quickstart.md",
+			"configuration.md",
+		],
 	],
 	[
 		"Archive & Sync",
@@ -838,7 +845,7 @@ function highlightShellLine(line) {
 		(_, lead, flag) => `${escapeHtml(lead)}${stashAdd(flag, "hl-f")}`,
 	);
 	working = working.replace(
-		/\b(birdclaw|pnpm|npm|brew|bird|xurl|git|node|tsx|sudo|launchctl|tail|jq|cd|export|cat|curl|cargo|ls|mv|cp|rm|mkdir|cron)\b/g,
+		/\b(birdclaw|bun|npm|brew|bird|xurl|git|node|sudo|launchctl|tail|jq|cd|export|cat|curl|cargo|ls|mv|cp|rm|mkdir|cron)\b/g,
 		(m) => stashAdd(m, "hl-cmd"),
 	);
 	working = working.replace(/\b(\d+(?:\.\d+)?)\b/g, (m) => stashAdd(m, "hl-n"));
