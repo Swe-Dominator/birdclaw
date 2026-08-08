@@ -14,7 +14,7 @@ ssh -o RequestTTY=no -o RemoteCommand=none steipete@clawstudio \
   'zsh -lc "birdclaw --json db stats"'
 ```
 
-Use the same SSH/login-shell shape for searches. If `clawstudio` is unavailable, report that before falling back to a local archive because coverage may differ. Production web UI: `https://app.birdclaw.sh`.
+Use the same SSH/login-shell shape for searches. If `clawstudio` is unavailable, report that before falling back to a local archive because coverage may differ. Production web UI: `https://bird.steipete.dev/`.
 
 ## Data
 
