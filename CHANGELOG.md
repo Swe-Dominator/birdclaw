@@ -6,6 +6,10 @@
 
 - Move source installs, dependency locking, builds, tests, CI, Pages, and source-backed launchd jobs to the checksum-pinned Bun `1.4.0-canary.1+f972c287f` Rust-port runtime while retaining the public Node 26 npm/Homebrew contract.
 
+### Fixed
+
+- Keep common-term FTS timeline searches bounded under Bun's SQLite 3.51 planner by pinning the dense index and join order and capping match preflight work.
+
 ### Testing and maintenance
 
 - Add Bun/Istanbul and Node/V8 coverage lanes, dual-runtime installed-package smoke, Playwright against the built Bun production server, and explicit runtime performance metadata.

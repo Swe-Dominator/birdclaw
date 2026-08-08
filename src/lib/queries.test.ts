@@ -592,6 +592,17 @@ describe("birdclaw queries", () => {
 				detail: string;
 			}>;
 			const parentById = new Map(planRows.map((row) => [row.id, row.parent]));
+			const hasAncestor = (
+				row: (typeof planRows)[number],
+				ids: Set<number>,
+			) => {
+				let ancestor: number | undefined = row.parent;
+				while (ancestor !== undefined && ancestor !== 0) {
+					if (ids.has(ancestor)) return true;
+					ancestor = parentById.get(ancestor);
+				}
+				return false;
+			};
 			const materializeIds = new Set(
 				planRows
 					.filter((row) => row.detail.startsWith("MATERIALIZE fts_matches"))
@@ -606,18 +617,74 @@ describe("birdclaw queries", () => {
 			);
 			expect(ftsAccesses.length).toBeGreaterThan(0);
 			for (const access of ftsAccesses) {
-				let ancestor: number | undefined = access.parent;
-				let insideMaterialize = false;
-				while (ancestor !== undefined && ancestor !== 0) {
-					if (materializeIds.has(ancestor)) {
-						insideMaterialize = true;
-						break;
-					}
-					ancestor = parentById.get(ancestor);
-				}
-				expect(insideMaterialize).toBe(true);
+				expect(hasAncestor(access, materializeIds)).toBe(true);
 			}
+			expect(
+				planRows.some((row) =>
+					row.detail.includes("idx_tweet_account_edges_kind_tweet"),
+				),
+			).toBe(true);
 		}
+	});
+
+	it("pins dense timeline searches to the created-time index and bounded hydration", () => {
+		setupTempHome();
+		const db = getNativeDb();
+		const plan = buildTimelineItemsQuery(
+			{ resource: "home", search: "Agents", limit: 5 },
+			1_000_000,
+		);
+		const planRows = db
+			.prepare(`explain query plan ${plan.sql}`)
+			.all(...plan.params) as Array<{
+			id: number;
+			parent: number;
+			detail: string;
+		}>;
+		const parentById = new Map(planRows.map((row) => [row.id, row.parent]));
+		const searchSelectionIds = new Set(
+			planRows
+				.filter((row) => row.detail.startsWith("MATERIALIZE search_selection"))
+				.map((row) => row.id),
+		);
+		const hasSearchSelectionAncestor = (row: (typeof planRows)[number]) => {
+			let ancestor: number | undefined = row.parent;
+			while (ancestor !== undefined && ancestor !== 0) {
+				if (searchSelectionIds.has(ancestor)) return true;
+				ancestor = parentById.get(ancestor);
+			}
+			return false;
+		};
+		const selectionRows = planRows.filter(hasSearchSelectionAncestor);
+		const outerRows = planRows.filter(
+			(row) =>
+				!searchSelectionIds.has(row.id) && !hasSearchSelectionAncestor(row),
+		);
+
+		expect(searchSelectionIds.size).toBe(1);
+		expect(
+			selectionRows.some((row) =>
+				row.detail.includes("SCAN t USING INDEX idx_tweets_created"),
+			),
+		).toBe(true);
+		expect(
+			selectionRows.some(
+				(row) =>
+					row.detail.includes("idx_tweets_deleted") ||
+					row.detail.includes("idx_tweets_superseded"),
+			),
+		).toBe(false);
+		expect(outerRows.some((row) => row.detail === "SCAN e")).toBe(true);
+		expect(
+			outerRows.some(
+				(row) =>
+					row.detail.startsWith("SEARCH t USING") &&
+					row.detail.includes("(id=?)"),
+			),
+		).toBe(true);
+		expect(outerRows.some((row) => row.detail.startsWith("SCAN t"))).toBe(
+			false,
+		);
 	});
 
 	it("returns identical timeline search results for both FTS drive strategies", () => {
@@ -638,7 +705,37 @@ describe("birdclaw queries", () => {
 		expect(results[0]).toEqual(results[1]);
 	});
 
-	it("uses a supplied FTS match-count hint without an uncapped count query", () => {
+	it("bounds FTS match counting at the dense-strategy threshold", () => {
+		setupTempHome();
+		const db = getNativeDb();
+		let countSql = "";
+		let countParams: Array<string | number> = [];
+		const boundedDb = {
+			prepare(sql: string) {
+				const statement = db.prepare(sql);
+				const normalizedSql = sql.replace(/\s+/gu, " ").trim().toLowerCase();
+				if (!normalizedSql.includes(" as match_count")) return statement;
+				countSql = normalizedSql;
+				return {
+					get(...params: Array<string | number>) {
+						countParams = params;
+						return statement.get(...params);
+					},
+				} as ReturnType<TestDatabase["prepare"]>;
+			},
+		} as unknown as TestDatabase;
+
+		listTimelineItems(
+			{ resource: "home", search: "Agents", limit: 5 },
+			boundedDb,
+		);
+
+		expect(countSql).toContain("select distinct tweet_id from tweets_fts");
+		expect(countSql).toContain("limit ?");
+		expect(countParams.at(-1)).toBe(10_001);
+	});
+
+	it("uses a supplied FTS match-count hint without a count query", () => {
 		setupTempHome();
 		const db = getNativeDb();
 		const preparedSql: string[] = [];
@@ -656,11 +753,9 @@ describe("birdclaw queries", () => {
 		);
 
 		expect(items.map((item) => item.id)).toContain("tweet_001");
-		expect(
-			preparedSql.some((sql) =>
-				/select count\s*\([^)]*\)\s+as match_count from tweets_fts/u.test(sql),
-			),
-		).toBe(false);
+		expect(preparedSql.some((sql) => sql.includes(" as match_count"))).toBe(
+			false,
+		);
 	});
 
 	it("keeps timeline membership account-scoped for the same canonical tweet", () => {

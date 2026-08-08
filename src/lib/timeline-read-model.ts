@@ -520,6 +520,7 @@ export class TimelineCandidateLimitError extends Error {
 // dedupe subquery) costs more than walking the created_at index newest-first
 // and probing the match set until the limit fills.
 const FTS_DRIVE_FROM_MATCHES_MAX = 10_000;
+const FTS_MATCH_COUNT_LIMIT = FTS_DRIVE_FROM_MATCHES_MAX + 1;
 
 // Exported so tests can EXPLAIN the generated SQL with bound parameters and
 // guard the query plan (see the fts_matches comment below).
@@ -553,17 +554,20 @@ export function buildTimelineItemsQuery(
 	const effectiveAccountId = hasLiteralAccountId ? literalAccountId : account;
 	const shouldDedupeAcrossAccounts =
 		!hasLiteralAccountId && (!account || account === "all");
+	const ftsSearch = search?.trim() ? toFtsSearchQuery(search) : "";
+	const timelineEdgeIndexHint = ftsSearch
+		? " indexed by idx_tweet_account_edges_kind_tweet"
+		: "";
 	let timelineEdgesCte = `
 	      with timeline_edges as (
 	        select account_id, tweet_id, kind, raw_json
-	        from tweet_account_edges
+	        from tweet_account_edges${timelineEdgeIndexHint}
 	        where kind = ?
 	      )
 	    `;
 	const unwindowedTimelineEdgesCte = timelineEdgesCte;
 	let usedRecentEdgeWindow = false;
 	let where = "where e.kind = ?";
-	const ftsSearch = search?.trim() ? toFtsSearchQuery(search) : "";
 
 	const canUseRecentEdgeWindow =
 		!likedOnly &&
@@ -757,7 +761,7 @@ export function buildTimelineItemsQuery(
 	}
 	const searchDrivenFrom =
 		ftsMatchCountHint > FTS_DRIVE_FROM_MATCHES_MAX
-			? `tweets t
+			? `tweets t indexed by idx_tweets_created
         cross join fts_matches on fts_matches.tweet_id = t.id
         cross join timeline_edges e on e.tweet_id = t.id`
 			: `fts_matches
@@ -783,6 +787,7 @@ export function buildTimelineItemsQuery(
       )`
 		: "";
 
+	const hydrationJoin = ftsSearch ? "cross join" : "join";
 	const buildTimelineSelectSql = (timelineEdgesSql: string) => `
       ${timelineEdgesSql}${ftsMatchesCte}${searchSelectionCte}
       select
@@ -862,9 +867,9 @@ export function buildTimelineItemsQuery(
         qp.avatar_url as quoted_avatar_url,
         qp.created_at as quoted_profile_created_at
       from ${ftsSearch ? "search_selection e" : "timeline_edges e"}
-      join tweets t on t.id = e.tweet_id
-      join accounts a on a.id = e.account_id
-      join profiles p on p.id = t.author_profile_id
+      ${hydrationJoin} tweets t on t.id = e.tweet_id
+      ${hydrationJoin} accounts a on a.id = e.account_id
+      ${hydrationJoin} profiles p on p.id = t.author_profile_id
       left join tweets rt on rt.id = t.reply_to_id and rt.deleted_at is null and rt.superseded_at is null
       left join profiles rp on rp.id = rt.author_profile_id
       left join tweets qt on qt.id = t.quoted_tweet_id and qt.deleted_at is null and qt.superseded_at is null
@@ -982,9 +987,15 @@ export function listTimelineItems(
 				(
 					db
 						.prepare(
-							"select count(distinct tweet_id) as match_count from tweets_fts where tweets_fts.text match ?",
+							`select count(*) as match_count
+							 from (
+							   select distinct tweet_id
+							   from tweets_fts
+							   where tweets_fts.text match ?
+							   limit ?
+							 )`,
 						)
-						.get(ftsSearch) as { match_count: number }
+						.get(ftsSearch, FTS_MATCH_COUNT_LIMIT) as { match_count: number }
 				).match_count,
 			))
 		: 0;
