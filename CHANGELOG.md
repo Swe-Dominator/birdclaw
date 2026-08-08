@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 0.12.2 - Unreleased
+
 ## 0.12.1 - 2026-08-08
 
 ### Changed
