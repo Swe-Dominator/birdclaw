@@ -25,6 +25,7 @@ const SCENARIOS = {
 			await page.getByRole("link", { name: "Mentions" }).click();
 			await page.waitForURL("**/mentions");
 			await waitForAny(page, ['[data-perf="timeline-card"]']);
+			await page.waitForTimeout(250);
 			const queryCallsBeforeReturn = await page.evaluate(
 				() =>
 					performance
@@ -34,6 +35,7 @@ const SCENARIOS = {
 			await page.getByRole("link", { name: "Home" }).click();
 			await page.waitForURL((url) => url.pathname === "/");
 			await waitForAny(page, ['[data-perf="timeline-card"]']);
+			await page.waitForTimeout(250);
 			const queryCallsAfterReturn = await page.evaluate(
 				() =>
 					performance
@@ -47,26 +49,48 @@ const SCENARIOS = {
 	},
 	"mentions-search": {
 		path: "/mentions",
-		ready: async (page) => {
+		ready: async (page) => waitForAny(page, ['[data-perf="timeline-card"]']),
+		action: async (page) => {
+			const queryCallsBeforeSearch = await page.evaluate(
+				() =>
+					performance
+						.getEntriesByType("resource")
+						.filter((entry) => entry.name.includes("/api/query")).length,
+			);
 			await page.getByPlaceholder("Search mentions").fill("peekaboo");
-			await waitForAny(page, ['[data-perf="timeline-card"]']);
+			await page.waitForFunction(
+				(previousCalls) =>
+					performance
+						.getEntriesByType("resource")
+						.filter((entry) => entry.name.includes("/api/query")).length >
+					previousCalls,
+				queryCallsBeforeSearch,
+			);
+			await waitForAny(page, [
+				'[data-perf="timeline-card"]',
+				"text=No mentions in this view",
+			]);
 		},
 	},
 	links: {
 		path: "/links",
-		ready: async (page) =>
-			waitForAny(page, [
+		ready: async (page) => {
+			await waitForAny(page, [
 				'[data-perf="link-insight-row"]',
 				"text=No links in this window.",
-			]),
+			]);
+			await waitForLinkInsightKind(page, "videos");
+		},
 	},
 	"links-toggle": {
 		path: "/links",
-		ready: async (page) =>
-			waitForAny(page, [
+		ready: async (page) => {
+			await waitForAny(page, [
 				'[data-perf="link-insight-row"]',
 				"text=No links in this window.",
-			]),
+			]);
+			await waitForLinkInsightKind(page, "videos");
+		},
 		action: async (page) => {
 			await page.getByRole("button", { name: "videos" }).click();
 			await waitForAny(page, [
@@ -84,6 +108,10 @@ function parseArgs(argv) {
 		scenarios: Object.keys(SCENARIOS),
 		json: false,
 		budgets: {},
+		runtime: process.env.BIRDCLAW_PERF_RUNTIME || process.execPath,
+		runtimeArgs: [],
+		entry: process.env.BIRDCLAW_PERF_ENTRY || "bin/birdclaw.mjs",
+		startServer: true,
 	};
 
 	for (const arg of argv) {
@@ -102,6 +130,14 @@ function parseArgs(argv) {
 				.split(",")
 				.map((value) => value.trim())
 				.filter(Boolean);
+		} else if (arg.startsWith("--runtime=")) {
+			options.runtime = arg.slice("--runtime=".length);
+		} else if (arg.startsWith("--runtime-arg=")) {
+			options.runtimeArgs.push(arg.slice("--runtime-arg=".length));
+		} else if (arg.startsWith("--entry=")) {
+			options.entry = arg.slice("--entry=".length);
+		} else if (arg === "--no-start") {
+			options.startServer = false;
 		} else if (arg.startsWith("--budget-ready-ms=")) {
 			options.budgets.readyMs = Number(arg.split("=")[1]);
 		} else if (arg.startsWith("--budget-action-ms=")) {
@@ -133,43 +169,90 @@ async function isReachable(baseUrl) {
 	}
 }
 
-async function startServerIfNeeded(baseUrl) {
-	if (await isReachable(baseUrl)) {
-		return null;
+async function startServerIfNeeded(options) {
+	const reachable = await isReachable(options.baseUrl);
+	if (reachable) {
+		if (options.startServer) {
+			throw new Error(
+				`${options.baseUrl} is already reachable; refusing to attribute an existing server to ${options.runtime}`,
+			);
+		}
+		return {
+			child: null,
+			managed: false,
+			runtime: null,
+			runtimeArgs: null,
+			entry: null,
+		};
+	}
+	if (!options.startServer) {
+		throw new Error(
+			`${options.baseUrl} is not reachable and --no-start was set`,
+		);
 	}
 
-	const url = new URL(baseUrl);
+	const url = new URL(options.baseUrl);
 	const port = url.port || "3000";
-	const viteBin = path.join(
-		process.cwd(),
-		"node_modules",
-		"vite",
-		"bin",
-		"vite.js",
-	);
+	const entry = path.resolve(process.cwd(), options.entry);
+	const runtimeArgs = [...options.runtimeArgs];
+	if (
+		runtimeArgs.length === 0 &&
+		path.basename(options.runtime).toLowerCase().startsWith("bun")
+	) {
+		runtimeArgs.push("--no-env-file");
+	}
 	const child = spawn(
-		process.execPath,
-		[viteBin, "dev", "--port", port, "--host", "127.0.0.1"],
+		options.runtime,
+		[
+			...runtimeArgs,
+			entry,
+			"serve",
+			"--host",
+			url.hostname || "127.0.0.1",
+			"--port",
+			port,
+		],
 		{
 			cwd: process.cwd(),
 			stdio: ["ignore", "pipe", "pipe"],
 			env: {
 				...withSanitizedNodeOptions(process.env),
-				BIRDCLAW_LOCAL_WEB: "1",
+				BIRDCLAW_BACKUP_AUTO_SYNC: "0",
+				BIRDCLAW_DISABLE_LIVE_PROFILE_LOOKUP: "1",
+				BIRDCLAW_DISABLE_LIVE_WRITES: "1",
+				DO_NOT_TRACK: "1",
 			},
 		},
 	);
 
+	let output = "";
+	child.stdout.on("data", (chunk) => {
+		output += String(chunk);
+	});
+	child.stderr.on("data", (chunk) => {
+		output += String(chunk);
+	});
 	const deadline = Date.now() + 30_000;
 	while (Date.now() < deadline) {
-		if (await isReachable(baseUrl)) {
-			return child;
+		if (await isReachable(options.baseUrl)) {
+			return {
+				child,
+				managed: true,
+				runtime: options.runtime,
+				runtimeArgs,
+				entry,
+			};
+		}
+		if (child.exitCode !== null || child.signalCode !== null) {
+			throw new Error(
+				`Performance server exited before startup (${String(child.exitCode ?? child.signalCode)})\n${output}`,
+			);
 		}
 		await sleep(250);
 	}
 
 	child.kill("SIGTERM");
-	throw new Error(`Timed out waiting for ${baseUrl}`);
+	throw new Error(`Timed out waiting for ${options.baseUrl}\n${output}`);
 }
 
 async function waitForAny(page, selectors) {
@@ -182,6 +265,21 @@ async function waitForAny(page, selectors) {
 				return Boolean(document.querySelector(selector));
 			}),
 		selectors,
+		{ timeout: READY_TIMEOUT_MS },
+	);
+}
+
+async function waitForLinkInsightKind(page, kind) {
+	await page.waitForFunction(
+		(expectedKind) =>
+			performance.getEntriesByType("resource").some((entry) => {
+				const url = new URL(entry.name);
+				return (
+					url.pathname === "/api/link-insights" &&
+					url.searchParams.get("kind") === expectedKind
+				);
+			}),
+		kind,
 		{ timeout: READY_TIMEOUT_MS },
 	);
 }
@@ -392,7 +490,7 @@ function printHuman(results, failures) {
 
 async function main() {
 	const options = parseArgs(process.argv.slice(2));
-	const server = await startServerIfNeeded(options.baseUrl);
+	const server = await startServerIfNeeded(options);
 	const browser = await chromium.launch({ headless: true });
 	const results = [];
 	const failures = [];
@@ -410,13 +508,29 @@ async function main() {
 		}
 	} finally {
 		await browser.close();
-		if (server) {
-			server.kill("SIGTERM");
-		}
+		server.child?.kill("SIGTERM");
 	}
 
 	if (options.json) {
-		console.log(JSON.stringify({ results, failures }, null, 2));
+		console.log(
+			JSON.stringify(
+				{
+					meta: {
+						baseUrl: options.baseUrl,
+						iterations: options.iterations,
+						observerRuntime: process.execPath,
+						serverManaged: server.managed,
+						serverRuntime: server.runtime,
+						serverRuntimeArgs: server.runtimeArgs,
+						serverEntry: server.entry,
+					},
+					results,
+					failures,
+				},
+				null,
+				2,
+			),
+		);
 	} else {
 		printHuman(results, failures);
 	}

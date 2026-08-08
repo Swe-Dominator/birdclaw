@@ -351,7 +351,7 @@ async function loadCli() {
 
 describe("cli", () => {
 	beforeEach(() => {
-		process.exitCode = undefined;
+		process.exitCode = 0;
 		consoleLogMock.mockClear();
 		ensureBirdclawDirsMock.mockReset();
 		getBirdclawPathsMock.mockReset();
@@ -2186,7 +2186,7 @@ describe("cli", () => {
 			"accept",
 		);
 		expect(maybeAutoSyncBackupMock).toHaveBeenCalled();
-		expect(process.exitCode).toBeUndefined();
+		expect(process.exitCode).toBe(0);
 	});
 
 	it("forwards DM block pagination options", async () => {

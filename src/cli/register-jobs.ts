@@ -10,6 +10,10 @@ import {
 import type { TimelineCollectionMode } from "#/lib/timeline-collections-live";
 import type { CliCommandContext } from "./command-context";
 
+function collectRuntimeArg(value: string, previous: string[]) {
+	return [...previous, value];
+}
+
 export function registerJobCommands({ program, print }: CliCommandContext) {
 	const jobsCommand = program
 		.command("jobs")
@@ -56,7 +60,18 @@ export function registerJobCommands({ program, print }: CliCommandContext) {
 		.description("Install a LaunchAgent that runs account sync")
 		.option("--label <label>", "LaunchAgent label")
 		.option("--interval-seconds <seconds>", "Launch interval", "1800")
-		.option("--program <path>", "birdclaw executable or command", "birdclaw")
+		.option(
+			"--program <path>",
+			"birdclaw executable or source entry",
+			"birdclaw",
+		)
+		.option("--runtime <absolute-path>", "Runtime executable for --program")
+		.option(
+			"--runtime-arg <value>",
+			"Repeatable runtime argument (for example --runtime-arg=--no-env-file)",
+			collectRuntimeArg,
+			[],
+		)
 		.option("--account <username>", "Account username or id")
 		.option(
 			"--steps <steps>",
@@ -83,6 +98,8 @@ export function registerJobCommands({ program, print }: CliCommandContext) {
 				label: options.label,
 				intervalSeconds: Number(options.intervalSeconds),
 				program: options.program,
+				runtime: options.runtime,
+				runtimeArgs: options.runtimeArg,
 				account: options.account,
 				steps: parseAccountSyncSteps(options.steps),
 				mode: options.mode as TimelineCollectionMode,
@@ -133,7 +150,18 @@ export function registerJobCommands({ program, print }: CliCommandContext) {
 		.option("--account <username>", "Account username or id")
 		.option("--label <label>", "LaunchAgent label")
 		.option("--interval-seconds <seconds>", "Launch interval", "10800")
-		.option("--program <path>", "birdclaw executable or command", "birdclaw")
+		.option(
+			"--program <path>",
+			"birdclaw executable or source entry",
+			"birdclaw",
+		)
+		.option("--runtime <absolute-path>", "Runtime executable for --program")
+		.option(
+			"--runtime-arg <value>",
+			"Repeatable runtime argument (for example --runtime-arg=--no-env-file)",
+			collectRuntimeArg,
+			[],
+		)
 		.option("--mode <mode>", "auto, xurl, or bird", "auto")
 		.option("--limit <n>", "Per-page/result limit", "100")
 		.option("--all", "Fetch every retrievable page")
@@ -153,6 +181,8 @@ export function registerJobCommands({ program, print }: CliCommandContext) {
 				label: options.label,
 				intervalSeconds: Number(options.intervalSeconds),
 				program: options.program,
+				runtime: options.runtime,
+				runtimeArgs: options.runtimeArg,
 				mode: options.mode as TimelineCollectionMode,
 				limit: Number(options.limit),
 				all: Boolean(options.all) || options.maxPages !== undefined,

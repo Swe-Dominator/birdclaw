@@ -3,6 +3,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/steipete/birdclaw/ci.yml?branch=main&style=flat-square&label=ci)](https://github.com/steipete/birdclaw/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/birdclaw?style=flat-square)](https://www.npmjs.com/package/birdclaw)
 [![Node](https://img.shields.io/node/v/birdclaw?style=flat-square)](https://nodejs.org/)
+[![Bun source toolchain](https://img.shields.io/badge/Bun-1.4.0--canary.1-black?style=flat-square)](https://bun.sh/blog/bun-in-rust)
 [![License](https://img.shields.io/github/license/steipete/birdclaw?style=flat-square)](LICENSE)
 [![Homebrew](https://img.shields.io/badge/homebrew-steipete%2Ftap-blue?style=flat-square)](https://github.com/steipete/homebrew-tap)
 [![Docs](https://img.shields.io/badge/docs-birdclaw.sh-blue?style=flat-square)](https://birdclaw.sh)
@@ -25,7 +26,7 @@ The package is also published on npm:
 npm install -g birdclaw
 ```
 
-The npm and source installs require Node.js `>=26.5.1 <27`. See the [installation guide](https://birdclaw.sh/install.html) for pnpm, source builds, updates, and optional live transports.
+The npm and Homebrew installs retain the public Node.js `>=26.5.1 <27` contract. Source development uses one checksum-pinned Bun `1.4.0-canary.1` build and keeps Node as a tested compatibility lane. See the [installation guide](https://birdclaw.sh/install.html) for setup and the [Bun canary reference](https://birdclaw.sh/bun-canary.html) for exact checksums, constraints, and rollback boundaries.
 
 ## Quick start
 
@@ -84,14 +85,13 @@ See [Configuration](https://birdclaw.sh/configuration.html) for the complete fil
 ## Development
 
 ```bash
-fnm use
-pnpm install --frozen-lockfile
-pnpm check
-pnpm test
-pnpm build
+./scripts/bun-canary.sh install --frozen-lockfile
+./scripts/bun-canary.sh run --bun check
+./scripts/bun-canary.sh run --bun test
+./scripts/bun-canary.sh run --bun build
 ```
 
-The CI workflow also runs coverage, the installed-package smoke test, and Playwright end-to-end tests.
+The wrapper installs and verifies the exact Rust-port canary recorded in `toolchains/bun-canary.conf`; it refuses a newer rolling canary with a different checksum or revision. CI also runs Bun/Istanbul and Node/V8 coverage, dual-runtime installed-package smoke, and Playwright against the Bun production server.
 
 ## License
 

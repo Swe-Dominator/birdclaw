@@ -5,14 +5,24 @@ description: "Install birdclaw via Homebrew, npm, or from source. Optional xurl 
 
 # Install
 
-`birdclaw` ships as a Node CLI plus a local web app. Pick whichever path fits the machine.
+The published `birdclaw` package is a Node CLI plus a local web app. Source development and Birdclaw's production deployment use one checksum-pinned Bun 1.4 canary, while the npm/Homebrew artifact retains its public Node 26 contract.
 
 ## Requirements
 
-- **Node.js** 26.5.1 (managed via `fnm`, `nvm`, or `volta`)
-- **pnpm** 11.x for source installs
+- **Homebrew/npm runtime:** Node.js `>=26.5.1 <27`
+- **Source toolchain:** the exact Bun `1.4.0-canary.1+f972c287f` recorded in `toolchains/bun-canary.conf`
+- **Source bootstrap:** `curl`, `unzip`, and either macOS arm64 or Linux x64
 - **macOS** is recommended for archive autodiscovery (Spotlight `mdfind`); Linux works for everything else
-- **SQLite** uses Node's native `node:sqlite` runtime — no system install needed
+- **SQLite** uses the shared `node:sqlite` API under Node and Bun — no separate SQLite install is needed
+
+Bun 1.4 is the Rust port of Bun, but it still embeds JavaScriptCore, SQLite, and other C/C++ components. The selected build is a canary rather than a stable release. Birdclaw verifies the archive checksum, extracted binary checksum, full source revision, and `bun --revision` before using it.
+
+Bun's public `canary` download is rolling, so Birdclaw does not use it. The bootstrap downloads the revision-specific artifact from Bun's Buildkite build `90456` and fails closed on any checksum or revision mismatch. You can also pass a verified cached archive explicitly:
+
+```bash
+BIRDCLAW_BUN_ARCHIVE=~/Downloads/bun-darwin-aarch64.zip \
+  ./scripts/install-bun-canary.sh
+```
 
 Optional but encouraged:
 
@@ -20,7 +30,7 @@ Optional but encouraged:
 - an existing private `bird` installation — optional browser-cookie-backed compatibility fallback
 - `OPENAI_API_KEY` — inbox scoring and low-signal filtering
 
-birdclaw still works in pure local/archive mode without any of the above.
+birdclaw still works in pure local/archive mode without any of the optional tools.
 
 ## Homebrew (macOS, Linux)
 
@@ -29,32 +39,43 @@ brew install steipete/tap/birdclaw
 birdclaw --version
 ```
 
-The Homebrew formula lives in `steipete/homebrew-tap` and installs the `birdclaw` binary plus a launchd plist target.
+The Homebrew formula lives in `steipete/homebrew-tap` and installs the npm artifact with its Node runtime contract.
 
-## npm / pnpm
+## npm
 
 ```bash
-pnpm add -g birdclaw
-# or
 npm install -g birdclaw
-
 birdclaw --version
 ```
 
-The package is published as [`birdclaw`](https://www.npmjs.com/package/birdclaw) on npm.
+The package is published as [`birdclaw`](https://www.npmjs.com/package/birdclaw) on npm. Its `#!/usr/bin/env node` launcher and `engines.node` range remain tested in CI.
 
 ## From source
 
 ```bash
 git clone https://github.com/steipete/birdclaw.git
 cd birdclaw
-fnm use
-pnpm install
-pnpm build
-node ./bin/birdclaw.mjs --version
+./scripts/bun-canary.sh install --frozen-lockfile
+./scripts/bun-canary.sh run --bun build
+./scripts/bun-canary.sh bin/birdclaw.mjs --version
 ```
 
-`fnm use` reads the version from `.node-version`. Source builds run the same `tsx`-based entrypoint as the published binary.
+`./scripts/bun-canary.sh` installs the exact verified binary under the ignored project-local `.toolchains/` directory, prepends only that binary to `PATH`, disables Bun's implicit `.env` loading, and sets `DO_NOT_TRACK=1` unless you override it.
+
+The source build produces the same compiled `bin/` plus `dist/cli`, `dist/client`, and `dist/server` artifact shape used by the npm package. Runtime TypeScript loaders are not shipped.
+
+### Node compatibility from source
+
+Node remains a named public contract rather than a fallback hidden inside the default scripts:
+
+```bash
+fnm use
+./scripts/bun-canary.sh run test:node
+./scripts/bun-canary.sh run coverage:node
+./scripts/bun-canary.sh run build:node
+```
+
+Bun owns dependency installation through `bun.lock`; Node executes the same sources and compiled package in the compatibility lane.
 
 ## Verify the install
 
@@ -100,8 +121,10 @@ Add it to `~/.profile` or your shell rc to persist. The inbox uses OpenAI for lo
 ## Updating
 
 - **Homebrew:** `brew upgrade birdclaw`.
-- **npm:** `pnpm up -g birdclaw` (or `npm i -g birdclaw@latest`).
-- **Source:** `git pull && pnpm install && pnpm build`.
+- **npm:** `npm i -g birdclaw@latest`.
+- **Source:** `git pull && ./scripts/bun-canary.sh install --frozen-lockfile && ./scripts/bun-canary.sh run --bun build`.
+
+If the pinned Buildkite artifact is unavailable, use the previously verified archive through `BIRDCLAW_BUN_ARCHIVE`. Updating to a different Bun canary is a repository change with new artifact URLs, checksums, and a full compatibility/performance rerun, not an automatic upgrade.
 
 The local SQLite store is forward-compatible across point releases. Long-running schema migrations run on startup; `birdclaw db stats --json` reports the current schema version.
 
@@ -112,7 +135,10 @@ The local SQLite store is forward-compatible across point releases. Long-running
 brew uninstall birdclaw
 
 # npm
-pnpm rm -g birdclaw
+npm rm -g birdclaw
+
+# Optional source toolchain cache
+rm -rf .toolchains/bun
 
 # Optional: also remove local data
 rm -rf ~/.birdclaw

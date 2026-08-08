@@ -388,6 +388,7 @@ tail -n 20 ~/.birdclaw/audit/account-sync.jsonl | jq .
 - uses `launchctl load -w` unless `--no-load` is passed
 - `--steps <steps>` narrows the scheduled surfaces
 - `--env-path <path>` sources account-specific `bird` cookies for launchd
+- `--runtime <absolute-path>` plus repeatable `--runtime-arg <value>` pins a source launcher to an exact runtime; Bun jobs use `--runtime-arg=--no-env-file`
 - `--allow-bird-account` asserts those cookies match `--account` for Bird-backed timeline, mentions, and DM steps
 
 ```bash
@@ -422,6 +423,7 @@ tail -n 20 ~/.birdclaw/audit/bookmarks-sync.jsonl | jq .
 - uses `launchctl load -w` unless `--no-load` is passed
 - writes launchd stdout/stderr to `~/.birdclaw/logs/bookmarks-sync.*.log`
 - `--env-path <path>` sources an export-only shell env file inside the scheduled process, useful when `bird` needs `AUTH_TOKEN`/`CT0` outside an interactive browser session
+- `--runtime <absolute-path>` plus repeatable `--runtime-arg <value>` pins a source launcher to an exact runtime instead of relying on launchd `PATH`
 
 ```bash
 birdclaw --json jobs install-bookmarks-launchd --program /opt/homebrew/bin/birdclaw

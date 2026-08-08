@@ -22,5 +22,5 @@ Useful refresh flow:
 birdclaw sync followers --yes --json
 birdclaw sync following --yes --json
 birdclaw import hydrate-profiles --json
-pnpm dev
+./scripts/bun-canary.sh run --bun dev
 ```

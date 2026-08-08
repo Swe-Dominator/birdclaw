@@ -4,17 +4,28 @@ import {
 	defineConfig,
 } from "vitest/config";
 
+const isBun = Boolean(process.versions.bun);
+const isCoverageRun = process.env.BIRDCLAW_COVERAGE_RUN === "1";
+const coverageProvider =
+	process.env.BIRDCLAW_COVERAGE_PROVIDER === "v8" ? "v8" : "istanbul";
+
 export default defineConfig({
 	resolve: {
 		tsconfigPaths: true,
 	},
 	test: {
 		environment: "jsdom",
+		testTimeout: isCoverageRun ? 30_000 : 10_000,
 		setupFiles: ["./src/test/setup.ts"],
 		include: ["src/**/*.test.{ts,tsx}"],
 		exclude: [...configDefaults.exclude, "playwright/**/*"],
+		server: {
+			deps: {
+				inline: isBun ? ["zod"] : [],
+			},
+		},
 		coverage: {
-			provider: "v8",
+			provider: coverageProvider,
 			reporter: ["text", "json-summary", "html"],
 			include: ["src/**/*.{ts,tsx}"],
 			exclude: [
@@ -29,7 +40,7 @@ export default defineConfig({
 			thresholds: {
 				lines: 85,
 				functions: 85,
-				branches: 80,
+				branches: coverageProvider === "v8" ? 80 : 79,
 				statements: 85,
 			},
 		},

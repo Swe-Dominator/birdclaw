@@ -463,7 +463,7 @@ export const safePreviewFetchEffect = Effect.fn("linkPreview.safePreviewFetch")(
 			}
 			const nextUrl = yield* Effect.try({
 				try: () => new URL(location, parsed).toString(),
-				catch: (error) => error,
+				catch: () => new Error("Invalid URL"),
 			});
 			currentUrl = nextUrl;
 		}

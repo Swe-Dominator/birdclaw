@@ -846,16 +846,14 @@ describe("native sqlite compatibility wrapper", () => {
 		);
 		tempDirs.push(tempDir);
 		const dbPath = path.join(tempDir, "database.sqlite");
-		const setupDb = new NativeSqliteDatabase(dbPath);
-		setupDb.exec(`
+		const writer = new NativeSqliteDatabase(dbPath);
+		writer.exec(`
 			pragma journal_mode = wal;
 			create table events (name text);
 			insert into events (name) values ('first');
 		`);
-		setupDb.close();
 
 		const reader = new NativeSqliteDatabase(dbPath, { readonly: true });
-		const writer = new NativeSqliteDatabase(dbPath);
 		reader.exec("pragma query_only = on");
 
 		try {

@@ -1,4 +1,5 @@
 import { execFile, spawn } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
 	mkdtemp,
 	mkdir,
@@ -16,6 +17,9 @@ import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const bunBin = process.execPath;
+const nodeBin = process.env.BIRDCLAW_NODE_BIN || "node";
+const jsonOutput = process.argv.includes("--json");
 const tempRoot = await mkdtemp(
 	path.join(os.tmpdir(), "birdclaw-package-smoke-"),
 );
@@ -25,6 +29,12 @@ async function run(command, args, options = {}) {
 		maxBuffer: 20 * 1024 * 1024,
 		...options,
 	});
+}
+
+async function sha256(filePath) {
+	return createHash("sha256")
+		.update(await readFile(filePath))
+		.digest("hex");
 }
 
 async function reserveLoopbackPort() {
@@ -63,14 +73,14 @@ async function withTimeout(label, promise, timeoutMs = 20_000) {
 	}
 }
 
-async function waitForServer(child) {
+async function waitForServer(child, label) {
 	return new Promise((resolve, reject) => {
 		let output = "";
 		let errors = "";
 		const timer = setTimeout(() => {
 			reject(
 				new Error(
-					`Timed out waiting for production server\n${output}\n${errors}`,
+					`${label}: timed out waiting for production server\n${output}\n${errors}`,
 				),
 			);
 		}, 20_000);
@@ -88,115 +98,97 @@ async function waitForServer(child) {
 			clearTimeout(timer);
 			reject(
 				new Error(
-					`Production server exited before startup (${String(code ?? signal)})\n${output}\n${errors}`,
+					`${label}: production server exited before startup (${String(code ?? signal)})\n${output}\n${errors}`,
 				),
 			);
 		});
 	});
 }
 
-try {
-	const packDir = path.join(tempRoot, "pack");
-	await mkdir(packDir, { recursive: true });
-	await run("npm", ["pack", "--pack-destination", packDir], { cwd: root });
-	const tarballName = (await readdir(packDir)).find((name) =>
-		name.endsWith(".tgz"),
-	);
-	if (!tarballName) throw new Error("npm pack did not create a tarball");
-	const tarball = path.join(packDir, tarballName);
-	const { stdout: tarOutput } = await run("tar", ["-tzf", tarball]);
-	const files = tarOutput.trim().split("\n");
-	for (const required of [
-		"package/bin/birdclaw.mjs",
-		"package/dist/cli/birdclaw.js",
-		"package/dist/server/server.js",
-	]) {
-		if (!files.includes(required))
-			throw new Error(`Tarball missing ${required}`);
-	}
-	for (const forbidden of ["package/src/", "package/scripts/", "tsx"]) {
-		if (files.some((file) => file.includes(forbidden))) {
-			throw new Error(`Tarball unexpectedly contains ${forbidden}`);
-		}
-	}
+function commandFor(runtime, args) {
+	return [runtime.executable, [...runtime.prefix, ...args]];
+}
 
-	const installDir = path.join(tempRoot, "install");
-	await mkdir(installDir, { recursive: true });
-	await writeFile(
-		path.join(installDir, "package.json"),
-		`${JSON.stringify({ name: "birdclaw-package-smoke", private: true, type: "module" })}\n`,
-	);
-	await run(
-		"npm",
-		["install", "--ignore-scripts", "--no-audit", "--no-fund", tarball],
-		{ cwd: installDir },
-	);
-	const installedRoot = path.join(installDir, "node_modules", "birdclaw");
-	const manifest = JSON.parse(
-		await readFile(path.join(installedRoot, "package.json"), "utf8"),
-	);
-	if (manifest.dependencies?.tsx || manifest.dependencies?.vite) {
-		throw new Error("Installed runtime dependencies include tsx or vite");
-	}
-	const bin = path.join(installDir, "node_modules", ".bin", "birdclaw");
-	const home = path.join(tempRoot, "home");
+async function runRuntime(runtime, args, options = {}) {
+	const [command, commandArgs] = commandFor(runtime, args);
+	return run(command, commandArgs, options);
+}
+
+function spawnRuntime(runtime, args, options = {}) {
+	const [command, commandArgs] = commandFor(runtime, args);
+	return spawn(command, commandArgs, options);
+}
+
+async function smokeRuntime({
+	runtime,
+	manifest,
+	installedRoot,
+	installDir,
+	Client,
+	StreamableHTTPClientTransport,
+}) {
+	const home = path.join(tempRoot, `home-${runtime.name}`);
 	const env = {
 		...process.env,
+		BIRDCLAW_BACKUP_AUTO_SYNC: "0",
+		BIRDCLAW_DISABLE_LIVE_PROFILE_LOOKUP: "1",
 		BIRDCLAW_DISABLE_LIVE_WRITES: "1",
 		BIRDCLAW_HOME: home,
+		DO_NOT_TRACK: "1",
 	};
 	delete env.BIRDCLAW_MCP_ACCOUNT;
 	delete env.BIRDCLAW_WEB_TOKEN;
 
 	const versionStarted = performance.now();
-	const { stdout: versionOutput } = await run(bin, ["--version"], {
+	const { stdout: versionOutput } = await runRuntime(runtime, ["--version"], {
 		cwd: installDir,
 		env,
 	});
 	const versionMs = performance.now() - versionStarted;
 	if (versionOutput.trim() !== manifest.version) {
-		throw new Error(`Unexpected version output: ${versionOutput}`);
+		throw new Error(
+			`${runtime.name}: unexpected version output ${versionOutput}`,
+		);
 	}
-	const { stdout: helpOutput } = await run(bin, ["--help"], {
+	const { stdout: helpOutput } = await runRuntime(runtime, ["--help"], {
 		cwd: installDir,
 		env,
 	});
 	if (!helpOutput.includes("Run the local web app")) {
-		throw new Error("Installed CLI help is missing serve");
+		throw new Error(`${runtime.name}: installed CLI help is missing serve`);
 	}
-	const { stdout: initOutput } = await run(bin, ["--json", "init", "--demo"], {
-		cwd: installDir,
-		env,
-	});
+	const { stdout: initOutput } = await runRuntime(
+		runtime,
+		["--json", "init", "--demo"],
+		{ cwd: installDir, env },
+	);
 	const init = JSON.parse(initOutput);
 	if (
 		init.demo?.seeded !== true ||
 		init.demo?.counts?.accounts !== 2 ||
 		!init.nextSteps?.includes("birdclaw serve")
 	) {
-		throw new Error(`Installed CLI demo init failed: ${initOutput}`);
+		throw new Error(
+			`${runtime.name}: installed CLI demo init failed: ${initOutput}`,
+		);
 	}
-	const { stdout: statsOutput } = await run(bin, ["--json", "db", "stats"], {
-		cwd: installDir,
-		env,
-	});
+	const { stdout: statsOutput } = await runRuntime(
+		runtime,
+		["--json", "db", "stats"],
+		{ cwd: installDir, env },
+	);
 	JSON.parse(statsOutput);
 
 	const port = await reserveLoopbackPort();
 	const expectedBaseUrl = `http://127.0.0.1:${String(port)}`;
-	const mcpToken = [
-		"birdclaw-package",
-		"smoke-token",
-		"0123456789",
-		"abcdef",
-	].join("-");
+	const mcpToken = `birdclaw-${runtime.name}-smoke-token-0123456789-abcdef`;
 	const serverEnv = {
 		...env,
 		BIRDCLAW_MCP_PUBLIC_URL: `${expectedBaseUrl}/mcp`,
 		BIRDCLAW_MCP_TOKEN: mcpToken,
 	};
-	const child = spawn(
-		bin,
+	const child = spawnRuntime(
+		runtime,
 		["serve", "--host", "127.0.0.1", "--port", String(port)],
 		{
 			cwd: installDir,
@@ -206,40 +198,25 @@ try {
 	);
 	let shutdownError;
 	try {
-		const baseUrl = await waitForServer(child);
+		const baseUrl = await waitForServer(child, runtime.name);
 		if (baseUrl !== expectedBaseUrl) {
 			throw new Error(
-				`Production server listened at unexpected URL ${baseUrl}`,
+				`${runtime.name}: server listened at unexpected URL ${baseUrl}`,
 			);
 		}
 		const page = await fetch(baseUrl);
 		if (!page.ok || !(await page.text()).toLowerCase().includes("birdclaw")) {
 			throw new Error(
-				`Production SSR smoke failed with ${String(page.status)}`,
+				`${runtime.name}: production SSR smoke failed with ${String(page.status)}`,
 			);
 		}
 		const asset = await fetch(`${baseUrl}/favicon.ico`);
 		if (!asset.ok) {
 			throw new Error(
-				`Production static asset smoke failed with ${String(asset.status)}`,
+				`${runtime.name}: static asset smoke failed with ${String(asset.status)}`,
 			);
 		}
 
-		const installedRequire = createRequire(
-			path.join(installedRoot, "package.json"),
-		);
-		const { Client } = await import(
-			pathToFileURL(
-				installedRequire.resolve("@modelcontextprotocol/sdk/client/index.js"),
-			).href
-		);
-		const { StreamableHTTPClientTransport } = await import(
-			pathToFileURL(
-				installedRequire.resolve(
-					"@modelcontextprotocol/sdk/client/streamableHttp.js",
-				),
-			).href
-		);
 		const transport = new StreamableHTTPClientTransport(
 			new URL(`${baseUrl}/mcp`),
 			{
@@ -249,7 +226,7 @@ try {
 			},
 		);
 		const client = new Client({
-			name: "birdclaw-package-smoke",
+			name: `birdclaw-package-smoke-${runtime.name}`,
 			version: "1.0.0",
 		});
 		try {
@@ -257,12 +234,12 @@ try {
 			const serverVersion = client.getServerVersion();
 			if (serverVersion?.version !== manifest.version) {
 				throw new Error(
-					`Unexpected MCP server version: ${JSON.stringify(serverVersion)}`,
+					`${runtime.name}: unexpected MCP server version ${JSON.stringify(serverVersion)}`,
 				);
 			}
 			if (transport.sessionId !== undefined) {
 				throw new Error(
-					`Stateless MCP returned session ${transport.sessionId}`,
+					`${runtime.name}: stateless MCP returned session ${transport.sessionId}`,
 				);
 			}
 			const listed = await withTimeout("MCP tools/list", client.listTools());
@@ -271,7 +248,9 @@ try {
 				JSON.stringify(toolNames) !==
 				JSON.stringify(["search_tweets", "get_tweet_thread"])
 			) {
-				throw new Error(`Unexpected MCP tools: ${JSON.stringify(toolNames)}`);
+				throw new Error(
+					`${runtime.name}: unexpected MCP tools ${JSON.stringify(toolNames)}`,
+				);
 			}
 			const result = await withTimeout(
 				"MCP tools/call",
@@ -288,7 +267,7 @@ try {
 				!Array.isArray(structured.items)
 			) {
 				throw new Error(
-					`Unexpected MCP tool result: ${JSON.stringify(result)}`,
+					`${runtime.name}: unexpected MCP result ${JSON.stringify(result)}`,
 				);
 			}
 		} finally {
@@ -303,16 +282,214 @@ try {
 			const exit = await exited;
 			if (process.platform !== "win32" && exit.signal !== "SIGTERM") {
 				shutdownError = new Error(
-					`Production server did not preserve SIGTERM (${JSON.stringify(exit)})`,
+					`${runtime.name}: server did not preserve SIGTERM (${JSON.stringify(exit)})`,
 				);
 			}
 		}
 	}
 	if (shutdownError) throw shutdownError;
 
-	console.log(
-		`Package smoke passed: ${String(files.length)} files, --version ${versionMs.toFixed(0)}ms`,
+	return {
+		name: runtime.name,
+		executable: runtime.executable,
+		entry: runtime.prefix.at(-1),
+		versionMs: Math.round(versionMs),
+		installedRoot,
+	};
+}
+
+try {
+	const { stdout: bunRevision } = await run(bunBin, ["--revision"]);
+	if (!bunRevision.trim().startsWith("1.4.0-canary.1+")) {
+		throw new Error(`Unexpected Bun revision: ${bunRevision}`);
+	}
+	const { stdout: nodeVersionOutput } = await run(nodeBin, ["--version"]);
+	const nodeVersion = nodeVersionOutput.trim();
+	const nodeMatch = nodeVersion.match(/^v26\.(\d+)\.(\d+)$/);
+	if (
+		!nodeMatch ||
+		Number(nodeMatch[1]) < 5 ||
+		(Number(nodeMatch[1]) === 5 && Number(nodeMatch[2]) < 1)
+	) {
+		throw new Error(
+			`Node compatibility smoke requires >=26.5.1 <27, got ${nodeVersion}`,
+		);
+	}
+	const nodeToolEnv = { ...process.env };
+	if (path.isAbsolute(nodeBin)) {
+		nodeToolEnv.PATH = `${path.dirname(nodeBin)}:${nodeToolEnv.PATH ?? ""}`;
+	}
+
+	await run(bunBin, ["--no-env-file", "run", "--bun", "build"], {
+		cwd: root,
+	});
+	const npmPackDir = path.join(tempRoot, "pack-npm");
+	const bunPackDir = path.join(tempRoot, "pack-bun");
+	await mkdir(npmPackDir, { recursive: true });
+	await mkdir(bunPackDir, { recursive: true });
+	await run(
+		"npm",
+		["pack", "--ignore-scripts", "--pack-destination", npmPackDir],
+		{
+			cwd: root,
+			env: nodeToolEnv,
+		},
 	);
+	await run(
+		bunBin,
+		[
+			"--no-env-file",
+			"pm",
+			"pack",
+			"--ignore-scripts",
+			"--destination",
+			bunPackDir,
+		],
+		{ cwd: root },
+	);
+	const npmTarballName = (await readdir(npmPackDir)).find((name) =>
+		name.endsWith(".tgz"),
+	);
+	const bunTarballName = (await readdir(bunPackDir)).find((name) =>
+		name.endsWith(".tgz"),
+	);
+	if (!npmTarballName || !bunTarballName) {
+		throw new Error("Package smoke did not create both npm and Bun tarballs");
+	}
+	const npmTarball = path.join(npmPackDir, npmTarballName);
+	const bunTarball = path.join(bunPackDir, bunTarballName);
+	const npmFiles = (await run("tar", ["-tzf", npmTarball])).stdout
+		.trim()
+		.split("\n")
+		.sort();
+	const bunFiles = (await run("tar", ["-tzf", bunTarball])).stdout
+		.trim()
+		.split("\n")
+		.sort();
+	if (JSON.stringify(npmFiles) !== JSON.stringify(bunFiles)) {
+		throw new Error("npm pack and bun pm pack produced different file lists");
+	}
+	for (const required of [
+		"package/bin/birdclaw.mjs",
+		"package/dist/cli/birdclaw.js",
+		"package/dist/server/server.js",
+	]) {
+		if (!npmFiles.includes(required))
+			throw new Error(`Tarball missing ${required}`);
+	}
+	for (const forbidden of [
+		"package/src/",
+		"package/scripts/",
+		"package/toolchains/",
+		"tsx",
+	]) {
+		if (npmFiles.some((file) => file.includes(forbidden))) {
+			throw new Error(`Tarball unexpectedly contains ${forbidden}`);
+		}
+	}
+
+	const installDir = path.join(tempRoot, "install");
+	await mkdir(installDir, { recursive: true });
+	await writeFile(
+		path.join(installDir, "package.json"),
+		`${JSON.stringify({ name: "birdclaw-package-smoke", private: true, type: "module" })}\n`,
+	);
+	await run(
+		"npm",
+		["install", "--ignore-scripts", "--no-audit", "--no-fund", npmTarball],
+		{ cwd: installDir, env: nodeToolEnv },
+	);
+	const installedRoot = path.join(installDir, "node_modules", "birdclaw");
+	const manifest = JSON.parse(
+		await readFile(path.join(installedRoot, "package.json"), "utf8"),
+	);
+	if (manifest.dependencies?.tsx || manifest.dependencies?.vite) {
+		throw new Error("Installed runtime dependencies include tsx or vite");
+	}
+	const launcher = path.join(installedRoot, "bin", "birdclaw.mjs");
+	const bin = path.join(installDir, "node_modules", ".bin", "birdclaw");
+	const normalBinEnv = {
+		...nodeToolEnv,
+		BIRDCLAW_HOME: path.join(tempRoot, "home-bin"),
+	};
+	const { stdout: normalBinVersion } = await run(bin, ["--version"], {
+		cwd: installDir,
+		env: normalBinEnv,
+	});
+	if (normalBinVersion.trim() !== manifest.version) {
+		throw new Error(`Installed Node shebang returned ${normalBinVersion}`);
+	}
+
+	const installedRequire = createRequire(
+		path.join(installedRoot, "package.json"),
+	);
+	const { Client } = await import(
+		pathToFileURL(
+			installedRequire.resolve("@modelcontextprotocol/sdk/client/index.js"),
+		).href
+	);
+	const { StreamableHTTPClientTransport } = await import(
+		pathToFileURL(
+			installedRequire.resolve(
+				"@modelcontextprotocol/sdk/client/streamableHttp.js",
+			),
+		).href
+	);
+	const runtimes = [
+		{
+			name: "bun",
+			executable: bunBin,
+			prefix: ["--no-env-file", launcher],
+		},
+		{
+			name: "node",
+			executable: nodeBin,
+			prefix: [launcher],
+		},
+	];
+	const runtimeResults = [];
+	for (const runtime of runtimes) {
+		runtimeResults.push(
+			await smokeRuntime({
+				runtime,
+				manifest,
+				installedRoot,
+				installDir,
+				Client,
+				StreamableHTTPClientTransport,
+			}),
+		);
+	}
+
+	const result = {
+		ok: true,
+		files: npmFiles.length,
+		nodeVersion,
+		bunRevision: bunRevision.trim(),
+		npmTarball: {
+			name: npmTarballName,
+			sha256: await sha256(npmTarball),
+		},
+		bunTarball: {
+			name: bunTarballName,
+			sha256: await sha256(bunTarball),
+		},
+		runtimes: runtimeResults,
+	};
+	if (jsonOutput) {
+		console.log(JSON.stringify(result, null, 2));
+	} else {
+		const runtimeTimings = Object.fromEntries(
+			runtimeResults.map((runtime) => [runtime.name, runtime.versionMs]),
+		);
+		console.log(
+			`Package smoke passed: ${String(result.files)} files, Node ${runtimeTimings.node}ms, Bun ${runtimeTimings.bun}ms`,
+		);
+	}
 } finally {
-	await rm(tempRoot, { recursive: true, force: true });
+	if (process.env.BIRDCLAW_KEEP_PACKAGE_SMOKE === "1") {
+		console.error(`Package smoke workspace retained at ${tempRoot}`);
+	} else {
+		await rm(tempRoot, { recursive: true, force: true });
+	}
 }

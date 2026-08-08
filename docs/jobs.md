@@ -74,6 +74,16 @@ macOS only. Writes a LaunchAgent plist that runs `jobs sync-bookmarks` every 3 h
 birdclaw --json jobs install-bookmarks-launchd --program /opt/homebrew/bin/birdclaw
 ```
 
+A source checkout can pin both the runtime and program in the plist instead of relying on launchd's limited `PATH`:
+
+```bash
+BUN=$(./scripts/install-bun-canary.sh)
+./scripts/bun-canary.sh bin/birdclaw.mjs --json jobs install-bookmarks-launchd \
+  --runtime "$BUN" \
+  --runtime-arg=--no-env-file \
+  --program "$PWD/bin/birdclaw.mjs"
+```
+
 What it writes:
 
 - `~/Library/LaunchAgents/com.steipete.birdclaw.bookmarks-sync.plist`
@@ -84,7 +94,9 @@ What it writes:
 
 Flags:
 
-- `--program <path>` — absolute path to the `birdclaw` executable on this machine (Homebrew, npm global, or source build)
+- `--program <path>` — `birdclaw` executable, or an absolute source launcher when `--runtime` is set
+- `--runtime <absolute-path>` — invoke `--program` through this exact runtime rather than its shebang
+- `--runtime-arg <value>` — repeatable runtime argument; Bun source jobs should pass `--runtime-arg=--no-env-file`
 - `--env-path <path>` — source an export-only shell env file inside the scheduled process
 - `--no-load` — write the plist but do not load it; useful when you want to inspect first
 - `--all` — pass `--all` to the underlying sync, fetching every retrievable page each run (default caps at 5 pages)
