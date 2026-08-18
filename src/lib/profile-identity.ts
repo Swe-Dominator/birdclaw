@@ -26,6 +26,24 @@ type ProfileRow = {
 	created_at: string;
 };
 
+type ProfileIdentityCollision = Pick<ProfileRow, "id" | "handle" | "raw_json">;
+
+const PROFILE_MUTABLE_COLUMNS = [
+	"handle",
+	"display_name",
+	"bio",
+	"followers_count",
+	"following_count",
+	"public_metrics_json",
+	"avatar_hue",
+	"avatar_url",
+	"location",
+	"url",
+	"verified_type",
+	"entities_json",
+	"raw_json",
+] as const satisfies readonly (keyof ProfileRow)[];
+
 let observeProfileIdentityCandidateCountForTests:
 	| ((count: number) => void)
 	| undefined;
@@ -193,6 +211,170 @@ function isReservedPlaceholderHandle(handle: string, externalUserId: string) {
 		handle === `user_${externalUserId}` ||
 		handle === `id${externalUserId}`
 	);
+}
+
+function isReservedBackupMergeHandle(handle: string, externalUserId: string) {
+	return (
+		isReservedPlaceholderHandle(handle, externalUserId) ||
+		handle.startsWith("birdclaw_stale_")
+	);
+}
+
+function normalizeProfileSnapshotState(row: Record<string, unknown>) {
+	return {
+		handle: String(row.handle ?? ""),
+		displayName: String(row.display_name ?? ""),
+		bio: String(row.bio ?? ""),
+		location: row.location ?? null,
+		url: row.url ?? null,
+		verifiedType: row.verified_type ?? null,
+		followersCount: Number(row.followers_count ?? 0),
+		followingCount: Number(row.following_count ?? 0),
+	};
+}
+
+function profileSnapshotStateKey(row: Record<string, unknown>) {
+	return JSON.stringify(normalizeProfileSnapshotState(row));
+}
+
+function liveProfileStateLastSeenAt(
+	db: Database,
+	profileId: string,
+	row: Record<string, unknown>,
+) {
+	const state = normalizeProfileSnapshotState(row);
+	const match = db
+		.prepare(
+			`select max(last_seen_at) as last_seen_at
+			 from profile_snapshots
+			 where profile_id = ?
+			   and handle = ?
+			   and display_name = ?
+			   and bio = ?
+			   and location is ?
+			   and url is ?
+			   and verified_type is ?
+			   and followers_count = ?
+			   and following_count = ?`,
+		)
+		.get(
+			profileId,
+			state.handle,
+			state.displayName,
+			state.bio,
+			state.location,
+			state.url,
+			state.verifiedType,
+			state.followersCount,
+			state.followingCount,
+		) as { last_seen_at: string | null } | undefined;
+	return match?.last_seen_at ?? null;
+}
+
+function indexImportedProfileSnapshotRecency(
+	rows: readonly Record<string, unknown>[],
+) {
+	const recency = new Map<string, string>();
+	for (const row of rows) {
+		if (
+			typeof row.profile_id !== "string" ||
+			typeof row.last_seen_at !== "string"
+		) {
+			continue;
+		}
+		const key = `${row.profile_id}\0${profileSnapshotStateKey(row)}`;
+		const current = recency.get(key);
+		if (!current || row.last_seen_at > current) {
+			recency.set(key, row.last_seen_at);
+		}
+	}
+	return recency;
+}
+
+function currentProfileRow(db: Database, profileId: string) {
+	return db.prepare("select * from profiles where id = ?").get(profileId) as
+		| ProfileRow
+		| undefined;
+}
+
+function preserveCurrentProfileState(
+	incoming: Record<string, unknown>,
+	current: ProfileRow,
+) {
+	const preserved = { ...incoming };
+	for (const column of PROFILE_MUTABLE_COLUMNS) {
+		preserved[column] = current[column];
+	}
+	return preserved;
+}
+
+export function reconcileBackupProfileRows({
+	db,
+	profileRows,
+	profileSnapshotRows,
+}: {
+	db: Database;
+	profileRows: readonly Record<string, unknown>[];
+	profileSnapshotRows: readonly Record<string, unknown>[];
+}) {
+	const importedSnapshotRecency =
+		indexImportedProfileSnapshotRecency(profileSnapshotRows);
+	return profileRows.map((input) => {
+		const incoming = { ...input };
+		const profileId = typeof incoming.id === "string" ? incoming.id : "";
+		const externalUserId = canonicalExternalUserId(profileId);
+		const incomingHandle =
+			typeof incoming.handle === "string" ? incoming.handle : "";
+		if (!externalUserId || !incomingHandle) return incoming;
+
+		const current = currentProfileRow(db, profileId);
+		const incomingLastSeenAt = importedSnapshotRecency.get(
+			`${profileId}\0${profileSnapshotStateKey(incoming)}`,
+		);
+		const currentLastSeenAt = current
+			? liveProfileStateLastSeenAt(db, profileId, current)
+			: null;
+		const currentIsPlaceholder = Boolean(
+			current && isReservedBackupMergeHandle(current.handle, externalUserId),
+		);
+		const incomingIsNewer = Boolean(
+			!current ||
+			currentIsPlaceholder ||
+			(incomingLastSeenAt &&
+				(!currentLastSeenAt || incomingLastSeenAt > currentLastSeenAt)),
+		);
+		if (!incomingIsNewer && current) {
+			return preserveCurrentProfileState(incoming, current);
+		}
+
+		const reconciliation = reconcileCanonicalXProfileIdentity({
+			db,
+			externalUserId,
+			canonicalProfileId: profileId,
+			incomingHandle,
+			canReassignHandleCollision: (collision) => {
+				const collisionRow = currentProfileRow(db, collision.id);
+				const collisionLastSeenAt = collisionRow
+					? liveProfileStateLastSeenAt(db, collision.id, collisionRow)
+					: null;
+				return Boolean(
+					incomingLastSeenAt &&
+					(!collisionLastSeenAt || incomingLastSeenAt > collisionLastSeenAt),
+				);
+			},
+		});
+		const handle =
+			reconciliation.blockedHandleProfileIds.length === 0
+				? incomingHandle
+				: (current?.handle ?? allocateReservedProfileHandle(db, profileId));
+		incoming.handle = handle;
+		incoming.raw_json = repairRawIdentity(
+			typeof incoming.raw_json === "string" ? incoming.raw_json : "{}",
+			externalUserId,
+			handle,
+		);
+		return incoming;
+	});
 }
 
 function repairRawIdentity(
@@ -620,12 +802,14 @@ export function reconcileCanonicalXProfileIdentity({
 	canonicalProfileId,
 	incomingHandle,
 	provenLegacyProfileIds = new Set<string>(),
+	canReassignHandleCollision,
 }: {
 	db: Database;
 	externalUserId: string;
 	canonicalProfileId: string;
 	incomingHandle: string;
 	provenLegacyProfileIds?: ReadonlySet<string>;
+	canReassignHandleCollision?: (collision: ProfileIdentityCollision) => boolean;
 }) {
 	const explicitLegacyIds = [...provenLegacyProfileIds];
 	const explicitClause =
@@ -712,12 +896,13 @@ export function reconcileCanonicalXProfileIdentity({
 	const blockedHandleProfileIds: string[] = [];
 	for (const collision of collisions) {
 		if (
-			collision.id === "profile_me" &&
-			(profileRawIdentityVetoesExternalUserId(
-				collision.raw_json,
-				externalUserId,
-			) ||
-				profileIdentityHasConflict(collision.raw_json, externalUserId))
+			(collision.id === "profile_me" &&
+				(profileRawIdentityVetoesExternalUserId(
+					collision.raw_json,
+					externalUserId,
+				) ||
+					profileIdentityHasConflict(collision.raw_json, externalUserId))) ||
+			(canReassignHandleCollision && !canReassignHandleCollision(collision))
 		) {
 			blockedHandleProfileIds.push(collision.id);
 			continue;

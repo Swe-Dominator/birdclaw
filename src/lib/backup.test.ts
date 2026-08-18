@@ -43,6 +43,7 @@ import { getBirdclawPaths, resetBirdclawPathsForTests } from "./config";
 import { getNativeDb } from "./db";
 import NativeSqliteDatabase, { type Database } from "./sqlite";
 import { acquireScheduledJobLock } from "./scheduled-job";
+import { upsertProfileFromXUser } from "./x-profile";
 
 const testHome = useTestHome({ prefix: "birdclaw-backup-home-" });
 
@@ -1032,6 +1033,295 @@ describe("text backup", () => {
 				.prepare("select count(*) from tweets where id = 'tweet_2025'")
 				.get() as { "count(*)": number },
 		).toEqual({ "count(*)": 1 });
+	}, 20000);
+
+	it("keeps newer numeric profile identities when syncing a prior handle generation", async () => {
+		switchHome("birdclaw-backup-profile-handoff-");
+		const db = getNativeDb({ seedDemoData: false });
+		clearData();
+		insertTestAccount(db, {
+			id: "acct_primary",
+			handle: "@owner",
+			externalUserId: "9000",
+		});
+		const repoPath = makeTempDir("birdclaw-profile-handoff-store-");
+		const remotePath = path.join(
+			makeTempDir("birdclaw-profile-handoff-remote-"),
+			"remote.git",
+		);
+		execFileSync("git", ["init", "--bare", remotePath]);
+		vi.useFakeTimers({ toFake: ["Date"] });
+		try {
+			vi.setSystemTime(new Date("2026-08-18T10:00:00.000Z"));
+			upsertProfileFromXUser(db, {
+				id: "1001",
+				username: "alpha",
+				name: "Alpha",
+				description: "Founder at @oldco",
+				affiliation: {
+					organizationIds: ["profile_org_1"],
+					label: "Old Org",
+					organizationHandle: "oldorg",
+				},
+				public_metrics: { followers_count: 10, following_count: 5 },
+			});
+			upsertProfileFromXUser(db, {
+				id: "1002",
+				username: "beta",
+				name: "Beta",
+				description: "Original beta",
+				public_metrics: { followers_count: 20, following_count: 6 },
+			});
+			insertTestTweet(db, {
+				id: "tweet_profile_handoff",
+				authorProfileId: "profile_user_1001",
+				text: "Numeric identity stays put",
+			});
+			const prior = await exportBackup({ repoPath, db });
+
+			vi.setSystemTime(new Date("2026-08-18T11:00:00.000Z"));
+			db.transaction(() => {
+				upsertProfileFromXUser(db, {
+					id: "1001",
+					username: "beta",
+					name: "Alpha Current",
+					description: "Founder at @newco",
+					affiliation: {
+						organizationIds: ["profile_org_1"],
+						label: "Current Org",
+						organizationHandle: "currentorg",
+					},
+					public_metrics: { followers_count: 11, following_count: 5 },
+				});
+				upsertProfileFromXUser(db, {
+					id: "1002",
+					username: "alpha",
+					name: "Beta Current",
+					description: "Current alpha owner",
+					public_metrics: { followers_count: 21, following_count: 6 },
+				});
+			})();
+
+			const synced = await syncBackup({ repoPath, remote: remotePath, db });
+			const reexported = await exportBackup({ repoPath, db });
+
+			expect(synced.imported).toBe(true);
+			expect(synced.exportResult.validation.ok).toBe(true);
+			expect(reexported.validation.ok).toBe(true);
+			expect(reexported.manifest.backupHash).toBe(
+				synced.exportResult.manifest.backupHash,
+			);
+			expect(reexported.manifest.backupHash).not.toBe(
+				prior.manifest.backupHash,
+			);
+			expect(
+				db
+					.prepare(
+						"select id, handle, display_name, bio, raw_json from profiles where id in (?, ?) order by id",
+					)
+					.all("profile_user_1001", "profile_user_1002"),
+			).toEqual([
+				expect.objectContaining({
+					id: "profile_user_1001",
+					handle: "beta",
+					display_name: "Alpha Current",
+					bio: "Founder at @newco",
+					raw_json: expect.stringContaining('"id":"1001"'),
+				}),
+				expect.objectContaining({
+					id: "profile_user_1002",
+					handle: "alpha",
+					display_name: "Beta Current",
+					bio: "Current alpha owner",
+					raw_json: expect.stringContaining('"id":"1002"'),
+				}),
+			]);
+			expect(
+				db
+					.prepare(
+						"select author_profile_id from tweets where id = 'tweet_profile_handoff'",
+					)
+					.get(),
+			).toEqual({ author_profile_id: "profile_user_1001" });
+			expect(
+				db
+					.prepare(
+						"select handle from profile_snapshots where profile_id = ? and handle in ('alpha', 'beta') order by handle",
+					)
+					.all("profile_user_1001"),
+			).toEqual([{ handle: "alpha" }, { handle: "beta" }]);
+			expect(
+				db
+					.prepare(
+						"select value, is_active from profile_bio_entities where profile_id = ? and value in ('@newco', '@oldco') order by value",
+					)
+					.all("profile_user_1001"),
+			).toEqual([
+				{ value: "@newco", is_active: 1 },
+				{ value: "@oldco", is_active: 0 },
+			]);
+			expect(
+				db
+					.prepare(
+						"select organization_name, organization_handle, is_active from profile_affiliations where subject_profile_id = ? and organization_profile_id = ?",
+					)
+					.get("profile_user_1001", "profile_org_1"),
+			).toEqual({
+				organization_name: "Current Org",
+				organization_handle: "currentorg",
+				is_active: 1,
+			});
+			const exportedProfiles = readFileSync(
+				path.join(repoPath, "data/profiles.jsonl"),
+				"utf8",
+			);
+			expect(exportedProfiles).toContain(
+				'"handle":"beta","id":"profile_user_1001"',
+			);
+			expect(exportedProfiles).toContain(
+				'"handle":"alpha","id":"profile_user_1002"',
+			);
+		} finally {
+			vi.useRealTimers();
+		}
+	}, 20000);
+
+	it("adopts a newer backup profile generation into an older live database", async () => {
+		switchHome("birdclaw-backup-newer-profile-source-");
+		const sourceDb = getNativeDb({ seedDemoData: false });
+		clearData();
+		insertTestAccount(sourceDb, {
+			id: "acct_primary",
+			handle: "@owner",
+			externalUserId: "9000",
+		});
+		const repoPath = makeTempDir("birdclaw-newer-profile-store-");
+		vi.useFakeTimers({ toFake: ["Date"] });
+		try {
+			vi.setSystemTime(new Date("2026-08-18T10:00:00.000Z"));
+			upsertProfileFromXUser(sourceDb, {
+				id: "2001",
+				username: "north",
+				name: "North",
+				description: "Founder at @oldco",
+				public_metrics: { followers_count: 10, following_count: 5 },
+			});
+			upsertProfileFromXUser(sourceDb, {
+				id: "2002",
+				username: "south",
+				name: "South",
+				description: "Original south",
+				public_metrics: { followers_count: 20, following_count: 6 },
+			});
+			vi.setSystemTime(new Date("2026-08-18T11:00:00.000Z"));
+			sourceDb.transaction(() => {
+				upsertProfileFromXUser(sourceDb, {
+					id: "2001",
+					username: "south",
+					name: "North Current",
+					description: "Founder at @newco",
+					public_metrics: { followers_count: 11, following_count: 5 },
+				});
+				upsertProfileFromXUser(sourceDb, {
+					id: "2002",
+					username: "north",
+					name: "South Current",
+					description: "Current north owner",
+					public_metrics: { followers_count: 21, following_count: 6 },
+				});
+			})();
+			const newer = await exportBackup({ repoPath, db: sourceDb });
+
+			switchHome("birdclaw-backup-older-profile-destination-");
+			const destinationDb = getNativeDb({ seedDemoData: false });
+			clearData();
+			insertTestAccount(destinationDb, {
+				id: "acct_primary",
+				handle: "@owner",
+				externalUserId: "9000",
+			});
+			vi.setSystemTime(new Date("2026-08-18T10:00:00.000Z"));
+			upsertProfileFromXUser(destinationDb, {
+				id: "2001",
+				username: "north",
+				name: "North",
+				description: "Founder at @oldco",
+				public_metrics: { followers_count: 10, following_count: 5 },
+			});
+			upsertProfileFromXUser(destinationDb, {
+				id: "2002",
+				username: "south",
+				name: "South",
+				description: "Original south",
+				public_metrics: { followers_count: 20, following_count: 6 },
+			});
+			insertTestTweet(destinationDb, {
+				id: "tweet_older_profile_reference",
+				authorProfileId: "profile_user_2002",
+				text: "Keep this destination-only reference",
+			});
+
+			const imported = await importBackup({
+				repoPath,
+				db: destinationDb,
+			});
+			const reexported = await exportBackup({ repoPath, db: destinationDb });
+
+			expect(imported.ok).toBe(true);
+			expect(imported.mode).toBe("merge");
+			expect(newer.validation.ok).toBe(true);
+			expect(reexported.validation.ok).toBe(true);
+			expect(
+				destinationDb
+					.prepare(
+						"select id, handle, display_name, bio, followers_count, raw_json from profiles where id in (?, ?) order by id",
+					)
+					.all("profile_user_2001", "profile_user_2002"),
+			).toEqual([
+				expect.objectContaining({
+					id: "profile_user_2001",
+					handle: "south",
+					display_name: "North Current",
+					bio: "Founder at @newco",
+					followers_count: 11,
+					raw_json: expect.stringContaining('"id":"2001"'),
+				}),
+				expect.objectContaining({
+					id: "profile_user_2002",
+					handle: "north",
+					display_name: "South Current",
+					bio: "Current north owner",
+					followers_count: 21,
+					raw_json: expect.stringContaining('"id":"2002"'),
+				}),
+			]);
+			expect(
+				destinationDb
+					.prepare(
+						"select author_profile_id from tweets where id = 'tweet_older_profile_reference'",
+					)
+					.get(),
+			).toEqual({ author_profile_id: "profile_user_2002" });
+			expect(
+				destinationDb
+					.prepare(
+						"select handle from profile_snapshots where profile_id = ? and handle in ('north', 'south') order by handle",
+					)
+					.all("profile_user_2001"),
+			).toEqual([{ handle: "north" }, { handle: "south" }]);
+			expect(
+				destinationDb
+					.prepare(
+						"select value, is_active from profile_bio_entities where profile_id = ? and value in ('@newco', '@oldco') order by value",
+					)
+					.all("profile_user_2001"),
+			).toEqual([
+				{ value: "@newco", is_active: 1 },
+				{ value: "@oldco", is_active: 0 },
+			]);
+		} finally {
+			vi.useRealTimers();
+		}
 	}, 20000);
 
 	it("round-trips tweet tombstones, subordinate deletions, and edit revisions", async () => {

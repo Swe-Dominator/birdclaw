@@ -39,6 +39,7 @@ import {
 } from "./streaming-ingestion";
 import { runSubprocessEffect, SubprocessError } from "./subprocess";
 import { acquireScheduledJobLockEffect } from "./scheduled-job";
+import { reconcileBackupProfileRows } from "./profile-identity";
 
 const BACKUP_SCHEMA_VERSION = 8;
 const MIN_SUPPORTED_BACKUP_SCHEMA_VERSION = 1;
@@ -3272,7 +3273,14 @@ function importBackupUnlockedEffect({
 				(left, right) => left.merge.order - right.merge.order,
 			);
 			for (const codec of mergeCodecs) {
-				const rows = importRows[codec.name];
+				const rows =
+					mode === "merge" && codec.name === "profiles"
+						? reconcileBackupProfileRows({
+								db: writeDb,
+								profileRows: importRows.profiles,
+								profileSnapshotRows: importRows.profile_snapshots,
+							})
+						: importRows[codec.name];
 				repository.insertRows(codec.merge.sql, rows, codec.merge.columns);
 				const fts = codec.merge.fts;
 				if (!fts) continue;
