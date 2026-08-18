@@ -6,6 +6,7 @@
 
 - Register `archive find` and `db stats` as strict nested CLI commands, reject unknown subcommands, and return a structured HTTP 400 for invalid `/api/query` resources.
 - Apply the shared account-selection policy to follow-graph and network-map reads so IDs, `@handle` selectors, and bare handles resolve consistently.
+- Report scheduled account syncs as failed when their configured backup export fails, so launchd records a nonzero exit.
 - Make numeric X user IDs the durable live-profile identity, preserving history and dependent references across proven legacy rekeys, handle reuse, case-fold collisions, handoffs, and swaps.
 - Serialize backup repositories with renewable token-owned leases and reliable token-checked release, validate NUL-safe fetched and staged generations before checkout mutation, prove Git ownership before finalizing journal recovery, and protect fsynced pending-push receipts from later export generations.
 - Adopt validated non-Git exports into empty backup remotes without weakening inventory checks, and preserve sparse handle-less DM avatar enrichment without fabricating public handles.
