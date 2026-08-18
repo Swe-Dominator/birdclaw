@@ -41,6 +41,7 @@ import {
 import { BACKUP_TABLE_CODECS } from "./backup-table-codecs";
 import { getBirdclawPaths, resetBirdclawPathsForTests } from "./config";
 import { getNativeDb } from "./db";
+import { syncIdentitySearchIndexForProfileIds } from "./identity-search-index";
 import NativeSqliteDatabase, { type Database } from "./sqlite";
 import { acquireScheduledJobLock } from "./scheduled-job";
 import { upsertProfileFromXUser } from "./x-profile";
@@ -1034,6 +1035,394 @@ describe("text backup", () => {
 				.get() as { "count(*)": number },
 		).toEqual({ "count(*)": 1 });
 	}, 20000);
+
+	it("adopts a proven legacy selected-account backup after importing all references", async () => {
+		switchHome("birdclaw-backup-legacy-account-source-");
+		const sourceDb = getNativeDb({ seedDemoData: false });
+		clearData();
+		insertTestAccount(sourceDb, {
+			id: "acct_primary",
+			handle: "@selected_owner",
+			externalUserId: "25401953",
+			createdAt: "2009-03-19T22:54:05.000Z",
+		});
+		insertTestProfile(sourceDb, {
+			id: "profile_me",
+			handle: "selected_owner",
+			displayName: "Legacy Selected Owner",
+			bio: "Legacy bio at @legacyco",
+			followersCount: 20_000,
+			followingCount: 500,
+			publicMetricsJson: '{"followers_count":20000,"following_count":500}',
+			rawJson: '{"id":"profile_me","username":"selected_owner"}',
+			createdAt: "2009-03-19T22:54:05.000Z",
+		});
+		insertTestProfile(sourceDb, {
+			id: "profile_user_25401953",
+			handle: "birdclaw_stub_25401953",
+			displayName: "Numeric Stub",
+			bio: "",
+			followersCount: 0,
+			followingCount: 0,
+			publicMetricsJson: "{}",
+			rawJson: '{"id":"25401953"}',
+			createdAt: "2009-03-19T22:54:05.000Z",
+		});
+		insertTestProfile(sourceDb, {
+			id: "profile_org_legacy",
+			handle: "legacyco",
+			displayName: "Legacy Co",
+		});
+		sourceDb.exec(`
+			insert into profile_snapshots (
+				profile_id, snapshot_hash, observed_at, last_seen_at, source,
+				handle, display_name, bio, followers_count, following_count,
+				affiliations_json, raw_json
+			) values
+				('profile_me', 'legacy-selected-state',
+				 '2026-08-18T06:18:12.256Z', '2026-08-18T06:18:12.256Z',
+				 'backup-test', 'selected_owner', 'Legacy Selected Owner',
+				 'Legacy bio at @legacyco', 20000, 500,
+				 '[{"organizationHandle":"legacyco"}]', '{"id":"profile_me"}'),
+				('profile_user_25401953', 'legacy-numeric-stub',
+				 '2026-08-18T06:18:12.256Z', '2026-08-18T06:18:12.256Z',
+				 'backup-test', 'birdclaw_stub_25401953', 'Numeric Stub', '',
+				 0, 0, '[]', '{"id":"25401953"}');
+
+			insert into profile_bio_entities (
+				profile_id, kind, value, source, is_active, first_seen_at,
+				last_seen_at, raw_json
+			) values (
+				'profile_me', 'handle', '@legacyco', 'backup-test', 1,
+				'2026-08-18T06:18:12.256Z', '2026-08-18T06:18:12.256Z', '{}'
+			);
+
+			insert into profile_affiliations (
+				subject_profile_id, organization_profile_id, organization_name,
+				organization_handle, label, source, is_active, first_seen_at,
+				last_seen_at, raw_json, updated_at
+			) values (
+				'profile_me', 'profile_org_legacy', 'Legacy Co', 'legacyco',
+				'Legacy affiliation', 'backup-test', 1,
+				'2026-08-18T06:18:12.256Z', '2026-08-18T06:18:12.256Z',
+				'{}', '2026-08-18T06:18:12.256Z'
+			);
+
+			insert into tweets (
+				id, author_profile_id, text, created_at, is_replied, like_count,
+				media_count, entities_json, media_json
+			) values (
+				'legacy-selected-tweet', 'profile_me', 'legacy reference',
+				'2026-08-18T06:18:12.256Z', 0, 0, 0, '{}', '[]'
+			);
+
+			insert into dm_conversations (
+				id, account_id, participant_profile_id, title, inbox_kind,
+				last_message_at, unread_count, needs_reply
+			) values (
+				'legacy-selected-dm', 'acct_primary', 'profile_me', 'Selected owner',
+				'accepted', '2026-08-18T06:18:12.256Z', 0, 0
+			);
+			insert into dm_messages (
+				id, conversation_id, sender_profile_id, text, created_at, direction,
+				is_replied, media_count
+			) values (
+				'legacy-selected-message', 'legacy-selected-dm', 'profile_me',
+				'legacy dm reference', '2026-08-18T06:18:12.256Z', 'outbound', 1, 0
+			);
+
+			insert into follow_snapshots (
+				id, account_id, direction, source, status, page_count, result_count,
+				started_at, completed_at, raw_meta_json
+			) values (
+				'legacy-follow-snapshot', 'acct_primary', 'following', 'backup-test',
+				'complete', 1, 1, '2026-08-18T06:18:12.256Z',
+				'2026-08-18T06:18:12.256Z', '{}'
+			);
+			insert into follow_snapshot_members (
+				snapshot_id, profile_id, external_user_id, position
+			) values ('legacy-follow-snapshot', 'profile_me', '25401953', 0);
+			insert into follow_edges (
+				account_id, direction, profile_id, external_user_id, source, current,
+				first_seen_at, last_seen_at, ended_at, updated_at
+			) values (
+				'acct_primary', 'following', 'profile_me', '25401953', 'backup-test',
+				1, '2026-08-18T06:18:12.256Z', '2026-08-18T06:18:12.256Z', null,
+				'2026-08-18T06:18:12.256Z'
+			);
+			insert into follow_events (
+				id, account_id, direction, profile_id, external_user_id, kind,
+				event_at, snapshot_id
+			) values (
+				'legacy-follow-event', 'acct_primary', 'following', 'profile_me',
+				'25401953', 'started', '2026-08-18T06:18:12.256Z',
+				'legacy-follow-snapshot'
+			);
+
+			insert into x_lists (
+				account_id, list_id, name, owner_profile_id, owner_external_user_id,
+				is_private, source, membership_status, lists_synced_at,
+				member_page_count, member_result_count, rate_limit_json, raw_json,
+				updated_at
+			) values (
+				'acct_primary', 'legacy-list', 'Legacy list', 'profile_me', '25401953',
+				0, 'backup-test', 'complete', '2026-08-18T06:18:12.256Z', 1, 1,
+				'{}', '{}', '2026-08-18T06:18:12.256Z'
+			);
+			insert into x_list_members (
+				account_id, list_id, profile_id, external_user_id, source, current,
+				first_seen_at, last_seen_at, raw_json, updated_at
+			) values (
+				'acct_primary', 'legacy-list', 'profile_me', '25401953', 'backup-test',
+				1, '2026-08-18T06:18:12.256Z', '2026-08-18T06:18:12.256Z', '{}',
+				'2026-08-18T06:18:12.256Z'
+			);
+			insert into blocks (account_id, profile_id, source, created_at)
+			values ('acct_primary', 'profile_me', 'backup-test', '2026-08-18T06:18:12.256Z');
+			insert into mutes (account_id, profile_id, source, created_at)
+			values ('acct_primary', 'profile_me', 'backup-test', '2026-08-18T06:18:12.256Z');
+		`);
+		const repoPath = makeTempDir("birdclaw-legacy-account-store-");
+		const prior = await exportBackup({ repoPath, db: sourceDb });
+		expect(prior.validation.ok).toBe(true);
+
+		switchHome("birdclaw-backup-legacy-account-destination-");
+		const destinationDb = getNativeDb({ seedDemoData: false });
+		clearData();
+		insertTestAccount(destinationDb, {
+			id: "acct_primary",
+			handle: "@selected_owner",
+			externalUserId: "25401953",
+			createdAt: "2009-03-19T22:54:05.000Z",
+		});
+		insertTestProfile(destinationDb, {
+			id: "profile_user_25401953",
+			handle: "selected_owner",
+			displayName: "Current Selected Owner",
+			bio: "Current live bio",
+			followersCount: 15_000,
+			followingCount: 400,
+			publicMetricsJson: '{"followers_count":15000,"following_count":400}',
+			avatarUrl: "https://images.example/current.jpg",
+			rawJson: '{"id":"25401953","username":"selected_owner"}',
+			createdAt: "2009-03-19T22:54:05.000Z",
+		});
+		destinationDb
+			.prepare(
+				`insert into profile_snapshots (
+				profile_id, snapshot_hash, observed_at, last_seen_at, source,
+				handle, display_name, bio, followers_count, following_count,
+				affiliations_json, raw_json
+			) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			)
+			.run(
+				"profile_user_25401953",
+				"current-selected-state",
+				"2026-08-18T23:04:16.635Z",
+				"2026-08-18T23:04:16.635Z",
+				"live-test",
+				"selected_owner",
+				"Current Selected Owner",
+				"Current live bio",
+				15_000,
+				400,
+				"[]",
+				'{"id":"25401953"}',
+			);
+		syncIdentitySearchIndexForProfileIds(destinationDb, [
+			"profile_user_25401953",
+		]);
+
+		const imported = await importBackup({ repoPath, db: destinationDb });
+		const reexported = await exportBackup({ repoPath, db: destinationDb });
+
+		expect(imported.ok).toBe(true);
+		expect(imported.mode).toBe("merge");
+		expect(reexported.validation.ok).toBe(true);
+		expect(
+			destinationDb
+				.prepare(
+					"select id, handle, display_name, bio, followers_count, following_count, avatar_url from profiles where id in ('profile_me', 'profile_user_25401953') order by id",
+				)
+				.all(),
+		).toEqual([
+			{
+				id: "profile_user_25401953",
+				handle: "selected_owner",
+				display_name: "Current Selected Owner",
+				bio: "Current live bio",
+				followers_count: 15_000,
+				following_count: 400,
+				avatar_url: "https://images.example/current.jpg",
+			},
+		]);
+		for (const [table, column] of [
+			["tweets", "author_profile_id"],
+			["dm_conversations", "participant_profile_id"],
+			["dm_messages", "sender_profile_id"],
+			["profile_snapshots", "profile_id"],
+			["profile_bio_entities", "profile_id"],
+			["profile_affiliations", "subject_profile_id"],
+			["follow_snapshot_members", "profile_id"],
+			["follow_edges", "profile_id"],
+			["follow_events", "profile_id"],
+			["x_lists", "owner_profile_id"],
+			["x_list_members", "profile_id"],
+			["blocks", "profile_id"],
+			["mutes", "profile_id"],
+			["identity_search_index", "profile_id"],
+		] as const) {
+			expect(
+				destinationDb
+					.prepare(
+						`select count(*) as count from ${table} where ${column} = 'profile_me'`,
+					)
+					.get(),
+			).toEqual({ count: 0 });
+		}
+		expect(
+			destinationDb
+				.prepare(
+					"select author_profile_id from tweets where id = 'legacy-selected-tweet'",
+				)
+				.get(),
+		).toEqual({ author_profile_id: "profile_user_25401953" });
+		expect(
+			destinationDb
+				.prepare(
+					"select participant_profile_id from dm_conversations where id = 'legacy-selected-dm'",
+				)
+				.get(),
+		).toEqual({ participant_profile_id: "profile_user_25401953" });
+		expect(
+			destinationDb
+				.prepare(
+					"select profile_id, external_user_id from follow_edges where account_id = 'acct_primary' and direction = 'following'",
+				)
+				.get(),
+		).toEqual({
+			profile_id: "profile_user_25401953",
+			external_user_id: "25401953",
+		});
+		expect(
+			destinationDb
+				.prepare(
+					"select owner_profile_id, owner_external_user_id from x_lists where list_id = 'legacy-list'",
+				)
+				.get(),
+		).toEqual({
+			owner_profile_id: "profile_user_25401953",
+			owner_external_user_id: "25401953",
+		});
+		expect(
+			destinationDb
+				.prepare(
+					"select handle, bio, last_seen_at from profile_snapshots where profile_id = 'profile_user_25401953' and handle = 'selected_owner' and last_seen_at in ('2026-08-18T06:18:12.256Z', '2026-08-18T23:04:16.635Z') order by last_seen_at",
+				)
+				.all(),
+		).toEqual([
+			{
+				handle: "selected_owner",
+				bio: "Legacy bio at @legacyco",
+				last_seen_at: "2026-08-18T06:18:12.256Z",
+			},
+			{
+				handle: "selected_owner",
+				bio: "Current live bio",
+				last_seen_at: "2026-08-18T23:04:16.635Z",
+			},
+		]);
+		expect(
+			destinationDb
+				.prepare(
+					"select organization_handle from profile_affiliations where subject_profile_id = 'profile_user_25401953'",
+				)
+				.get(),
+		).toEqual({ organization_handle: "legacyco" });
+		expect(
+			destinationDb
+				.prepare(
+					"select value from identity_search_index where profile_id = 'profile_user_25401953' and value = 'selected_owner'",
+				)
+				.get(),
+		).toEqual({ value: "selected_owner" });
+		expect(
+			destinationDb
+				.prepare(
+					"select count(*) as count from identity_search_index where value like 'birdclaw_stale_%'",
+				)
+				.get(),
+		).toEqual({ count: 0 });
+	}, 20000);
+
+	it.each([
+		{
+			name: "contradictory raw identity",
+			accountHandle: "@selected_owner",
+			rawJson: '{"id":"999999","username":"selected_owner"}',
+		},
+		{
+			name: "selected account handle mismatch",
+			accountHandle: "@different_owner",
+			rawJson: "{}",
+		},
+	])(
+		"keeps unproven legacy profile_me separate for $name",
+		async ({ accountHandle, rawJson }) => {
+			switchHome("birdclaw-backup-unproven-legacy-source-");
+			const sourceDb = getNativeDb({ seedDemoData: false });
+			clearData();
+			insertTestAccount(sourceDb, {
+				id: "acct_primary",
+				handle: accountHandle,
+				externalUserId: "25401953",
+			});
+			insertTestProfile(sourceDb, {
+				id: "profile_me",
+				handle: "selected_owner",
+				displayName: "Unproven Legacy",
+				rawJson,
+			});
+			const repoPath = makeTempDir("birdclaw-unproven-legacy-store-");
+			await exportBackup({ repoPath, db: sourceDb });
+
+			switchHome("birdclaw-backup-unproven-legacy-destination-");
+			const destinationDb = getNativeDb({ seedDemoData: false });
+			clearData();
+			insertTestAccount(destinationDb, {
+				id: "acct_primary",
+				handle: "@selected_owner",
+				externalUserId: "25401953",
+			});
+			insertTestProfile(destinationDb, {
+				id: "profile_user_25401953",
+				handle: "selected_owner",
+				displayName: "Current Numeric Owner",
+				rawJson: '{"id":"25401953"}',
+			});
+
+			const imported = await importBackup({ repoPath, db: destinationDb });
+
+			expect(imported.ok).toBe(true);
+			expect(
+				destinationDb
+					.prepare(
+						"select id, handle from profiles where id in ('profile_me', 'profile_user_25401953') order by id",
+					)
+					.all(),
+			).toEqual([
+				expect.objectContaining({
+					id: "profile_me",
+					handle: expect.stringMatching(/^birdclaw_stale_/u),
+				}),
+				{
+					id: "profile_user_25401953",
+					handle: "selected_owner",
+				},
+			]);
+		},
+		20000,
+	);
 
 	it("keeps newer numeric profile identities when syncing a prior handle generation", async () => {
 		switchHome("birdclaw-backup-profile-handoff-");

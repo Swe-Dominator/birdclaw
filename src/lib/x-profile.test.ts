@@ -206,7 +206,7 @@ describe("x profile sync helpers", () => {
 				},
 			],
 			profileSnapshotRows: [],
-		});
+		}).rows;
 
 		expect(prepared).toMatchObject({
 			id: "profile_user_4242",

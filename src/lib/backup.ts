@@ -39,7 +39,12 @@ import {
 } from "./streaming-ingestion";
 import { runSubprocessEffect, SubprocessError } from "./subprocess";
 import { acquireScheduledJobLockEffect } from "./scheduled-job";
-import { reconcileBackupProfileRows } from "./profile-identity";
+import {
+	finalizeBackupProfileRows,
+	reconcileBackupProfileRows,
+	type BackupLegacyProfileMergePlan,
+} from "./profile-identity";
+import { resolveLiveSyncAccount } from "./live-sync-engine";
 
 const BACKUP_SCHEMA_VERSION = 8;
 const MIN_SUPPORTED_BACKUP_SCHEMA_VERSION = 1;
@@ -3272,15 +3277,24 @@ function importBackupUnlockedEffect({
 			const mergeCodecs = [...BACKUP_TABLE_CODECS].sort(
 				(left, right) => left.merge.order - right.merge.order,
 			);
+			let legacyProfileMergePlans: BackupLegacyProfileMergePlan[] = [];
 			for (const codec of mergeCodecs) {
-				const rows =
-					mode === "merge" && codec.name === "profiles"
-						? reconcileBackupProfileRows({
-								db: writeDb,
-								profileRows: importRows.profiles,
-								profileSnapshotRows: importRows.profile_snapshots,
-							})
-						: importRows[codec.name];
+				let rows = importRows[codec.name];
+				if (mode === "merge" && codec.name === "profiles") {
+					const selectedAccount = writeDb
+						.prepare("select 1 from accounts limit 1")
+						.get()
+						? resolveLiveSyncAccount(writeDb)
+						: undefined;
+					const reconciled = reconcileBackupProfileRows({
+						db: writeDb,
+						profileRows: importRows.profiles,
+						profileSnapshotRows: importRows.profile_snapshots,
+						selectedAccount,
+					});
+					rows = reconciled.rows;
+					legacyProfileMergePlans = reconciled.legacyProfileMergePlans;
+				}
 				repository.insertRows(codec.merge.sql, rows, codec.merge.columns);
 				const fts = codec.merge.fts;
 				if (!fts) continue;
@@ -3290,6 +3304,12 @@ function importBackupUnlockedEffect({
 					idKey: fts.idKey,
 					textKey: fts.textKey,
 					existingIds: existingFtsIds.get(codec.name),
+				});
+			}
+			if (mode === "merge") {
+				finalizeBackupProfileRows({
+					db: writeDb,
+					legacyProfileMergePlans,
 				});
 			}
 			const importedRevisionChains = new Map<
