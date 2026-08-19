@@ -1,5 +1,7 @@
 // @vitest-environment node
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const ensureBirdclawDirsMock = vi.fn();
@@ -763,6 +765,82 @@ describe("cli", () => {
 			await expect(
 				command?.parseAsync(["nonsense"], { from: "user" }),
 			).rejects.toMatchObject({ code: "commander.unknownCommand" });
+		}
+	});
+
+	it("exits nonzero when account sync backup returns a failure", async () => {
+		const tempDir = mkdtempSync(path.join(os.tmpdir(), "birdclaw-cli-job-"));
+		try {
+			getBirdclawPathsMock.mockReturnValue({
+				rootDir: tempDir,
+				dbPath: path.join(tempDir, "birdclaw.sqlite"),
+			});
+			syncMentionsMock.mockResolvedValueOnce({ source: "xurl", count: 1 });
+			maybeAutoSyncBackupMock.mockResolvedValueOnce({
+				ok: false,
+				enabled: true,
+				skipped: false,
+				error: "backup export failed",
+			});
+			const { runCli } = await loadCli();
+
+			await runCli([
+				"node",
+				"birdclaw",
+				"--json",
+				"jobs",
+				"sync-account",
+				"--steps",
+				"mentions",
+			]);
+
+			expect(process.exitCode).toBe(1);
+			expect(
+				JSON.parse(consoleLogMock.mock.lastCall?.[0] as string),
+			).toMatchObject({
+				ok: false,
+				backup: { ok: false, error: "backup export failed" },
+			});
+		} finally {
+			rmSync(tempDir, { recursive: true, force: true });
+		}
+	});
+
+	it("exits zero when account sync backup is successfully skipped", async () => {
+		const tempDir = mkdtempSync(path.join(os.tmpdir(), "birdclaw-cli-job-"));
+		try {
+			getBirdclawPathsMock.mockReturnValue({
+				rootDir: tempDir,
+				dbPath: path.join(tempDir, "birdclaw.sqlite"),
+			});
+			syncMentionsMock.mockResolvedValueOnce({ source: "xurl", count: 1 });
+			maybeAutoSyncBackupMock.mockResolvedValueOnce({
+				ok: true,
+				enabled: false,
+				skipped: true,
+				reason: "backup auto-sync is not configured",
+			});
+			const { runCli } = await loadCli();
+
+			await runCli([
+				"node",
+				"birdclaw",
+				"--json",
+				"jobs",
+				"sync-account",
+				"--steps",
+				"mentions",
+			]);
+
+			expect(process.exitCode).toBe(0);
+			expect(
+				JSON.parse(consoleLogMock.mock.lastCall?.[0] as string),
+			).toMatchObject({
+				ok: true,
+				backup: { ok: true, enabled: false, skipped: true },
+			});
+		} finally {
+			rmSync(tempDir, { recursive: true, force: true });
 		}
 	});
 

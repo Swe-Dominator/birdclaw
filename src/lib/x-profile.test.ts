@@ -11,6 +11,7 @@ import {
 	getProvenSelectedAccountLegacyProfileIds,
 	markProfileIdentityConflict,
 	profileIdentityHasConflict,
+	reconcileBackupProfileRows,
 	repairCanonicalProfileRawIdentity,
 } from "./profile-identity";
 import {
@@ -171,6 +172,50 @@ describe("x profile sync helpers", () => {
 				followingCount: 44,
 			}),
 		);
+	});
+
+	it("preserves a non-placeholder current profile without matching imported snapshot evidence", () => {
+		const db = makeTempHome();
+		upsertProfileFromXUser(db, {
+			id: "4242",
+			username: "current_handle",
+			name: "Current Name",
+			description: "Current bio",
+			public_metrics: { followers_count: 42, following_count: 7 },
+		});
+
+		const [prepared] = reconcileBackupProfileRows({
+			db,
+			profileRows: [
+				{
+					id: "profile_user_4242",
+					handle: "stale_handle",
+					display_name: "Stale Name",
+					bio: "Stale bio",
+					followers_count: 10,
+					following_count: 2,
+					public_metrics_json: "{}",
+					avatar_hue: 1,
+					avatar_url: null,
+					location: null,
+					url: null,
+					verified_type: null,
+					entities_json: "{}",
+					raw_json: '{"id":"4242","username":"stale_handle"}',
+					created_at: "2025-01-01T00:00:00.000Z",
+				},
+			],
+			profileSnapshotRows: [],
+		}).rows;
+
+		expect(prepared).toMatchObject({
+			id: "profile_user_4242",
+			handle: "current_handle",
+			display_name: "Current Name",
+			bio: "Current bio",
+			followers_count: 42,
+			following_count: 7,
+		});
 	});
 
 	it("preserves an existing avatar when a later payload omits one", () => {
